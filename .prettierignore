@@ -1,0 +1,5 @@
+public/build
+public/icons
+vendor
+node_modules
+storage

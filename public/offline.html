@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>You are offline — MoriHome</title>
+    <meta name="theme-color" content="#F5C518">
+    <meta name="robots" content="noindex">
+    <link rel="icon" href="/favicon.ico" sizes="48x48">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <style>
+        :root { color-scheme: light; }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100dvh;
+            display: grid;
+            place-items: center;
+            background: #f4f4f4;
+            color: #171717;
+            padding: calc(2rem + env(safe-area-inset-top, 0px)) 1.5rem calc(2rem + env(safe-area-inset-bottom, 0px));
+            font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        .card {
+            background: #fff;
+            border-radius: 1rem;
+            padding: 2.5rem 2rem;
+            max-width: 26rem;
+            text-align: center;
+            box-shadow: 0 1px 2px rgb(23 23 23 / 6%), 0 8px 24px -12px rgb(23 23 23 / 18%);
+        }
+        img { width: 88px; height: 88px; }
+        h1 { font-size: 1.35rem; margin: 1.25rem 0 0.5rem; letter-spacing: -0.02em; }
+        p { color: #5f6368; line-height: 1.6; margin: 0 0 1.5rem; font-size: 0.95rem; }
+        button {
+            background: #f5c518;
+            color: #171717;
+            font: inherit;
+            font-weight: 600;
+            border: 0;
+            cursor: pointer;
+            padding: 0.75rem 1.75rem;
+            border-radius: 999px;
+            min-height: 44px;
+        }
+        button:hover { background: #f9d94a; }
+        @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+    </style>
+</head>
+<body>
+    <main class="card">
+        <img src="/icons/icon-192.png" alt="MoriHome" width="88" height="88">
+        <h1>You are offline</h1>
+        <p>
+            Search results and provider details need a connection, so MoriHome never shows you
+            information that may be out of date. Reconnect and try again.
+        </p>
+        <button type="button" onclick="window.location.replace('/')">Try again</button>
+    </main>
+</body>
+</html>

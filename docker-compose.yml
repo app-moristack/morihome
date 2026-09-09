@@ -1,0 +1,20 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: morihome-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-morihome}
+      MYSQL_DATABASE: ${DB_DATABASE:-morihome}
+    ports:
+      - "${DB_PORT:-3310}:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  mysql-data:

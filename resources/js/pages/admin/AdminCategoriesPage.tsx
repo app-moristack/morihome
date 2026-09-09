@@ -1,0 +1,180 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Plus, Save } from 'lucide-react'
+import { useState } from 'react'
+import { ApiError } from '@/api/client'
+import { adminApi } from '@/api/endpoints'
+import { PageHeader } from '@/components/layout/PageHeader'
+import { Badge } from '@/components/ui/Badge'
+import { Button } from '@/components/ui/Button'
+import { TextField } from '@/components/ui/Field'
+import { Skeleton } from '@/components/ui/Skeleton'
+import { useToast } from '@/hooks/useToast'
+import type { ServiceCategory } from '@/types/api'
+
+type DraftCategory = {
+  id?: number
+  name: string
+  slug: string
+  icon: string
+  sort_order: number
+  is_active: boolean
+  is_popular: boolean
+}
+
+const EMPTY_DRAFT: DraftCategory = {
+  name: '',
+  slug: '',
+  icon: 'wrench',
+  sort_order: 500,
+  is_active: true,
+  is_popular: false,
+}
+
+function toDraft(category: ServiceCategory): DraftCategory {
+  return {
+    id: category.id,
+    name: category.name,
+    slug: category.slug,
+    icon: category.icon ?? 'wrench',
+    sort_order: category.sort_order,
+    is_active: true,
+    is_popular: category.is_popular,
+  }
+}
+
+export default function AdminCategoriesPage() {
+  const [draft, setDraft] = useState<DraftCategory | null>(null)
+  const queryClient = useQueryClient()
+  const { showToast } = useToast()
+
+  const { data: categories = [], isLoading } = useQuery({
+    queryKey: ['admin', 'categories'],
+    queryFn: adminApi.categories,
+  })
+
+  const save = useMutation({
+    mutationFn: ({ id, ...attributes }: DraftCategory) => adminApi.saveCategory(attributes, id),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['admin', 'categories'] })
+      void queryClient.invalidateQueries({ queryKey: ['categories'] })
+      showToast('Category saved.', 'success')
+      setDraft(null)
+    },
+    onError: (error) =>
+      showToast(
+        error instanceof ApiError ? (Object.values(error.errors)[0]?.[0] ?? error.message) : 'Save failed.',
+        'error',
+      ),
+  })
+
+  return (
+    <div className="container-page max-w-4xl py-8 sm:py-10">
+      <PageHeader
+        eyebrow="Administration"
+        title="Service categories"
+        description="Categories drive the search dropdown and the popular-services grid on the home page."
+        action={
+          <Button onClick={() => setDraft(EMPTY_DRAFT)} leadingIcon={<Plus className="size-4" />}>
+            New category
+          </Button>
+        }
+      />
+
+      {draft ? (
+        <form
+          onSubmit={(event) => {
+            event.preventDefault()
+            save.mutate({ ...draft, slug: draft.slug || draft.name.toLowerCase().replaceAll(' ', '-') })
+          }}
+          className="card mt-6 grid gap-4 p-5 sm:grid-cols-2"
+        >
+          <h2 className="text-lg font-bold text-ink-900 sm:col-span-2">
+            {draft.id ? `Edit ${draft.name}` : 'New category'}
+          </h2>
+
+          <TextField
+            label="Name"
+            isRequired
+            value={draft.name}
+            onChange={(event) => setDraft({ ...draft, name: event.target.value })}
+          />
+          <TextField
+            label="Slug"
+            value={draft.slug}
+            placeholder="auto-generated from the name"
+            onChange={(event) => setDraft({ ...draft, slug: event.target.value })}
+          />
+          <TextField
+            label="Lucide icon name"
+            value={draft.icon}
+            hint="e.g. wrench, zap, droplets"
+            onChange={(event) => setDraft({ ...draft, icon: event.target.value })}
+          />
+          <TextField
+            label="Sort order"
+            type="number"
+            value={draft.sort_order}
+            onChange={(event) => setDraft({ ...draft, sort_order: Number(event.target.value) })}
+          />
+
+          <div className="flex flex-col gap-3 sm:col-span-2">
+            <label className="flex items-center gap-3 text-sm font-medium text-ink-700">
+              <input
+                type="checkbox"
+                checked={draft.is_active}
+                onChange={(event) => setDraft({ ...draft, is_active: event.target.checked })}
+                className="size-5 rounded accent-brand-500"
+              />
+              Active — providers can choose it and customers can search it
+            </label>
+            <label className="flex items-center gap-3 text-sm font-medium text-ink-700">
+              <input
+                type="checkbox"
+                checked={draft.is_popular}
+                onChange={(event) => setDraft({ ...draft, is_popular: event.target.checked })}
+                className="size-5 rounded accent-brand-500"
+              />
+              Show in the popular-services grid on the home page
+            </label>
+          </div>
+
+          <div className="flex gap-2 sm:col-span-2">
+            <Button type="submit" isLoading={save.isPending} leadingIcon={<Save className="size-4" />}>
+              Save category
+            </Button>
+            <Button type="button" variant="ghost" onClick={() => setDraft(null)}>
+              Cancel
+            </Button>
+          </div>
+        </form>
+      ) : null}
+
+      <div className="mt-6">
+        {isLoading ? (
+          <div className="flex flex-col gap-2">
+            {Array.from({ length: 8 }, (_, index) => (
+              <Skeleton key={index} className="h-14 rounded-xl" />
+            ))}
+          </div>
+        ) : (
+          <ul className="flex flex-col gap-2">
+            {categories.map((category) => (
+              <li key={category.id} className="card flex items-center gap-3 p-3.5">
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate font-semibold text-ink-900">{category.name}</span>
+                  <span className="block text-xs text-ink-500">
+                    /{category.slug} · icon: {category.icon ?? '—'} · order {category.sort_order}
+                  </span>
+                </span>
+                {category.is_popular ? <Badge tone="brand">Popular</Badge> : null}
+                <Button size="sm" variant="ghost" onClick={() => setDraft(toDraft(category))}>
+                  Edit
+                </Button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  )
+}
