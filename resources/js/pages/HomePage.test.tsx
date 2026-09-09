@@ -73,28 +73,73 @@ describe('HomePage', () => {
 
     const sections = container.querySelectorAll('.home-model-section')
     expect(Array.from(sections, (section) => section.getAttribute('aria-labelledby'))).toEqual([
-      'services-title',
       'featured-title',
       'why-title',
     ])
     expect(container.querySelectorAll('.home-model-page > [aria-hidden="true"]')).toHaveLength(1)
     expect(screen.getByRole('region', { name: 'How MoriHome works' })).toHaveClass('home-soft-bg')
   })
+
+  it('keeps services light and featured professionals on the model background', () => {
+    const { container } = renderWithProviders(<HomePage />)
+
+    expect(screen.getByRole('heading', { name: 'What do you need help with?' })).toBeInTheDocument()
+    expect(screen.getByText('Find the right professional for your project.')).toBeInTheDocument()
+    expect(container.querySelector('[aria-labelledby="services-title"]')).toHaveClass('home-services-section')
+    expect(container.querySelector('[aria-labelledby="featured-title"]')).toHaveClass('home-model-section')
+    expect(container.querySelector('[aria-labelledby="featured-title"] > .container-page')).not.toHaveClass(
+      'max-w-none',
+    )
+  })
+
+  it('uses a compact navy trust section with reviewed-profile language', () => {
+    const { container } = renderWithProviders(<HomePage />)
+
+    expect(container.querySelector('[aria-labelledby="why-title"]')).toHaveClass(
+      'home-model-section',
+      'home-why-section',
+    )
+    expect(screen.getByRole('heading', { name: 'Professionals you can trust.' })).toBeInTheDocument()
+    expect(screen.getByText(/Every professional profile is reviewed before publication/)).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'How verification works' })).not.toBeInTheDocument()
+    expect(screen.queryByText(/Your privacy matters/)).not.toBeInTheDocument()
+  })
   it('shows Made for Mauritius in the homepage hero instead of the trust card', async () => {
     renderWithProviders(<HomePage />)
 
-    expect(screen.getByRole('heading', { name: 'Your home. The right pro.' })).toBeInTheDocument()
     expect(
-      screen.getByText(
-        (_, element) =>
-          element?.tagName === 'P' &&
-          element.textContent ===
-            'Find trusted local professionals for construction, renovation, repairs and maintenance across Mauritius.',
-      ),
+      screen.getByRole('heading', { name: 'Need work done at home? Find the right local pro.' }),
     ).toBeInTheDocument()
+    expect(screen.getByText(/Find local professionals near you for repairs, renovation/)).toBeInTheDocument()
+    expect(screen.queryByText('Look for the Verified badge on professional profiles.')).not.toBeInTheDocument()
     expect(screen.getByLabelText('Made for Mauritius')).toBeInTheDocument()
-    expect(screen.queryByText('Local people')).not.toBeInTheDocument()
-    expect(screen.queryByText('Faster support')).not.toBeInTheDocument()
+    expect(screen.getAllByText('Built for Mauritius')).toHaveLength(2)
+    expect(screen.getByText('Reviewed profiles')).toBeInTheDocument()
+  })
+
+  it('prioritizes finding and joining over the installation prompt', () => {
+    const { container } = renderWithProviders(<HomePage />)
+    const sectionIds = Array.from(
+      container.querySelectorAll('.home-page > section[aria-labelledby]'),
+      (section) => section.getAttribute('aria-labelledby'),
+    )
+
+    expect(sectionIds).toEqual([
+      'services-title',
+      'featured-title',
+      'how-title',
+      'why-title',
+      'join-title',
+      'app-title',
+    ])
+    expect(screen.getByRole('link', { name: 'Create Your Free Account' })).toHaveAttribute(
+      'href',
+      '/register',
+    )
+    expect(screen.queryByRole('link', { name: 'Report a concern' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Learn about your privacy' })).not.toBeInTheDocument()
+    expect(screen.getByText('Get discovered by customers looking for your services near you.')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Add to your phone' })).toHaveAttribute('href', '/install')
   })
 
   it('keeps the selected service, address and radius when searching', async () => {
@@ -146,6 +191,38 @@ describe('HomePage', () => {
       'local-plumber',
       expect.objectContaining({ source: 'home' }),
     )
+  })
+
+  it('shows a professional logo when one is available', async () => {
+    vi.mocked(publicApi.featuredProviders).mockResolvedValue([
+      { ...provider, logo_url: '/storage/logos/local-plumber.webp' },
+    ])
+
+    renderWithProviders(<HomePage />)
+
+    expect(await screen.findByAltText('Local Plumber logo')).toHaveAttribute(
+      'src',
+      '/storage/logos/local-plumber.webp',
+    )
+  })
+
+  it('renders no more than five featured professionals in a horizontal rail', async () => {
+    vi.mocked(publicApi.featuredProviders).mockResolvedValue(
+      Array.from({ length: 6 }, (_, index) => ({
+        ...provider,
+        id: index + 1,
+        name: `Professional ${index + 1}`,
+        slug: `professional-${index + 1}`,
+      })),
+    )
+
+    const { container } = renderWithProviders(<HomePage />)
+
+    await screen.findByRole('link', { name: 'Professional 1' })
+    const rail = container.querySelector('[aria-label="Featured professionals"]')
+    expect(rail).toHaveClass('home-featured-carousel')
+    expect(rail?.querySelectorAll('.home-provider-card')).toHaveLength(5)
+    expect(screen.getByRole('link', { name: 'View all professionals' })).toBeInTheDocument()
   })
 
   it('offers directory search when there are no featured profiles', async () => {

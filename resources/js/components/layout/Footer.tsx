@@ -9,7 +9,7 @@ export function Footer() {
   const { data: categories = [] } = useCategories(true)
   return (
     <footer className="site-footer" style={{ paddingBottom: 'var(--safe-bottom)' }}>
-      <div className="container-page grid items-start gap-6 py-6 sm:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr_1.1fr_0.8fr]">
+      <div className="container-page grid items-start gap-6 py-5 sm:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr_1.1fr_0.8fr]">
         <div className="flex flex-col items-center text-center">
           <Brand footer />
           <p className="mt-3 max-w-52 text-xs leading-relaxed text-white/60">
@@ -72,20 +72,22 @@ export function Footer() {
             </li>
           </ul>
         </div>
-        <div className="flex items-start gap-3 self-start">
+        <div className="flex items-center gap-3 self-start">
           <img
             src={island}
             alt="Silhouette of the island of Mauritius"
             width={55}
-            height={76}
+            height={56}
             loading="lazy"
-            className="h-20 w-14 object-contain object-top opacity-65"
+            className="h-14 w-11 shrink-0 object-contain opacity-65"
           />
-          <div className="text-xs">
-            Proudly
-            <br />
-            Mauritian
-            <span className="mauritius-flag mt-2" role="img" aria-label="Mauritius flag">
+          <div className="flex flex-col gap-1 text-xs leading-tight">
+            <span>
+              Proudly built
+              <br />
+              in Mauritius
+            </span>
+            <span className="mauritius-flag" role="img" aria-label="Mauritius flag">
               <i />
               <i />
               <i />

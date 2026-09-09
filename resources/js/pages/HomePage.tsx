@@ -1,22 +1,16 @@
-﻿import {
+import {
   ArrowRight,
-  ChartNoAxesColumnIncreasing,
   CircleCheck,
-  Clock3,
-  Handshake,
-  Heart,
   House,
   List,
   MapPin,
   MessageCircle,
-  MonitorSmartphone,
   MoreHorizontal,
   Search,
   ShieldCheck,
   Smartphone,
-  Users,
-  Zap,
 } from 'lucide-react'
+import { createElement } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { HomeHeroScene } from '@/components/search/HomeHeroScene'
 import { SearchHero } from '@/components/search/SearchHero'
@@ -27,15 +21,13 @@ import { resolveCategoryIcon } from '@/lib/categoryIcons'
 import { emptySearchState, writeSearchState, type SearchFormState } from '@/lib/searchParams'
 import { initialsOf } from '@/lib/format'
 import type { ProviderSummary } from '@/types/api'
-import room from '../../images/mauritius-home-renovation-living-room.webp'
-import phoneWelcome from '../../images/morihome-mobile-app-welcome.webp'
-import phoneSearch from '../../images/morihome-mobile-app-professional-search.webp'
+import professionalBanner from '../../images/Grow your business with MoriHome.png'
 
 const TRUST = [
-  { icon: Users, title: 'Local Professionals', body: 'Across Mauritius' },
-  { icon: ShieldCheck, title: 'Verified Listings', body: 'For your peace of mind' },
-  { icon: Zap, title: 'Quick Contact', body: 'Via WhatsApp' },
-  { icon: House, title: 'Stronger Homes', body: 'Stronger communities' },
+  { icon: MapPin, title: 'Built for Mauritius', body: 'Your town, village or district' },
+  { icon: ShieldCheck, title: 'Reviewed profiles', body: 'Checked before publication' },
+  { icon: MessageCircle, title: 'Direct contact', body: 'Message on WhatsApp' },
+  { icon: Search, title: 'Search freely', body: 'No customer account needed' },
 ]
 const STEPS = [
   { icon: Search, title: 'Search', body: 'Select a service, enter your location and choose a radius.' },
@@ -43,10 +35,26 @@ const STEPS = [
   { icon: MessageCircle, title: 'Contact', body: 'Get in touch directly via WhatsApp.' },
 ]
 const BENEFITS = [
-  { icon: Handshake, title: 'Local & Reliable', body: 'Real professionals in your area' },
-  { icon: ShieldCheck, title: 'Verified Listings', body: 'Manual validation for quality and trust' },
-  { icon: Clock3, title: 'Save Time', body: 'Find the right pro in minutes' },
-  { icon: Heart, title: 'Support Local', body: 'A stronger Mauritius together' },
+  {
+    icon: ShieldCheck,
+    title: 'Reviewed professionals',
+    body: 'Our team reviews professional profiles before they appear in the directory.',
+  },
+  {
+    icon: MapPin,
+    title: 'Professionals near you',
+    body: 'Search by town, village and distance to find services in your area.',
+  },
+  {
+    icon: MessageCircle,
+    title: 'Direct contact',
+    body: 'Contact professionals directly on WhatsApp. No complicated booking process.',
+  },
+  {
+    icon: House,
+    title: 'Built for Mauritius',
+    body: 'A local platform for Mauritian homeowners and businesses.',
+  },
 ]
 
 function SectionLink({ to, children }: { to: string; children: React.ReactNode }) {
@@ -60,12 +68,16 @@ function SectionLink({ to, children }: { to: string; children: React.ReactNode }
 
 function FeaturedCard({ provider }: { provider: ProviderSummary }) {
   const category = provider.service_categories[0]
+  const categoryIcon = createElement(resolveCategoryIcon(category?.icon ?? null), {
+    className: 'size-9 shrink-0',
+    'aria-hidden': true,
+  })
   return (
     <article className="home-provider-card flex min-w-0 flex-col overflow-hidden rounded-xl border border-ink-100 bg-surface shadow-card">
       <Link
         to={`/providers/${provider.slug}`}
         aria-label={`View ${provider.name}'s profile`}
-        className="home-provider-cover"
+        className={`home-provider-cover ${provider.cover_url ? '' : 'home-provider-cover-identity'}`}
       >
         {provider.cover_url ? (
           <img
@@ -78,19 +90,22 @@ function FeaturedCard({ provider }: { provider: ProviderSummary }) {
             className="h-full w-full object-cover"
           />
         ) : (
-          <House className="size-16" aria-hidden />
+          <>
+            {categoryIcon}
+            <span className="text-sm font-semibold">{category?.name ?? provider.provider_type_label}</span>
+          </>
         )}
       </Link>
-      <div className="flex flex-1 flex-col gap-3 p-4">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-1 flex-col gap-2.5 p-3">
+        <div className="flex items-center gap-2.5">
           {provider.logo_url ? (
             <img
               src={provider.logo_url}
-              alt=""
+              alt={`${provider.name} logo`}
               loading="lazy"
               width={44}
               height={44}
-              className="size-11 rounded-full object-cover"
+              className="size-10 rounded-full object-cover"
             />
           ) : (
             <span className="grid size-11 shrink-0 place-items-center rounded-full bg-brand-100 text-sm font-bold text-brand-900">
@@ -115,6 +130,9 @@ function FeaturedCard({ provider }: { provider: ProviderSummary }) {
             <CircleCheck className="size-3" aria-hidden />
             Verified
           </span>
+        )}
+        {provider.excerpt && (
+          <p className="line-clamp-2 text-xs leading-relaxed text-ink-500">{provider.excerpt}</p>
         )}
         <div className="mt-auto pt-1">
           {provider.whatsapp_number ? (
@@ -162,9 +180,11 @@ export function HomePage() {
         state={emptySearchState()}
         onSearch={runSearch}
         categories={categories}
-        title="Your home."
-        highlightedTitle="The right pro."
-        description="Find trusted local professionals for construction, renovation, repairs and maintenance across Mauritius."
+        title="Need work done at home?"
+        highlightedTitle="Find the right local pro."
+        description={
+          'Find local professionals near you for repairs, renovation, maintenance and construction across Mauritius.'
+        }
         aside={
           <p
             className="home-handwritten hidden px-5 pt-4 text-[2.75rem] lg:block"
@@ -192,12 +212,12 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="home-model-section home-services-section" aria-labelledby="services-title">
+      <section className="home-services-section" aria-labelledby="services-title">
         <div className="container-page home-section">
           <div className="home-section-heading">
             <div>
-              <h2 id="services-title">Browse by Service</h2>
-              <p>Find the right professional for your project</p>
+              <h2 id="services-title">What do you need help with?</h2>
+              <p>Find the right professional for your project.</p>
             </div>
             <SectionLink to="/search">View all services</SectionLink>
           </div>
@@ -238,6 +258,54 @@ export function HomePage() {
         </div>
       </section>
 
+      <section className="home-model-section" aria-labelledby="featured-title">
+        <div className="container-page home-section">
+          <div className="home-section-heading">
+            <div>
+              <h2 id="featured-title">Featured Professionals</h2>
+              <p>Your next home project starts with a local professional. Explore who can help.</p>
+            </div>
+            <SectionLink to="/search">View all professionals</SectionLink>
+          </div>
+          {providersLoading ? (
+            <div className="home-featured-carousel" aria-label="Loading featured professionals">
+              {Array.from({ length: 5 }, (_, i) => (
+                <Skeleton key={i} className="h-72 rounded-xl" />
+              ))}
+            </div>
+          ) : providersError ? (
+            <div className="home-empty">
+              <p>We couldn’t load the featured professionals.</p>
+              <button
+                type="button"
+                onClick={() => void refetch()}
+                className="mt-3 min-h-11 font-semibold underline"
+              >
+                Try again
+              </button>
+            </div>
+          ) : providers.length ? (
+            <div className="home-featured-carousel" aria-label="Featured professionals">
+              {providers.slice(0, 5).map((provider) => (
+                <FeaturedCard key={provider.id} provider={provider} />
+              ))}
+            </div>
+          ) : (
+            <div className="home-empty flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h3 className="font-bold">Your next home project starts here.</h3>
+                <p className="mt-1 text-sm text-ink-500">
+                  Browse the directory to find professionals in your area.
+                </p>
+              </div>
+              <Link to="/search" className="home-cta">
+                Find a professional <ArrowRight className="size-4" aria-hidden />
+              </Link>
+            </div>
+          )}
+        </div>
+      </section>
+
       <section className="home-soft-bg" aria-labelledby="how-title">
         <div className="container-page home-section relative">
           <div className="home-section-heading">
@@ -270,184 +338,95 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="home-model-section" aria-labelledby="featured-title">
-        <div className="container-page home-section max-w-none">
-          <div className="home-section-heading">
-            <div>
-              <h2 id="featured-title">Featured Professionals</h2>
-              <p>Discover local expertise across Mauritius.</p>
-            </div>
-            <SectionLink to="/search">View all professionals</SectionLink>
-          </div>
-          {providersLoading ? (
-            <div
-              className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
-              aria-label="Loading featured professionals"
-            >
-              {Array.from({ length: 5 }, (_, i) => (
-                <Skeleton key={i} className="h-72 rounded-xl" />
-              ))}
-            </div>
-          ) : providersError ? (
-            <div className="home-empty">
-              <p>We couldn’t load the featured professionals.</p>
-              <button
-                type="button"
-                onClick={() => void refetch()}
-                className="mt-3 min-h-11 font-semibold underline"
-              >
-                Try again
-              </button>
-            </div>
-          ) : providers.length ? (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-              {providers.map((provider) => (
-                <FeaturedCard key={provider.id} provider={provider} />
-              ))}
-            </div>
-          ) : (
-            <div className="home-empty flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <h3 className="font-bold">Your next home project starts here.</h3>
-                <p className="mt-1 text-sm text-ink-500">
-                  Browse the directory to find professionals in your area.
-                </p>
-              </div>
-              <Link to="/search" className="home-cta">
-                Find a professional <ArrowRight className="size-4" aria-hidden />
-              </Link>
-            </div>
-          )}
-        </div>
-      </section>
-
-      <section className="home-app-banner relative isolate overflow-hidden" aria-labelledby="app-title">
-        <div className="container-page relative grid gap-8 py-10 md:grid-cols-2 md:py-12">
-          <div className="relative z-10">
-            <h2 id="app-title" className="text-4xl leading-[1.1] font-extrabold tracking-tight lg:text-5xl">
-              Take MoriHome
-              <br />
-              <span className="home-yellow-text">with you</span>
-            </h2>
-            <p className="mt-4 max-w-md text-base leading-relaxed text-white/90 sm:text-lg">
-              Add MoriHome to your home screen and access it like a mobile app on iOS and Android.
-            </p>
-            <ul className="my-7 flex flex-wrap gap-x-5 gap-y-4 text-xs sm:text-sm">
-              <li className="flex items-center gap-2">
-                <Smartphone className="size-7" aria-hidden />
-                <span>
-                  Add to
-                  <br />
-                  Home Screen
-                </span>
-              </li>
-              <li className="flex items-center gap-2">
-                <MonitorSmartphone className="size-7" aria-hidden />
-                <span>
-                  Install on
-                  <br />
-                  Android
-                </span>
-              </li>
-              <li className="flex items-center gap-2">
-                <CircleCheck className="size-7" aria-hidden />
-                <span>
-                  Fast. Simple.
-                  <br />
-                  Always with you.
-                </span>
-              </li>
-            </ul>
-            <Link to="/install" className="home-cta">
-              Learn how <ArrowRight className="size-4" aria-hidden />
-            </Link>
-          </div>
-          <div className="home-phone-art" aria-label="MoriHome mobile app previews">
-            <img
-              src={phoneWelcome}
-              alt="MoriHome welcome screen on a phone"
-              width={600}
-              height={990}
-              loading="lazy"
-              decoding="async"
-              className="home-phone-welcome"
-            />
-            <img
-              src={phoneSearch}
-              alt="MoriHome mobile search with service, location and radius fields"
-              width={600}
-              height={990}
-              loading="lazy"
-              decoding="async"
-              className="home-phone-search"
-            />
-          </div>
-        </div>
-      </section>
-
-      <section className="home-model-section" aria-labelledby="why-title">
-        <div className="container-page home-section grid gap-7 lg:grid-cols-[1fr_260px]">
+      <section className="home-model-section home-why-section" aria-labelledby="why-title">
+        <div className="container-page home-section grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-center">
           <div>
             <h2 id="why-title" className="text-2xl font-extrabold">
               Why choose MoriHome?
             </h2>
-            <div className="mt-6 grid grid-cols-2 gap-6 md:grid-cols-4">
+            <div className="mt-5 grid gap-x-5 gap-y-6 sm:grid-cols-2 xl:grid-cols-4">
               {BENEFITS.map(({ icon: Icon, title, body }) => (
-                <div key={title} className="border-l border-ink-100 pl-4">
+                <div key={title} className="home-why-benefit border-l border-white/20 pl-4">
                   <Icon className="home-illustrated-icon mb-3 size-8" aria-hidden />
                   <h3 className="text-sm font-bold">{title}</h3>
-                  <p className="mt-1 text-xs leading-relaxed text-ink-600">{body}</p>
+                  <p className="mt-1 text-xs leading-relaxed">{body}</p>
                 </div>
               ))}
             </div>
           </div>
-          <aside className="home-soft-bg flex flex-col justify-center rounded-xl p-6">
+          <aside className="home-why-trust-card rounded-xl p-5">
             <ShieldCheck className="home-illustrated-icon mb-3 size-8" aria-hidden />
-            <h3 className="font-bold">Peace of mind starts here.</h3>
-            <p className="mt-2 text-sm leading-relaxed text-ink-600">
-              Every professional is reviewed by our team before appearing in the directory.
+            <h3 className="font-bold">Professionals you can trust.</h3>
+            <p className="mt-2 text-sm leading-relaxed">
+              Every professional profile is reviewed before publication. The Verified badge identifies
+              profiles approved by our team.
             </p>
-            <Link to="/about" className="mt-3 inline-flex min-h-11 items-center gap-2 text-sm font-semibold">
-              Our commitment <ArrowRight className="size-4" aria-hidden />
-            </Link>
           </aside>
         </div>
       </section>
 
       <section className="home-pro-banner relative isolate" aria-labelledby="join-title">
         <img
-          src={room}
+          src={professionalBanner}
           alt=""
-          width={1600}
-          height={640}
+          width={2084}
+          height={755}
           loading="lazy"
           className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover"
         />
         <div className="home-pro-shade pointer-events-none absolute inset-0 -z-10" />
-        <div className="container-page grid items-center gap-8 py-10 lg:grid-cols-[1fr_1fr] lg:pl-64">
-          <div>
-            <h2 id="join-title" className="text-2xl font-extrabold">
-              Are you a professional?
+        <div className="container-page py-12 sm:py-16 lg:py-18">
+          <div className="home-pro-content">
+            <p className="home-pro-label">
+              For local professionals · Free registration
+            </p>
+            <h2 id="join-title" className="mt-5 text-4xl leading-[1.02] font-extrabold tracking-[-0.045em] sm:text-5xl lg:text-6xl">
+              Grow your business
+              <br />
+              with <span className="text-brand-400">MoriHome</span>
             </h2>
-            <p className="mt-2 text-sm text-ink-600">Join MoriHome and get discovered by people near you.</p>
-            <Link to="/register" className="home-cta mt-5">
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-600 sm:text-lg">
+              Get discovered by customers looking for your services near you.
+            </p>
+            <ul className="mt-8 grid max-w-2xl gap-x-8 gap-y-5 text-sm font-semibold sm:grid-cols-2 sm:text-base">
+            {[
+              'Create your professional profile',
+              'Showcase your services and project photos',
+              'Hear from customers directly on WhatsApp',
+              'Build your local presence',
+            ].map((benefit) => (
+              <li key={benefit} className="flex items-start gap-3">
+                <CircleCheck className="size-6 shrink-0 text-brand-500" aria-hidden />
+                {benefit}
+              </li>
+            ))}
+            </ul>
+            <Link to="/register" className="home-cta mt-9">
               Create Your Free Account <ArrowRight className="size-4" aria-hidden />
             </Link>
           </div>
-          <ul className="grid grid-cols-3 gap-4 text-center text-xs font-semibold">
-            {[
-              { icon: ChartNoAxesColumnIncreasing, label: 'Grow your business' },
-              { icon: Users, label: 'Reach more clients' },
-              { icon: ShieldCheck, label: 'Build your reputation' },
-            ].map(({ icon: Icon, label }) => (
-              <li key={label}>
-                <span className="mx-auto mb-3 grid size-16 place-items-center rounded-full bg-surface/80">
-                  <Icon className="home-illustrated-icon size-9" aria-hidden />
-                </span>
-                {label}
-              </li>
-            ))}
-          </ul>
+        </div>
+      </section>
+
+      <section className="home-app-banner relative isolate overflow-hidden" aria-labelledby="app-title">
+        <div className="container-page flex flex-col items-start justify-between gap-5 py-7 sm:flex-row sm:items-center">
+          <div className="flex items-center gap-4">
+            <Smartphone className="size-10 shrink-0 text-brand-300" aria-hidden />
+            <div>
+              <h2 id="app-title" className="text-xl font-bold">
+                Keep MoriHome close at hand
+              </h2>
+              <p className="mt-1 max-w-xl text-sm text-white/85">
+                Add MoriHome to your home screen for easy access on iOS and Android.
+              </p>
+            </div>
+          </div>
+          <Link
+            to="/install"
+            className="inline-flex min-h-11 shrink-0 items-center gap-2 text-sm font-semibold text-brand-300 hover:underline"
+          >
+            Add to your phone <ArrowRight className="size-4" aria-hidden />
+          </Link>
         </div>
       </section>
     </div>
