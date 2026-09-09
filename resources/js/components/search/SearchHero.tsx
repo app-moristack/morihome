@@ -1,4 +1,4 @@
-import { BadgeCheck, Users, Zap } from 'lucide-react'
+﻿import { BadgeCheck, Users, Zap } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { SearchModule } from './SearchModule'
 import type { SearchFormState } from '@/lib/searchParams'
@@ -16,6 +16,7 @@ type SearchHeroProps = {
   title?: string
   highlightedTitle?: string
   description?: ReactNode
+  background?: ReactNode
 }
 
 const TRUST_POINTS = [
@@ -34,20 +35,23 @@ export function SearchHero({
   title = 'Find the right professional',
   highlightedTitle = 'near you.',
   description,
+  background,
 }: SearchHeroProps) {
   return (
     <section className="search-page-hero relative isolate text-white">
-      <picture className="pointer-events-none absolute inset-0 -z-20">
-        <source media="(max-width: 640px)" srcSet={heroMobile} />
-        <img
-          src={hero}
-          alt="Le Morne mountain and the Mauritius coast"
-          width={1980}
-          height={793}
-          fetchPriority="high"
-          className="h-full w-full object-cover"
-        />
-      </picture>
+      {background ?? (
+        <picture className="pointer-events-none absolute inset-0 -z-20">
+          <source media="(max-width: 640px)" srcSet={heroMobile} />
+          <img
+            src={hero}
+            alt="Le Morne mountain and the Mauritius coast"
+            width={1980}
+            height={793}
+            fetchPriority="high"
+            className="h-full w-full object-cover"
+          />
+        </picture>
+      )}
       <div className="search-page-hero-shade absolute inset-0 -z-10" />
       <div className="container-page relative py-8 sm:py-10">
         <div className="grid items-start gap-6 lg:grid-cols-[1fr_auto]">

@@ -220,6 +220,56 @@
   .home-section {
     @apply py-8 sm:py-9;
   }
+  .home-model-page {
+    position: relative;
+    isolation: isolate;
+    clip-path: inset(0);
+  }
+  .home-model-section {
+    --color-surface: #16364b;
+    --color-ink-50: #16364b;
+    --color-ink-100: #ffffff30;
+    --color-ink-500: #d8e3eb;
+    --color-ink-600: #d8e3eb;
+    --home-soft: #16364be6;
+    color: #fff;
+    background: linear-gradient(110deg, #071e30ed, #102c3fd9 60%, #102c3fc4);
+  }
+  .home-model-section .home-section-heading > div > p {
+    color: #d8e3eb;
+  }
+  .home-model-section .home-section-link,
+  .home-model-section aside a {
+    color: #ffcc00;
+  }
+  .home-model-section .home-section-link:hover,
+  .home-model-section aside a:hover {
+    color: #ffe580;
+  }
+  .home-model-section .home-category {
+    color: #fff;
+    background: #16364be6;
+    border-color: #ffffff30;
+    box-shadow: 0 4px 16px #03132226;
+  }
+  .home-model-section .home-category svg,
+  .home-model-section .home-illustrated-icon {
+    color: #ffcc00;
+    filter: none;
+  }
+  .home-model-section .home-provider-card .home-provider-cover {
+    color: #ffcc00;
+    background: linear-gradient(135deg, #1b4056, #102c3f);
+  }
+  .home-model-section .home-category:hover,
+  .home-model-section .home-category:focus-visible {
+    background: #244a60;
+    border-color: #ffcc00;
+  }
+  .home-model-section a:focus-visible,
+  .home-model-section button:focus-visible {
+    outline-color: #ffcc00;
+  }
   .home-section-heading {
     @apply mb-6 flex flex-wrap items-center justify-between gap-x-5 gap-y-2;
   }

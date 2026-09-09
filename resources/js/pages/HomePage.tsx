@@ -18,6 +18,7 @@
   Zap,
 } from 'lucide-react'
 import { Link, useNavigate } from 'react-router'
+import { HomeHeroScene } from '@/components/search/HomeHeroScene'
 import { SearchHero } from '@/components/search/SearchHero'
 import { WhatsappButton } from '@/components/provider/WhatsappButton'
 import { Skeleton } from '@/components/ui/Skeleton'
@@ -155,7 +156,8 @@ export function HomePage() {
   const runSearch = (state: SearchFormState) => navigate(`/search?${writeSearchState(state).toString()}`)
 
   return (
-    <div className="home-page bg-surface">
+    <div className="home-page home-model-page bg-surface">
+      <HomeHeroScene />
       <SearchHero
         state={emptySearchState()}
         onSearch={runSearch}
@@ -190,48 +192,50 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="container-page home-section" aria-labelledby="services-title">
-        <div className="home-section-heading">
-          <div>
-            <h2 id="services-title">Browse by Service</h2>
-            <p>Find the right professional for your project</p>
+      <section className="home-model-section home-services-section" aria-labelledby="services-title">
+        <div className="container-page home-section">
+          <div className="home-section-heading">
+            <div>
+              <h2 id="services-title">Browse by Service</h2>
+              <p>Find the right professional for your project</p>
+            </div>
+            <SectionLink to="/search">View all services</SectionLink>
           </div>
-          <SectionLink to="/search">View all services</SectionLink>
-        </div>
-        {categoriesLoading ? (
-          <div className="home-category-grid" aria-label="Loading services">
-            {Array.from({ length: 9 }, (_, i) => (
-              <Skeleton key={i} className="h-28 rounded-xl" />
-            ))}
-          </div>
-        ) : categoriesError || !categories.length ? (
-          <p className="home-empty">
-            Services are unavailable right now.{' '}
-            <Link to="/search" className="underline">
-              Search all professionals
-            </Link>
-          </p>
-        ) : (
-          <ul className="home-category-grid">
-            {categories.slice(0, 8).map((category) => {
-              const Icon = resolveCategoryIcon(category.icon)
-              return (
-                <li key={category.id}>
-                  <Link to={categoryLink(category.id)} className="home-category">
-                    <Icon className="home-illustrated-icon size-10" aria-hidden />
-                    <span>{category.name}</span>
-                  </Link>
-                </li>
-              )
-            })}
-            <li>
-              <Link to="/search" className="home-category">
-                <MoreHorizontal className="size-10" aria-hidden />
-                <span>More</span>
+          {categoriesLoading ? (
+            <div className="home-category-grid" aria-label="Loading services">
+              {Array.from({ length: 9 }, (_, i) => (
+                <Skeleton key={i} className="h-28 rounded-xl" />
+              ))}
+            </div>
+          ) : categoriesError || !categories.length ? (
+            <p className="home-empty">
+              Services are unavailable right now.{' '}
+              <Link to="/search" className="underline">
+                Search all professionals
               </Link>
-            </li>
-          </ul>
-        )}
+            </p>
+          ) : (
+            <ul className="home-category-grid">
+              {categories.slice(0, 8).map((category) => {
+                const Icon = resolveCategoryIcon(category.icon)
+                return (
+                  <li key={category.id}>
+                    <Link to={categoryLink(category.id)} className="home-category">
+                      <Icon className="home-illustrated-icon size-10" aria-hidden />
+                      <span>{category.name}</span>
+                    </Link>
+                  </li>
+                )
+              })}
+              <li>
+                <Link to="/search" className="home-category">
+                  <MoreHorizontal className="size-10" aria-hidden />
+                  <span>More</span>
+                </Link>
+              </li>
+            </ul>
+          )}
+        </div>
       </section>
 
       <section className="home-soft-bg" aria-labelledby="how-title">
@@ -266,53 +270,55 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="container-page home-section max-w-none" aria-labelledby="featured-title">
-        <div className="home-section-heading">
-          <div>
-            <h2 id="featured-title">Featured Professionals</h2>
-            <p>Discover local expertise across Mauritius.</p>
-          </div>
-          <SectionLink to="/search">View all professionals</SectionLink>
-        </div>
-        {providersLoading ? (
-          <div
-            className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
-            aria-label="Loading featured professionals"
-          >
-            {Array.from({ length: 5 }, (_, i) => (
-              <Skeleton key={i} className="h-72 rounded-xl" />
-            ))}
-          </div>
-        ) : providersError ? (
-          <div className="home-empty">
-            <p>We couldn’t load the featured professionals.</p>
-            <button
-              type="button"
-              onClick={() => void refetch()}
-              className="mt-3 min-h-11 font-semibold underline"
-            >
-              Try again
-            </button>
-          </div>
-        ) : providers.length ? (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-            {providers.map((provider) => (
-              <FeaturedCard key={provider.id} provider={provider} />
-            ))}
-          </div>
-        ) : (
-          <div className="home-empty flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <section className="home-model-section" aria-labelledby="featured-title">
+        <div className="container-page home-section max-w-none">
+          <div className="home-section-heading">
             <div>
-              <h3 className="font-bold">Your next home project starts here.</h3>
-              <p className="mt-1 text-sm text-ink-500">
-                Browse the directory to find professionals in your area.
-              </p>
+              <h2 id="featured-title">Featured Professionals</h2>
+              <p>Discover local expertise across Mauritius.</p>
             </div>
-            <Link to="/search" className="home-cta">
-              Find a professional <ArrowRight className="size-4" aria-hidden />
-            </Link>
+            <SectionLink to="/search">View all professionals</SectionLink>
           </div>
-        )}
+          {providersLoading ? (
+            <div
+              className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
+              aria-label="Loading featured professionals"
+            >
+              {Array.from({ length: 5 }, (_, i) => (
+                <Skeleton key={i} className="h-72 rounded-xl" />
+              ))}
+            </div>
+          ) : providersError ? (
+            <div className="home-empty">
+              <p>We couldn’t load the featured professionals.</p>
+              <button
+                type="button"
+                onClick={() => void refetch()}
+                className="mt-3 min-h-11 font-semibold underline"
+              >
+                Try again
+              </button>
+            </div>
+          ) : providers.length ? (
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+              {providers.map((provider) => (
+                <FeaturedCard key={provider.id} provider={provider} />
+              ))}
+            </div>
+          ) : (
+            <div className="home-empty flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h3 className="font-bold">Your next home project starts here.</h3>
+                <p className="mt-1 text-sm text-ink-500">
+                  Browse the directory to find professionals in your area.
+                </p>
+              </div>
+              <Link to="/search" className="home-cta">
+                Find a professional <ArrowRight className="size-4" aria-hidden />
+              </Link>
+            </div>
+          )}
+        </div>
       </section>
 
       <section className="home-app-banner relative isolate overflow-hidden" aria-labelledby="app-title">
@@ -379,34 +385,33 @@ export function HomePage() {
         </div>
       </section>
 
-      <section
-        className="container-page home-section grid gap-7 lg:grid-cols-[1fr_260px]"
-        aria-labelledby="why-title"
-      >
-        <div>
-          <h2 id="why-title" className="text-2xl font-extrabold">
-            Why choose MoriHome?
-          </h2>
-          <div className="mt-6 grid grid-cols-2 gap-6 md:grid-cols-4">
-            {BENEFITS.map(({ icon: Icon, title, body }) => (
-              <div key={title} className="border-l border-ink-100 pl-4">
-                <Icon className="home-illustrated-icon mb-3 size-8" aria-hidden />
-                <h3 className="text-sm font-bold">{title}</h3>
-                <p className="mt-1 text-xs leading-relaxed text-ink-600">{body}</p>
-              </div>
-            ))}
+      <section className="home-model-section" aria-labelledby="why-title">
+        <div className="container-page home-section grid gap-7 lg:grid-cols-[1fr_260px]">
+          <div>
+            <h2 id="why-title" className="text-2xl font-extrabold">
+              Why choose MoriHome?
+            </h2>
+            <div className="mt-6 grid grid-cols-2 gap-6 md:grid-cols-4">
+              {BENEFITS.map(({ icon: Icon, title, body }) => (
+                <div key={title} className="border-l border-ink-100 pl-4">
+                  <Icon className="home-illustrated-icon mb-3 size-8" aria-hidden />
+                  <h3 className="text-sm font-bold">{title}</h3>
+                  <p className="mt-1 text-xs leading-relaxed text-ink-600">{body}</p>
+                </div>
+              ))}
+            </div>
           </div>
+          <aside className="home-soft-bg flex flex-col justify-center rounded-xl p-6">
+            <ShieldCheck className="home-illustrated-icon mb-3 size-8" aria-hidden />
+            <h3 className="font-bold">Peace of mind starts here.</h3>
+            <p className="mt-2 text-sm leading-relaxed text-ink-600">
+              Every professional is reviewed by our team before appearing in the directory.
+            </p>
+            <Link to="/about" className="mt-3 inline-flex min-h-11 items-center gap-2 text-sm font-semibold">
+              Our commitment <ArrowRight className="size-4" aria-hidden />
+            </Link>
+          </aside>
         </div>
-        <aside className="home-soft-bg flex flex-col justify-center rounded-xl p-6">
-          <ShieldCheck className="home-illustrated-icon mb-3 size-8" aria-hidden />
-          <h3 className="font-bold">Peace of mind starts here.</h3>
-          <p className="mt-2 text-sm leading-relaxed text-ink-600">
-            Every professional is reviewed by our team before appearing in the directory.
-          </p>
-          <Link to="/about" className="mt-3 inline-flex min-h-11 items-center gap-2 text-sm font-semibold">
-            Our commitment <ArrowRight className="size-4" aria-hidden />
-          </Link>
-        </aside>
       </section>
 
       <section className="home-pro-banner relative isolate" aria-labelledby="join-title">

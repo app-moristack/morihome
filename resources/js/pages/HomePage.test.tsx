@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+﻿import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useLocation } from 'react-router'
@@ -52,6 +52,34 @@ beforeEach(() => {
 })
 
 describe('HomePage', () => {
+  it('keeps the hero and search usable without WebGL', async () => {
+    const { container } = renderWithProviders(<HomePage />)
+    const page = container.querySelector('.home-model-page')
+
+    expect(page?.querySelector('img')).toHaveAttribute(
+      'src',
+      expect.stringContaining('mauritius-home-renovation-living-room.webp'),
+    )
+    expect(page?.querySelector('canvas')).toBeNull()
+    expect(screen.getByAltText('Le Morne mountain and the Mauritius coast')).toHaveAttribute(
+      'src',
+      expect.stringContaining('le-morne-mauritius-home-services.webp'),
+    )
+    expect(await screen.findByRole('option', { name: 'Plumber' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Search' })).toBeEnabled()
+  })
+  it('shares the model background with exactly the three marked content sections', () => {
+    const { container } = renderWithProviders(<HomePage />)
+
+    const sections = container.querySelectorAll('.home-model-section')
+    expect(Array.from(sections, (section) => section.getAttribute('aria-labelledby'))).toEqual([
+      'services-title',
+      'featured-title',
+      'why-title',
+    ])
+    expect(container.querySelectorAll('.home-model-page > [aria-hidden="true"]')).toHaveLength(1)
+    expect(screen.getByRole('region', { name: 'How MoriHome works' })).toHaveClass('home-soft-bg')
+  })
   it('shows Made for Mauritius in the homepage hero instead of the trust card', async () => {
     renderWithProviders(<HomePage />)
 

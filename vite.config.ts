@@ -54,10 +54,17 @@ export default defineConfig({
       workbox: {
         globDirectory: 'public',
         globPatterns: ['build/assets/**/*.{js,css,woff2}', 'icons/*.png', 'offline.html', 'favicon.ico'],
-        navigateFallback: '/offline.html',
-        navigateFallbackDenylist: [/^\/api\//, /^\/sanctum\//, /^\/storage\//, /^\/up$/],
+        navigateFallback: null,
         cleanupOutdatedCaches: true,
         runtimeCaching: [
+          {
+            urlPattern: ({ request, url }) =>
+              request.mode === 'navigate' && !/^\/(api|sanctum|storage)(\/|$)|^\/up$/.test(url.pathname),
+            handler: 'NetworkOnly',
+            options: {
+              precacheFallback: { fallbackURL: '/offline.html' },
+            },
+          },
           {
             urlPattern: ({ url }) => url.pathname.startsWith('/storage/'),
             handler: 'CacheFirst',
