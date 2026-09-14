@@ -92,12 +92,14 @@ class SeoAndSpaTest extends TestCase
     {
         $this->get('/')
             ->assertSee('window.__MORIHOME__', false)
-            ->assertSee('"defaultRadiusKm":10', false);
+            ->assertSee('"defaultRadiusKm":10', false)
+            ->assertSee('"providerTypes":[{"value":"individual","label":"Individual worker"},{"value":"agency","label":"Agency\\/Business"}]', false)
+            ->assertDontSee('"value":"business"', false);
     }
 
     public function test_deep_links_into_the_spa_are_served_rather_than_404(): void
     {
-        foreach (['/search', '/register', '/login', '/dashboard', '/admin', '/install', '/terms'] as $path) {
+        foreach (['/search', '/for-professionals', '/register/individual', '/register/business', '/login', '/dashboard', '/admin', '/install', '/terms'] as $path) {
             $this->get($path)->assertOk();
         }
     }

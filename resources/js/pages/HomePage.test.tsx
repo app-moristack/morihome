@@ -61,8 +61,14 @@ describe('HomePage', () => {
       expect.stringContaining('mauritius-home-renovation-living-room.webp'),
     )
     expect(page?.querySelector('canvas')).toBeNull()
-    expect(screen.getByAltText('Le Morne mountain and the Mauritius coast')).toHaveAttribute(
-      'src',
+    const heroVideo = container.querySelector('.search-page-hero video')
+    expect(decodeURI(heroVideo?.getAttribute('src') ?? '')).toContain('homepage video.mp4')
+    expect(heroVideo).toHaveAttribute('autoplay')
+    expect(heroVideo).toHaveProperty('muted', true)
+    expect(heroVideo).toHaveAttribute('loop')
+    expect(heroVideo).toHaveAttribute('playsinline')
+    expect(heroVideo).toHaveAttribute(
+      'poster',
       expect.stringContaining('le-morne-mauritius-home-services.webp'),
     )
     expect(await screen.findByRole('option', { name: 'Plumber' })).toBeInTheDocument()

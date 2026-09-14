@@ -2,7 +2,13 @@ import { Link } from 'react-router'
 import mark from '../../../images/morihome-house-services-logo.webp'
 import wordmark from '../../../images/morihome-wordmark.webp'
 
-export function Brand({ footer = false }: { footer?: boolean }) {
+export function Brand({
+  footer = false,
+  tagline = 'Local professionals. A stronger tomorrow.',
+}: {
+  footer?: boolean
+  tagline?: string
+}) {
   return (
     <Link
       to="/"
@@ -13,7 +19,7 @@ export function Brand({ footer = false }: { footer?: boolean }) {
         <img src={mark} alt="" width={60} height={42} className="brand-mark" />
         <img src={wordmark} alt="MoriHome" width={166} height={28} className="brand-wordmark" />
       </span>
-      <span className="brand-tagline">Local professionals. A stronger tomorrow.</span>
+      <span className="brand-tagline">{tagline}</span>
     </Link>
   )
 }

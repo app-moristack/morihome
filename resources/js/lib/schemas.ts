@@ -20,13 +20,14 @@ export const optionalPhoneSchema = z
 
 const passwordSchema = z
   .string()
-  .min(8, 'Use at least 8 characters.')
+  .min(12, 'Use at least 12 characters.')
+  .max(128, 'Use no more than 128 characters.')
   .regex(/[a-z]/, 'Include a lowercase letter.')
   .regex(/[A-Z]/, 'Include an uppercase letter.')
   .regex(/\d/, 'Include a number.')
 
 export const accountStepSchema = z.object({
-  provider_type: z.enum(['individual', 'agency', 'business'], {
+  provider_type: z.enum(['individual', 'agency'], {
     message: 'Choose the kind of professional you are.',
   }),
   name: z.string().trim().min(2, 'Enter your name or business name.').max(120),
@@ -78,7 +79,7 @@ export const passwordChangeSchema = z
 
 export const profileSchema = z.object({
   name: z.string().trim().min(2, 'Enter your name or business name.').max(120),
-  provider_type: z.enum(['individual', 'agency', 'business']),
+  provider_type: z.enum(['individual', 'agency']),
   description: z.string().trim().max(2000).optional(),
   phone: phoneSchema,
   whatsapp_phone: optionalPhoneSchema,

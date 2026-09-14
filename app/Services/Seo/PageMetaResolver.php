@@ -22,8 +22,12 @@ class PageMetaResolver
             '' => $this->home(),
             'providers' => $this->provider($segments[1] ?? null),
             'search' => $this->search($request),
+            'for-professionals' => $this->staticPage(
+                'Grow your business with MoriHome',
+                'Compare MoriHome plans for individual professionals, agencies and companies in Mauritius.',
+            ),
             'register' => $this->staticPage(
-                'Join the MoriHome directory',
+                ($segments[1] ?? null) === 'business' ? 'Register your business' : 'Register as an individual',
                 'Register your construction, renovation or maintenance business and reach customers across Mauritius.',
             ),
             'about' => $this->staticPage(

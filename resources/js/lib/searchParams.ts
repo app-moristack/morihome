@@ -1,7 +1,7 @@
 import { bootstrap } from './bootstrap'
 import type { ProviderTypeValue, SearchParams, SortOption } from '@/types/api'
 
-const PROVIDER_TYPES: ProviderTypeValue[] = ['individual', 'agency', 'business']
+const PROVIDER_TYPES: ProviderTypeValue[] = ['individual', 'agency']
 const SORTS: SortOption[] = ['recommended', 'distance']
 
 export type SearchFormState = {

@@ -3,11 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <script>
-        try {
-            const theme = localStorage.getItem('morihome-theme');
-            document.documentElement.classList.toggle('dark', theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches));
-        } catch (_) {}
+    <script nonce="{{ Vite::cspNonce() }}">
+        document.documentElement.classList.remove('dark');
+        document.documentElement.style.colorScheme = 'light';
     </script>
 
     <title>{{ $meta->title }}</title>
@@ -45,10 +43,10 @@
     <link rel="stylesheet" href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800&display=swap">
 
     @if ($meta->structuredData)
-        <script type="application/ld+json">{!! json_encode($meta->structuredData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+        <script nonce="{{ Vite::cspNonce() }}" type="application/ld+json">{!! json_encode($meta->structuredData, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) !!}</script>
     @endif
 
-    <script>
+    <script nonce="{{ Vite::cspNonce() }}">
         window.__MORIHOME__ = @json($bootstrap);
     </script>
 

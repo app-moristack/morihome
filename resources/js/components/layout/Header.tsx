@@ -6,12 +6,11 @@ import { cn } from '@/lib/cn'
 import { useAuth } from '@/hooks/useAuth'
 import { useToast } from '@/hooks/useToast'
 import { Brand } from './Brand'
-import { ThemeToggle } from './ThemeToggle'
 
 const NAV_LINKS = [
   { to: '/', label: 'Home' },
   { to: '/search', label: 'Find a Pro' },
-  { to: '/register', label: 'For Professionals' },
+  { to: '/for-professionals', label: 'For Professionals' },
   { to: '/about', label: 'About' },
   { to: '/contact', label: 'Contact' },
 ]
@@ -96,7 +95,7 @@ export function Header() {
               <Link to="/login" className="theme-toggle" aria-label="Sign in">
                 <UserRound className="size-5" aria-hidden />
               </Link>
-              <Button size="sm" onClick={() => navigate('/register')} className="min-h-11 px-5">
+              <Button size="sm" onClick={() => navigate('/for-professionals')} className="min-h-11 px-5">
                 Join as a Pro
               </Button>
             </>
@@ -104,7 +103,6 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-1">
-          <ThemeToggle />
           <button
             type="button"
             onClick={() => setIsMenuOpen((open) => !open)}

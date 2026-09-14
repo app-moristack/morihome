@@ -18,7 +18,7 @@ export function ProviderProfileHeader({ provider, serviceName }: ProviderProfile
   const primaryService = provider.service_categories[0]
 
   return (
-    <div className="card -mt-12 flex flex-col gap-4 p-5 sm:-mt-16 sm:p-6">
+    <div className="card relative z-10 -mt-12 flex flex-col gap-4 p-5 sm:-mt-16 sm:p-6">
       <div className="flex flex-wrap items-start gap-4">
         {provider.logo_url ? (
           <img

@@ -46,7 +46,7 @@ class DemoProviderBlueprints
             [
                 'name' => 'Volt Maurice Electrical',
                 'slug' => 'volt-maurice-electrical',
-                'type' => ProviderType::Business,
+                'type' => ProviderType::Agency,
                 'locality' => 'Curepipe',
                 'categories' => ['electrician', 'air-conditioning'],
                 'status' => 'approved',
@@ -57,7 +57,7 @@ class DemoProviderBlueprints
             [
                 'name' => 'Sega Tiles and Marble',
                 'slug' => 'sega-tiles-and-marble',
-                'type' => ProviderType::Business,
+                'type' => ProviderType::Agency,
                 'locality' => 'Beau Bassin',
                 'categories' => ['tiler', 'mason'],
                 'status' => 'approved',
@@ -89,7 +89,7 @@ class DemoProviderBlueprints
             [
                 'name' => 'Aqua Clean Mauritius',
                 'slug' => 'aqua-clean-mauritius',
-                'type' => ProviderType::Business,
+                'type' => ProviderType::Agency,
                 'locality' => 'Flic en Flac',
                 'categories' => ['cleaning', 'pool-services'],
                 'status' => 'approved',
@@ -111,7 +111,7 @@ class DemoProviderBlueprints
             [
                 'name' => 'Clim Confort Service',
                 'slug' => 'clim-confort-service',
-                'type' => ProviderType::Business,
+                'type' => ProviderType::Agency,
                 'locality' => 'Phoenix',
                 'categories' => ['air-conditioning', 'electrician'],
                 'status' => 'approved',
@@ -141,7 +141,7 @@ class DemoProviderBlueprints
             [
                 'name' => 'Alu Vitrage Maurice',
                 'slug' => 'alu-vitrage-maurice',
-                'type' => ProviderType::Business,
+                'type' => ProviderType::Agency,
                 'locality' => 'Pamplemousses',
                 'categories' => ['aluminium-glazing', 'welder'],
                 'status' => 'approved',
@@ -172,7 +172,7 @@ class DemoProviderBlueprints
             [
                 'name' => 'Zero Pest Solutions',
                 'slug' => 'zero-pest-solutions',
-                'type' => ProviderType::Business,
+                'type' => ProviderType::Agency,
                 'locality' => 'Port Louis',
                 'categories' => ['pest-control', 'cleaning'],
                 'status' => 'approved',
@@ -203,7 +203,7 @@ class DemoProviderBlueprints
             [
                 'name' => 'Materio Building Supplies',
                 'slug' => 'materio-building-supplies',
-                'type' => ProviderType::Business,
+                'type' => ProviderType::Agency,
                 'locality' => 'Goodlands',
                 'categories' => ['building-materials-supplier', 'equipment-tool-rental'],
                 'status' => 'approved',
@@ -233,7 +233,7 @@ class DemoProviderBlueprints
             [
                 'name' => 'Bel Air Nettoyage',
                 'slug' => 'bel-air-nettoyage',
-                'type' => ProviderType::Business,
+                'type' => ProviderType::Agency,
                 'locality' => 'Bel Air Riviere Seche',
                 'categories' => ['cleaning'],
                 'status' => 'pending',
@@ -253,7 +253,7 @@ class DemoProviderBlueprints
             [
                 'name' => 'Ocean Pool Care',
                 'slug' => 'ocean-pool-care',
-                'type' => ProviderType::Business,
+                'type' => ProviderType::Agency,
                 'locality' => 'Albion',
                 'categories' => ['pool-services'],
                 'status' => 'suspended',

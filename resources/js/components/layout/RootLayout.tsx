@@ -4,9 +4,11 @@ import { InstallPrompt } from '@/components/pwa/InstallPrompt'
 import { UpdatePrompt } from '@/components/pwa/UpdatePrompt'
 import { Footer } from './Footer'
 import { Header } from './Header'
+import { PageViewTracker } from './PageViewTracker'
 
 export function RootLayout() {
   const { pathname } = useLocation()
+  const isAdminPage = pathname === '/admin' || pathname.startsWith('/admin/')
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' })
@@ -21,14 +23,15 @@ export function RootLayout() {
         Skip to content
       </a>
 
-      <Header />
+      {!isAdminPage && pathname !== '/login' ? <Header /> : null}
+      <PageViewTracker />
 
       <main id="main" className="flex-1">
         <Outlet />
       </main>
 
-      <Footer />
-      <InstallPrompt />
+      {!isAdminPage && pathname !== '/login' ? <Footer /> : null}
+      {!isAdminPage ? <InstallPrompt /> : null}
       <UpdatePrompt />
     </div>
   )

@@ -9,8 +9,8 @@ export function Footer() {
   const { data: categories = [] } = useCategories(true)
   return (
     <footer className="site-footer" style={{ paddingBottom: 'var(--safe-bottom)' }}>
-      <div className="container-page grid items-start gap-6 py-5 sm:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr_1.1fr_0.8fr]">
-        <div className="flex flex-col items-center text-center">
+      <div className="footer-main container-page grid items-start gap-6 py-5 sm:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr_1.1fr_0.8fr]">
+        <div className="footer-brand flex flex-col items-center text-center">
           <Brand footer />
           <p className="mt-3 max-w-52 text-xs leading-relaxed text-white/60">
             Build. Renovate. Repair. Maintain.
@@ -24,7 +24,7 @@ export function Footer() {
             {[
               { to: '/', label: 'Home' },
               { to: '/search', label: 'Find a Pro' },
-              { to: '/register', label: 'For Professionals' },
+              { to: '/for-professionals', label: 'For Professionals' },
               { to: '/about', label: 'About' },
               { to: '/contact', label: 'Contact' },
             ].map((link) => (
@@ -49,7 +49,7 @@ export function Footer() {
             </li>
           </ul>
         </nav>
-        <div>
+        <div className="footer-contact">
           <h2 className="mb-2 text-sm font-bold">Stay Connected</h2>
           <ul className="footer-links">
             <li>
@@ -72,7 +72,7 @@ export function Footer() {
             </li>
           </ul>
         </div>
-        <div className="flex items-center gap-3 self-start">
+        <div className="footer-origin flex items-center gap-3 self-start">
           <img
             src={island}
             alt="Silhouette of the island of Mauritius"
@@ -96,7 +96,7 @@ export function Footer() {
           </div>
         </div>
       </div>
-      <div className="container-page flex flex-col gap-2 border-t border-white/10 py-2 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">
+      <div className="footer-bottom container-page flex flex-col gap-2 border-t border-white/10 py-2 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">
         <p>© {new Date().getFullYear()} MoriHome. All rights reserved.</p>
         <div className="flex gap-5">
           <Link to="/privacy" className="inline-flex min-h-9 items-center hover:text-white">

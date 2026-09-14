@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Auth;
 
+use App\Actions\Auth\RevokeAccountSessions;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,28 +18,27 @@ class PasswordResetController extends Controller
     {
         $validated = $request->validate(['email' => ['required', 'email']]);
 
-        $status = Password::sendResetLink($validated);
-
-        if ($status !== Password::RESET_LINK_SENT) {
-            throw ValidationException::withMessages(['email' => __($status)]);
+        if (! app()->isProduction() || ! in_array(config('mail.default'), ['log', 'array'], true)) {
+            Password::sendResetLink($validated);
         }
 
-        return response()->json(['message' => __($status)]);
+        return response()->json(['message' => 'If an account matches this email, you will receive password reset instructions.']);
     }
 
-    public function reset(Request $request): JsonResponse
+    public function reset(Request $request, RevokeAccountSessions $revokeSessions): JsonResponse
     {
         $validated = $request->validate([
             'token' => ['required', 'string'],
             'email' => ['required', 'email'],
-            'password' => ['required', 'confirmed', PasswordRule::defaults()],
+            'password' => ['required', 'string', 'max:128', 'confirmed', PasswordRule::defaults()],
         ]);
 
-        $status = Password::reset($validated, function ($user, string $password) {
+        $status = Password::reset($validated, function ($user, string $password) use ($revokeSessions) {
             $user->forceFill([
                 'password' => Hash::make($password),
                 'remember_token' => Str::random(60),
             ])->save();
+            $revokeSessions->handle($user);
         });
 
         if ($status !== Password::PASSWORD_RESET) {

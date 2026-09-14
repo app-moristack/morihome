@@ -9,37 +9,42 @@ import { accountStepSchema, type AccountStepValues } from '@/lib/schemas'
 type AccountStepProps = {
   defaultValues: Partial<AccountStepValues>
   onSubmit: (values: AccountStepValues) => void
+  providerType?: AccountStepValues['provider_type']
 }
 
-export function AccountStep({ defaultValues, onSubmit }: AccountStepProps) {
+export function AccountStep({ defaultValues, onSubmit, providerType }: AccountStepProps) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<AccountStepValues>({
     resolver: zodResolver(accountStepSchema),
-    defaultValues: { provider_type: 'individual', ...defaultValues },
+    defaultValues: { provider_type: providerType ?? 'individual', ...defaultValues },
   })
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
       <h2 className="text-lg font-bold text-ink-900">Tell us who you are</h2>
 
-      <SelectField
-        label="What kind of professional are you?"
-        isRequired
-        {...(errors.provider_type?.message ? { error: errors.provider_type.message } : {})}
-        {...register('provider_type')}
-      >
-        {bootstrap.providerTypes.map((type) => (
-          <option key={type.value} value={type.value}>
-            {type.label}
-          </option>
-        ))}
-      </SelectField>
+      {providerType ? (
+        <input type="hidden" value={providerType} {...register('provider_type')} />
+      ) : (
+        <SelectField
+          label="What kind of professional are you?"
+          isRequired
+          {...(errors.provider_type?.message ? { error: errors.provider_type.message } : {})}
+          {...register('provider_type')}
+        >
+          {bootstrap.providerTypes.map((type) => (
+            <option key={type.value} value={type.value}>
+              {type.label}
+            </option>
+          ))}
+        </SelectField>
+      )}
 
       <TextField
-        label="Name or business name"
+        label={providerType === 'individual' ? 'Full name' : 'Agency or company name'}
         isRequired
         autoComplete="organization"
         placeholder="e.g. Ti Marmit Plomberie"

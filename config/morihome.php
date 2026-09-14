@@ -6,8 +6,8 @@ return [
         'password' => env('ADMIN_PASSWORD'),
     ],
 
-    'support_email' => env('MORIHOME_SUPPORT_EMAIL', 'support@morihome.mu'),
-    'support_whatsapp' => env('MORIHOME_SUPPORT_WHATSAPP'),
+    'support_email' => env('MORIHOME_SUPPORT_EMAIL', 'moristack@gmail.com'),
+    'support_whatsapp' => env('MORIHOME_SUPPORT_WHATSAPP', '+23057079335'),
 
     'search' => [
         'default_radius_km' => (int) env('MORIHOME_DEFAULT_RADIUS_KM', 10),

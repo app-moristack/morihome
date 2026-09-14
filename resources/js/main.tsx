@@ -7,6 +7,9 @@ import '../css/app.css'
 
 const container = document.getElementById('app')
 
+document.documentElement.classList.remove('dark')
+document.documentElement.style.colorScheme = 'light'
+
 if (!container) {
   throw new Error('MoriHome could not find its mount element.')
 }

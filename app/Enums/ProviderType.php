@@ -6,7 +6,6 @@ enum ProviderType: string
 {
     case Individual = 'individual';
     case Agency = 'agency';
-    case Business = 'business';
 
     public function label(): string
     {

@@ -29,7 +29,7 @@ export function CredentialsStep({ onSubmit, onBack, isSubmitting, error }: Crede
         isRequired
         type="password"
         autoComplete="new-password"
-        hint="At least 8 characters, with an uppercase letter and a number."
+        hint="12–128 characters, with uppercase and lowercase letters and a number."
         {...(errors.password?.message ? { error: errors.password.message } : {})}
         {...register('password')}
       />

@@ -23,7 +23,7 @@ describe('readSearchState', () => {
   })
 
   it('ignores provider types it does not recognise', () => {
-    expect(readSearchState(new URLSearchParams('type=agency&type=alien')).providerTypes).toEqual(['agency'])
+    expect(readSearchState(new URLSearchParams('type=agency&type=business')).providerTypes).toEqual(['agency'])
   })
 
   it('defaults to page one', () => {
@@ -40,7 +40,7 @@ describe('writeSearchState', () => {
       longitude: 57.5804,
       radiusKm: 30,
       categoryId: 5,
-      providerTypes: ['business' as const],
+      providerTypes: ['agency' as const],
       verifiedOnly: true,
       hasWhatsapp: true,
       sort: 'distance' as const,
@@ -52,7 +52,7 @@ describe('writeSearchState', () => {
     expect(restored.address).toBe('Grand Baie')
     expect(restored.radiusKm).toBe(30)
     expect(restored.categoryId).toBe(5)
-    expect(restored.providerTypes).toEqual(['business'])
+    expect(restored.providerTypes).toEqual(['agency'])
     expect(restored.verifiedOnly).toBe(true)
     expect(restored.hasWhatsapp).toBe(true)
     expect(restored.sort).toBe('distance')

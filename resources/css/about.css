@@ -1,0 +1,417 @@
+@layer components {
+  .about-page {
+    background: #fff;
+    color: #202b40;
+  }
+  .about-page h2 {
+    font-size: clamp(1.8rem, 3.2vw, 2.4rem);
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -0.035em;
+  }
+  .about-page h1 > span,
+  .about-page h2 > span {
+    color: #ffc800;
+  }
+  .about-page p {
+    line-height: 1.55;
+  }
+  .about-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+  .about-eyebrow > span {
+    width: 38px;
+    height: 2px;
+    background: linear-gradient(90deg, #ffca00 60%, #ffca0030 60%);
+  }
+  .about-hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: #e9f4fd;
+  }
+  .about-hero-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 52%;
+    z-index: -3;
+  }
+  .about-hero-wash {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(0deg, rgb(255 255 255 / 0.45), transparent 24%),
+      linear-gradient(
+        90deg,
+        rgb(255 255 255 / 0.99) 0%,
+        rgb(255 255 255 / 0.96) 29%,
+        rgb(255 255 255 / 0.8) 43%,
+        rgb(255 255 255 / 0.24) 61%,
+        transparent 74%
+      );
+    z-index: -2;
+  }
+  .about-hero-copy {
+    width: 55%;
+    padding: 46px 0 54px;
+  }
+  .about-hero h1 {
+    font-size: clamp(2.7rem, 4.8vw, 3.8rem);
+    line-height: 0.99;
+    font-weight: 850;
+    letter-spacing: -0.035em;
+  }
+  .about-hero .about-intro {
+    max-width: 490px;
+    margin-top: 22px;
+    font-size: 17px;
+  }
+  .about-hero-promises {
+    display: flex;
+    gap: 30px;
+    margin-top: 30px;
+  }
+  .about-hero-promises > div {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    max-width: 155px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .about-hero-promises svg {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+  }
+
+  .about-story {
+    display: grid;
+    grid-template-columns: 1.08fr 1fr;
+    align-items: center;
+    gap: 55px;
+    padding-top: 42px;
+    padding-bottom: 46px;
+  }
+  .about-story p:not(.about-eyebrow),
+  .about-moristack p:not(.about-eyebrow):not(.home-handwritten) {
+    margin-top: 20px;
+    font-size: 15px;
+  }
+  .about-story-visual {
+    position: relative;
+    padding: 0 20px 18px 0;
+  }
+  .about-story-visual > img {
+    width: 100%;
+    height: 300px;
+    border-radius: 16px;
+    object-fit: cover;
+    object-position: 80% center;
+  }
+  .about-story blockquote {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 22px 28px;
+    background: #fffffff5;
+    border-radius: 16px;
+    box-shadow: 0 8px 28px #17243812;
+  }
+  .about-story blockquote svg {
+    color: #ffca00;
+    fill: #ffca00;
+    transform: rotate(180deg);
+  }
+  .about-story blockquote p {
+    margin-top: 12px !important;
+    font-size: 19px !important;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .about-story blockquote > span {
+    display: block;
+    width: 38px;
+    height: 3px;
+    background: #ffca00;
+    margin-top: 20px;
+  }
+  .about-values {
+    padding: 32px 0 46px;
+    background: linear-gradient(120deg, #f3f7fa, #f8fafc);
+  }
+  .about-values-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 34px;
+    text-align: center;
+  }
+  .about-values article {
+    position: relative;
+  }
+  .about-values article + article::before {
+    content: '';
+    position: absolute;
+    left: -17px;
+    top: 45px;
+    bottom: 14px;
+    width: 1px;
+    background: #e2e8ef;
+  }
+  .about-value-icon {
+    display: grid;
+    place-items: center;
+    margin: 0 auto 10px;
+    width: 82px;
+    height: 82px;
+    background: #fff;
+    border-radius: 50%;
+  }
+  .about-value-icon svg {
+    width: 44px;
+    height: 44px;
+  }
+  .about-values h3 {
+    font-size: 18px;
+    font-weight: 750;
+    letter-spacing: -0.025em;
+  }
+  .about-values article p {
+    max-width: 215px;
+    margin: 8px auto 0;
+    font-size: 14px;
+  }
+  .about-moristack {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 46px 0 62px;
+    background: linear-gradient(125deg, #eaf5ff, #fff 55%, #eef8ff);
+  }
+  .about-moristack-landscape {
+    position: absolute;
+    inset: auto 0 0;
+    z-index: -1;
+    width: 100%;
+    height: 155px;
+    object-fit: cover;
+    object-position: center 65%;
+    opacity: 0.28;
+    mask-image: linear-gradient(transparent, #000);
+  }
+  .about-moristack-grid {
+    display: grid;
+    grid-template-columns: 1.8fr 0.85fr 1fr;
+    align-items: center;
+    gap: 32px;
+  }
+  .about-moristack-logo {
+    width: 100%;
+    max-width: 224px;
+    height: auto;
+    justify-self: center;
+  }
+  .about-moristack-services ul {
+    display: grid;
+    gap: 17px;
+    padding-left: 24px;
+    border-left: 1px solid #dfe7f0;
+  }
+  .about-moristack-services li {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    font-size: 12px;
+  }
+  .about-moristack-services li svg {
+    flex-shrink: 0;
+    color: #111;
+  }
+  .about-moristack-services .home-handwritten {
+    margin-top: 28px;
+    margin-left: 24px;
+    font-size: 1.3rem;
+    line-height: 1.3;
+    color: #111;
+  }
+  .about-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 25px;
+    border-radius: 999px;
+    background: #ffca00;
+    color: #111;
+    font-weight: 650;
+    font-size: 13px;
+    transition: background 150ms;
+  }
+  .about-button:hover {
+    background: #efb900;
+  }
+  .about-moristack .about-button {
+    margin-top: 20px;
+  }
+  @media (max-width: 1023px) {
+    .about-hero-copy {
+      width: 65%;
+    }
+    .about-hero-promises {
+      gap: 14px;
+    }
+
+    .about-story {
+      gap: 30px;
+    }
+    .about-moristack-grid {
+      grid-template-columns: 1.6fr 1fr;
+    }
+    .about-moristack-services {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .about-moristack-services ul {
+      grid-template-columns: 1fr 1fr;
+      padding-left: 0;
+      border: 0;
+    }
+    .about-moristack-services .home-handwritten {
+      margin-top: 0;
+    }
+  }
+  @media (max-width: 639px) {
+    .about-eyebrow {
+      margin-bottom: 16px;
+    }
+    .about-hero-copy {
+      width: 100%;
+      padding: 34px 0 230px;
+    }
+    .about-hero-wash {
+      background: linear-gradient(white 4%, rgb(255 255 255 / 0.95) 50%, rgb(255 255 255 / 0.15) 82%);
+    }
+    .about-hero-image {
+      object-position: 65% bottom;
+    }
+    .about-hero .about-intro {
+      max-width: 390px;
+      font-size: 15px;
+    }
+    .about-hero-promises {
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .about-hero-promises > div {
+      gap: 7px;
+      font-size: 11px;
+    }
+    .about-hero-promises svg {
+      width: 29px;
+      height: 29px;
+    }
+
+    .about-story {
+      grid-template-columns: 1fr;
+      padding-top: 32px;
+      padding-bottom: 34px;
+      gap: 28px;
+    }
+    .about-story-visual > img {
+      height: 280px;
+    }
+    .about-story blockquote {
+      padding: 18px 22px;
+    }
+    .about-values {
+      padding: 30px 0;
+    }
+    .about-values-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 28px 20px;
+    }
+    .about-values article + article::before {
+      display: none;
+    }
+    .about-values h3 {
+      font-size: 16px;
+    }
+    .about-values article p {
+      font-size: 13px;
+    }
+    .about-moristack {
+      padding: 32px 0 45px;
+    }
+    .about-moristack-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .about-moristack-grid > div:first-child {
+      min-width: 0;
+      text-align: center;
+    }
+    .about-moristack .about-eyebrow {
+      justify-content: center;
+    }
+    .about-moristack h2 {
+      font-size: 28px;
+      line-height: 1.15;
+    }
+    .about-moristack-grid > div:first-child > p:not(.about-eyebrow) {
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+    .about-moristack .about-button {
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 16px;
+    }
+    .about-moristack .about-button svg {
+      flex-shrink: 0;
+    }
+    .about-moristack-logo {
+      grid-row: 1;
+      max-width: 140px;
+    }
+    .about-moristack-services {
+      display: block;
+    }
+    .about-moristack-services ul {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      padding: 0;
+      border: 0;
+    }
+    .about-moristack-services li {
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 10px;
+      min-height: 108px;
+      padding: 16px 10px;
+      border: 1px solid #dfe7f0;
+      border-radius: 12px;
+      background: rgb(255 255 255 / 0.7);
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    .about-moristack-services .home-handwritten {
+      max-width: 250px;
+      margin: 32px auto 0;
+      text-align: center;
+    }
+  }
+}

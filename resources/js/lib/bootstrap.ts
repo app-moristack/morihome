@@ -11,15 +11,14 @@ export type BootstrapPayload = {
 
 const FALLBACK: BootstrapPayload = {
   appName: 'MoriHome',
-  supportEmail: 'support@morihome.mu',
-  supportWhatsapp: null,
+  supportEmail: 'moristack@gmail.com',
+  supportWhatsapp: '+23057079335',
   defaultRadiusKm: 10,
   maxRadiusKm: 50,
   radiusOptionsKm: [2, 5, 10, 20, 30, 50],
   providerTypes: [
     { value: 'individual', label: 'Individual worker' },
-    { value: 'agency', label: 'Agency' },
-    { value: 'business', label: 'Business' },
+    { value: 'agency', label: 'Agency/Business' },
   ],
   whatsappTemplate: 'Hello, I found your profile on :app. I am looking for help with :service.',
 }

@@ -1,142 +1,414 @@
-import { CircleCheck, Clock, FolderTree, MessageCircle, PauseCircle, Users } from 'lucide-react'
-import type { ComponentType } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Link } from 'react-router'
+import {
+  ArrowDownRight,
+  ArrowRight,
+  ArrowUpRight,
+  BarChart3,
+  Building2,
+  CalendarDays,
+  Eye,
+  Grid2X2,
+  Plus,
+  Users,
+  UserRound,
+} from 'lucide-react'
+import { Link, useSearchParams } from 'react-router'
 import { adminApi } from '@/api/endpoints'
 import { queryKeys } from '@/api/queryKeys'
-import { PageHeader } from '@/components/layout/PageHeader'
-import { Badge } from '@/components/ui/Badge'
+import { AdminUsersTable } from '@/components/admin/AdminUsersTable'
+import { USER_STATUS_LABELS } from '@/lib/admin'
 import { Skeleton } from '@/components/ui/Skeleton'
+import { useAuth } from '@/hooks/useAuth'
+import { resolveCategoryIcon } from '@/lib/categoryIcons'
+import type { AdminDashboard, AdminMetric, AdminUserStatus } from '@/types/api'
 
-type StatTile = {
-  label: string
-  value: number
-  icon: ComponentType<{ className?: string }>
-  tone: string
-  to?: string
+const number = (value: number) => value.toLocaleString()
+const shortDate = (value: string) =>
+  new Date(value + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+const STATUS_COLORS: Record<AdminUserStatus, string> = {
+  active: '#34bf72',
+  pending: '#ffc72c',
+  suspended: '#ff456b',
+  inactive: '#afbacd',
+}
+
+function MetricChange({ metric }: { metric: AdminMetric }) {
+  if (metric.change_percent === null)
+    return <span className="admin-metric-new">{metric.current ? 'New' : '—'}</span>
+  const positive = metric.change_percent >= 0
+  const Icon = positive ? ArrowUpRight : ArrowDownRight
+  return (
+    <span
+      className={positive ? 'admin-change-positive' : 'admin-change-negative'}
+      title="New activity compared with the previous period"
+    >
+      <Icon size={13} />
+      {positive ? '+' : ''}
+      {metric.change_percent}%
+    </span>
+  )
+}
+
+function Overview({ rows, views = false }: { rows: AdminDashboard['overview']; views?: boolean }) {
+  const maximum = Math.max(1, ...rows.map((row) => (views ? row.views : row.individuals + row.businesses)))
+  const ceiling = Math.max(5, Math.ceil(maximum / 5) * 5)
+  return (
+    <div
+      className="admin-chart"
+      role="group"
+      aria-label={views ? 'Website views by period' : 'New individual and business registrations by period'}
+    >
+      <div className="admin-chart-axis">
+        {[1, 0.75, 0.5, 0.25, 0].map((fraction) => (
+          <span key={fraction}>{Math.round(ceiling * fraction)}</span>
+        ))}
+      </div>
+      <div className="admin-chart-plot">
+        <div className="admin-chart-grid" aria-hidden />
+        {rows.map((row) => (
+          <div
+            key={row.start}
+            className="admin-chart-column"
+            title={`${shortDate(row.start)}–${shortDate(row.end)}: ${views ? row.views + ' views' : row.individuals + ' individuals, ' + row.businesses + ' businesses'}`}
+          >
+            <div className="admin-chart-stack">
+              {views ? (
+                <span className="admin-bar-views" style={{ height: `${(row.views / ceiling) * 100}%` }} />
+              ) : (
+                <>
+                  <span
+                    className="admin-bar-business"
+                    style={{ height: `${(row.businesses / ceiling) * 100}%` }}
+                  />
+                  <span
+                    className="admin-bar-individual"
+                    style={{ height: `${(row.individuals / ceiling) * 100}%` }}
+                  />
+                </>
+              )}
+            </div>
+            <span className="admin-chart-label">{shortDate(row.start)}</span>
+          </div>
+        ))}
+      </div>
+      <table className="sr-only">
+        <caption>{views ? 'Website views' : 'New registrations'}</caption>
+        <thead>
+          <tr>
+            <th>Period</th>
+            <th>{views ? 'Views' : 'Individuals'}</th>
+            {!views ? <th>Businesses</th> : null}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={row.start}>
+              <th>
+                {row.start} to {row.end}
+              </th>
+              <td>{views ? row.views : row.individuals}</td>
+              {!views ? <td>{row.businesses}</td> : null}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
 }
 
 export default function AdminDashboardPage() {
-  const { data, isLoading } = useQuery({
-    queryKey: queryKeys.adminDashboard(),
-    queryFn: adminApi.dashboard,
+  const { user } = useAuth()
+  const [params, setParams] = useSearchParams()
+  const parsedDays = Number(params.get('days') ?? 30)
+  const days = [7, 30, 90].includes(parsedDays) ? parsedDays : 30
+  const { data, isLoading, isError, refetch } = useQuery({
+    queryKey: queryKeys.adminDashboard(days),
+    queryFn: () => adminApi.dashboard(days),
   })
 
-  if (isLoading || !data) {
+  if (isLoading)
     return (
-      <div className="container-page flex flex-col gap-4 py-8">
-        <Skeleton className="h-8 w-1/3" />
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {Array.from({ length: 4 }, (_, index) => (
-            <Skeleton key={index} className="h-28 rounded-card" />
+      <div aria-label="Loading dashboard">
+        <Skeleton className="mb-6 h-12 w-80" />
+        <div className="admin-metrics">
+          {[0, 1, 2, 3].map((i) => (
+            <Skeleton key={i} className="h-28" />
           ))}
         </div>
+        <Skeleton className="mt-6 h-96" />
       </div>
     )
-  }
+  if (isError || !data)
+    return (
+      <div className="admin-empty" role="alert">
+        <h1>Could not load the dashboard</h1>
+        <p>Please try again.</p>
+        <button onClick={() => void refetch()}>Retry</button>
+      </div>
+    )
 
-  const tiles: StatTile[] = [
+  const metrics = [
+    { key: 'users' as const, label: 'Total Users', icon: Users, to: '/admin/users' },
     {
-      label: 'Pending review',
-      value: data.providers.pending,
-      icon: Clock,
-      tone: 'bg-amber-50 text-warning',
-      to: '/admin/providers?status=pending',
+      key: 'individuals' as const,
+      label: 'Individuals',
+      icon: UserRound,
+      to: '/admin/users?type=individual',
     },
-    {
-      label: 'Approved',
-      value: data.providers.approved,
-      icon: CircleCheck,
-      tone: 'bg-emerald-50 text-success',
-      to: '/admin/providers?status=approved',
-    },
-    {
-      label: 'Suspended',
-      value: data.providers.suspended,
-      icon: PauseCircle,
-      tone: 'bg-red-50 text-danger',
-      to: '/admin/providers?status=suspended',
-    },
-    {
-      label: 'Categories',
-      value: data.service_categories.active,
-      icon: FolderTree,
-      tone: 'bg-brand-100 text-brand-800',
-      to: '/admin/categories',
-    },
+    { key: 'businesses' as const, label: 'Businesses', icon: Building2, to: '/admin/users?type=agency' },
+    { key: 'views' as const, label: 'Website Views', icon: Eye, to: '#website-views' },
   ]
+  const total = Object.values(data.user_status).reduce((sum, count) => sum + count, 0)
+  let cumulative = 0
+  const segments = (Object.entries(data.user_status) as [AdminUserStatus, number][]).map(
+    ([status, count]) => {
+      const start = cumulative
+      cumulative += total ? (count / total) * 100 : 0
+      return `${STATUS_COLORS[status]} ${start}% ${cumulative}%`
+    },
+  )
 
   return (
-    <div className="container-page py-8 sm:py-10">
-      <PageHeader
-        eyebrow="Administration"
-        title="Moderation overview"
-        description="Review new registrations, keep the directory trustworthy, and manage the service catalogue."
-      />
+    <>
+      <div className="admin-heading">
+        <div>
+          <h1>
+            Welcome back, {user?.name.split(' ')[0] ?? 'Admin'}! <span aria-hidden>👋</span>
+          </h1>
+          <p>Here’s what’s happening on MoriHome today.</p>
+        </div>
+        <label className="admin-period">
+          <CalendarDays size={17} aria-hidden />
+          <select
+            aria-label="Dashboard period"
+            value={days}
+            onChange={(event) => setParams({ days: event.target.value })}
+          >
+            <option value={7}>Last 7 days</option>
+            <option value={30}>Last 30 days</option>
+            <option value={90}>Last 90 days</option>
+          </select>
+        </label>
+      </div>
+      <div className="admin-metrics">
+        {metrics.map(({ key, label, icon: Icon, to }) => (
+          <Link
+            key={key}
+            to={to}
+            className={`admin-metric admin-metric-${key}`}
+            onClick={
+              key === 'views'
+                ? (event) => {
+                    event.preventDefault()
+                    document.getElementById('website-views')?.scrollIntoView({ behavior: 'smooth' })
+                  }
+                : undefined
+            }
+          >
+            <span className="admin-metric-icon">
+              <Icon />
+            </span>
+            <div>
+              <h2>{label}</h2>
+              <div className="admin-metric-value">
+                <strong>{number(data.metrics[key].total)}</strong>
+                <MetricChange metric={data.metrics[key]} />
+              </div>
+              <p>
+                {key === 'views' ? 'Page views' : '+' + number(data.metrics[key].current) + ' joined'} in the
+                last {days} days
+              </p>
+            </div>
+          </Link>
+        ))}
+      </div>
+      <p className="admin-metrics-note">
+        User totals are all-time. Growth compares new activity with the previous {days} days.
+      </p>
 
-      <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {tiles.map((tile) => {
-          const content = (
-            <div className="card flex h-full items-center gap-4 p-4 transition-shadow hover:shadow-lifted">
-              <span className={`grid size-12 shrink-0 place-items-center rounded-xl ${tile.tone}`}>
-                <tile.icon className="size-6" />
+      <div className="admin-dashboard-grid">
+        <div className="admin-dashboard-main">
+          <section className="admin-panel admin-recent">
+            <div className="admin-panel-heading">
+              <h2>
+                <Users size={19} />
+                Recent Users
+              </h2>
+              <Link to="/admin/users">
+                View all <ArrowRight size={14} />
+              </Link>
+            </div>
+            <AdminUsersTable users={data.recent_users} />
+          </section>
+          <section className="admin-panel">
+            <div className="admin-panel-heading">
+              <h2>
+                <Grid2X2 size={19} />
+                Service Categories
+              </h2>
+              <div>
+                <Link to="/admin/categories">
+                  View all <ArrowRight size={14} />
+                </Link>
+                <Link className="admin-primary-button" to="/admin/categories?new=1">
+                  <Plus size={14} />
+                  Add Category
+                </Link>
+              </div>
+            </div>
+            <div className="admin-table-scroll">
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Category Name</th>
+                    <th>Icon</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.categories.map((category, index) => {
+                    const Icon = resolveCategoryIcon(category.icon)
+                    return (
+                      <tr key={category.id}>
+                        <td>{index + 1}</td>
+                        <td>
+                          <strong>{category.name}</strong>
+                        </td>
+                        <td>
+                          <Icon size={20} className="admin-category-icon" aria-hidden />
+                        </td>
+                        <td>
+                          <span
+                            className={`admin-status admin-status-${category.is_active ? 'active' : 'inactive'}`}
+                          >
+                            {category.is_active ? 'Active' : 'Inactive'}
+                          </span>
+                        </td>
+                        <td>
+                          <Link
+                            className="admin-row-action"
+                            aria-label={`Edit ${category.name}`}
+                            to={`/admin/categories?edit=${category.id}`}
+                          >
+                            Edit
+                          </Link>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+              {data.categories.length === 0 ? (
+                <p className="admin-empty">No categories yet. Add your first service category.</p>
+              ) : null}
+            </div>
+          </section>
+        </div>
+        <div className="admin-dashboard-aside">
+          <section className="admin-panel">
+            <div className="admin-panel-heading">
+              <h2>
+                <BarChart3 size={19} />
+                Users Overview
+              </h2>
+            </div>
+            <div className="admin-chart-legend">
+              <span>
+                <i style={{ background: '#2f8cff' }} />
+                Individuals
               </span>
-              <span className="min-w-0">
-                <span className="block text-2xl font-extrabold text-ink-900">{tile.value}</span>
-                <span className="block text-sm font-medium text-ink-500">{tile.label}</span>
+              <span>
+                <i style={{ background: '#ffc72c' }} />
+                Businesses
               </span>
             </div>
-          )
-
-          return <li key={tile.label}>{tile.to ? <Link to={tile.to}>{content}</Link> : content}</li>
-        })}
-      </ul>
-
-      <div className="card mt-6 flex items-center gap-4 p-4">
-        <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-ink-100 text-ink-700">
-          <MessageCircle className="size-6" aria-hidden />
-        </span>
-        <div>
-          <p className="text-2xl font-extrabold text-ink-900">{data.contact_events_last_30_days}</p>
-          <p className="text-sm font-medium text-ink-500">WhatsApp contacts in the last 30 days</p>
+            <Overview rows={data.overview} />
+            <p className="admin-chart-caption">New provider accounts in the selected period</p>
+          </section>
+          <section className="admin-panel">
+            <div className="admin-panel-heading">
+              <h2>
+                <Users size={19} />
+                User Status
+              </h2>
+            </div>
+            <div className="admin-status-chart">
+              <div
+                className="admin-donut"
+                style={{ background: total ? `conic-gradient(${segments.join(',')})` : '#e5eaf1' }}
+              >
+                <div>
+                  <strong>{number(total)}</strong>
+                  <span>Users</span>
+                </div>
+              </div>
+              <ul>
+                {(Object.entries(data.user_status) as [AdminUserStatus, number][]).map(([status, count]) => (
+                  <li key={status}>
+                    <Link to={`/admin/users?status=${status}`}>
+                      <i style={{ background: STATUS_COLORS[status] }} />
+                      {USER_STATUS_LABELS[status]}
+                    </Link>
+                    <strong>{number(count)}</strong>
+                    <span>{total ? Math.round((count / total) * 100) : 0}%</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <p className="admin-chart-caption">Inactive includes draft, rejected and unpublished profiles.</p>
+          </section>
         </div>
       </div>
-
-      <section className="mt-8">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-ink-900">Recent registrations</h2>
-          <Link
-            to="/admin/providers"
-            className="text-sm font-semibold text-ink-700 underline underline-offset-2 hover:text-ink-900"
-          >
-            Open review queue
-          </Link>
+      <section className="admin-panel admin-views-panel" id="website-views">
+        <div className="admin-panel-heading">
+          <h2>
+            <Eye size={19} />
+            Website Views
+          </h2>
+          <span className="admin-muted">
+            {number(data.metrics.views.total)} in the last {days} days
+          </span>
         </div>
-
-        {data.recent_registrations.length === 0 ? (
-          <p className="mt-3 text-sm text-ink-500">No registrations yet.</p>
-        ) : (
-          <ul className="mt-3 flex flex-col gap-2">
-            {data.recent_registrations.map((provider) => (
-              <li key={provider.id}>
-                <Link
-                  to={`/admin/providers/${provider.id}`}
-                  className="card flex items-center gap-3 p-3.5 transition-colors hover:border-brand-300"
-                >
-                  <Users className="size-5 shrink-0 text-ink-400" aria-hidden />
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate font-semibold text-ink-900">{provider.name}</span>
-                    <span className="block text-xs text-ink-500">
-                      {provider.provider_type_label} · {provider.locality}
-                    </span>
-                  </span>
-                  {provider.is_verified ? <Badge tone="success">Verified</Badge> : null}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
+        <div className="admin-views-grid">
+          <Overview rows={data.overview} views />
+          <div className="admin-top-pages">
+            <h3>Most viewed pages</h3>
+            {data.top_pages.length ? (
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>Page</th>
+                    <th>Views</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.top_pages.map((page) => (
+                    <tr key={page.path}>
+                      <td>
+                        <Link to={page.path}>{page.path === '/' ? 'Home' : page.path}</Link>
+                      </td>
+                      <td>{number(Number(page.views))}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p className="admin-empty">
+                No visits recorded in this period. Real visits will appear here as people browse the website.
+              </p>
+            )}
+          </div>
+        </div>
+        <p className="admin-chart-caption">
+          Public page loads and navigation, excluding administrator visits. These are page views, not unique
+          visitors.
+          {data.tracking_started_at
+            ? ` Tracking since ${shortDate(data.tracking_started_at.slice(0, 10))}.`
+            : ''}
+        </p>
       </section>
-    </div>
+    </>
   )
 }

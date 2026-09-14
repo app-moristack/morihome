@@ -3,8 +3,7 @@
 return [
     'type' => [
         'individual' => 'Individual worker',
-        'agency' => 'Agency',
-        'business' => 'Business',
+        'agency' => 'Agency/Business',
     ],
 
     'status' => [

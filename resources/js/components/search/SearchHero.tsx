@@ -4,7 +4,7 @@ import { SearchModule } from './SearchModule'
 import type { SearchFormState } from '@/lib/searchParams'
 import type { ServiceCategory } from '@/types/api'
 import hero from '../../../images/le-morne-mauritius-home-services.webp'
-import heroMobile from '../../../images/le-morne-mauritius-home-services-mobile.webp'
+import heroVideo from '../../../videos/homepage video.mp4'
 
 type SearchHeroProps = {
   state: SearchFormState
@@ -38,19 +38,18 @@ export function SearchHero({
   background,
 }: SearchHeroProps) {
   return (
-    <section className="search-page-hero relative isolate text-white">
+    <section className="site-page-hero search-page-hero relative isolate text-white">
       {background ?? (
-        <picture className="pointer-events-none absolute inset-0 -z-20">
-          <source media="(max-width: 640px)" srcSet={heroMobile} />
-          <img
-            src={hero}
-            alt="Le Morne mountain and the Mauritius coast"
-            width={1980}
-            height={793}
-            fetchPriority="high"
-            className="h-full w-full object-cover"
-          />
-        </picture>
+        <video
+          src={heroVideo}
+          poster={hero}
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover"
+        />
       )}
       <div className="search-page-hero-shade absolute inset-0 -z-10" />
       <div className="container-page relative py-8 sm:py-10">
@@ -101,8 +100,8 @@ export function SearchHero({
         </div>
 
         {categories.length > 0 ? (
-          <div className="mt-3 flex [scrollbar-width:none] items-center gap-2 overflow-x-auto pb-1 text-xs">
-            <span className="shrink-0 font-semibold">Popular searches:</span>
+          <div className="mt-3 flex [scrollbar-width:none] flex-wrap items-center gap-2 overflow-visible pb-1 text-xs sm:flex-nowrap sm:overflow-x-auto">
+            <span className="shrink-0 basis-full font-semibold sm:basis-auto">Popular searches:</span>
             {categories.slice(0, 8).map((category) => (
               <button
                 key={category.id}

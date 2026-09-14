@@ -1,4 +1,7 @@
 @import 'tailwindcss';
+@import './about.css';
+@import './contact.css';
+@import './professionals.css';
 
 @theme {
   --color-brand-50: #fefbe8;
@@ -444,6 +447,18 @@
     flex: 0 0 100%;
     scroll-snap-align: start;
   }
+  @media (max-width: 639px) {
+    .home-featured-carousel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      overflow: visible;
+      scroll-snap-type: none;
+      padding-bottom: 0;
+    }
+    .home-featured-carousel > * {
+      min-width: 0;
+    }
+  }
   @media (min-width: 640px) {
     .home-featured-carousel > * {
       flex-basis: calc((100% - 1rem) / 2);
@@ -785,5 +800,161 @@
     .search-page-hero-shade {
       background: #031a2edc;
     }
+  }
+}
+
+section.site-page-hero {
+  --page-hero-height: 560px;
+  min-height: var(--page-hero-height);
+}
+section.site-page-hero > .container-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: var(--page-hero-height);
+}
+.site-page-hero .pro-hero-copy {
+  min-height: 0;
+}
+@media (max-width: 850px) {
+  section.site-page-hero {
+    --page-hero-height: 760px;
+  }
+  section.site-page-hero > .container-page {
+    justify-content: flex-start;
+  }
+}
+
+.site-page-hero .site-page-hero-note {
+  position: absolute;
+  top: 36px;
+  right: 45px;
+  width: clamp(280px, 28vw, 360px);
+  min-height: 4.4em;
+  font-size: clamp(1.8rem, 2.6vw, 2.3rem);
+  line-height: 1.1;
+  color: #fff;
+  transform-origin: top left;
+  text-shadow: 0 2px 10px rgb(7 23 36 / 0.65);
+}
+@media (max-width: 1023px) {
+  .site-page-hero .site-page-hero-note {
+    right: 24px;
+    font-size: 1.8rem;
+  }
+}
+@media (max-width: 639px) {
+  .site-page-hero .site-page-hero-note {
+    top: auto;
+    right: 24px;
+    bottom: 32px;
+    width: 260px;
+    font-size: 1.7rem;
+  }
+}
+
+@media (max-width: 639px) {
+  .site-footer .footer-main {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 20px;
+    padding-top: 28px;
+    padding-bottom: 24px;
+  }
+  .site-footer .footer-brand {
+    grid-column: 1 / -1;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgb(255 255 255 / 0.1);
+  }
+  .site-footer .morihome-brand-footer > span:first-child {
+    flex-direction: row;
+    gap: 5px;
+  }
+  .site-footer .morihome-brand-footer .brand-mark {
+    width: 48px;
+  }
+  .site-footer .morihome-brand-footer .brand-wordmark {
+    width: 148px;
+  }
+  .site-footer .footer-brand > p {
+    max-width: 290px;
+  }
+  .site-footer .footer-main > nav {
+    min-width: 0;
+  }
+  .site-footer .footer-links a {
+    min-height: 40px;
+    line-height: 1.4;
+  }
+  .site-footer .footer-contact {
+    grid-column: 1 / -1;
+    padding-top: 20px;
+    border-top: 1px solid rgb(255 255 255 / 0.1);
+  }
+  .site-footer .footer-contact .footer-links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 20px;
+  }
+  .site-footer .footer-contact li:nth-child(2) {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  .site-footer .footer-origin {
+    grid-column: 1 / -1;
+    justify-content: center;
+  }
+  .site-footer .footer-bottom {
+    align-items: center;
+    padding-top: 16px;
+    padding-bottom: 20px;
+    text-align: center;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 639px) {
+  section.site-page-hero:is(.pro-hero, .about-hero, .contact-hero) {
+    --page-hero-height: 560px;
+  }
+  .site-page-hero :is(.pro-hero-copy, .about-hero-copy, .contact-hero-copy) {
+    width: 100%;
+    padding: 24px 0 150px;
+  }
+  .site-page-hero:is(.pro-hero, .about-hero, .contact-hero) h1 {
+    font-size: clamp(32px, 8.5vw, 38px);
+    line-height: 1.04;
+  }
+  .site-page-hero :is(.about-eyebrow, .contact-eyebrow) {
+    margin-bottom: 12px;
+  }
+  .site-page-hero
+    :is(.pro-hero-copy, .about-hero-copy, .contact-hero-copy)
+    > p:not(.pro-eyebrow, .about-eyebrow, .contact-eyebrow) {
+    margin-top: 16px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .site-page-hero :is(.pro-promises, .about-hero-promises, .contact-promises) {
+    margin-top: 20px;
+  }
+  .site-page-hero.pro-hero > img {
+    height: 190px;
+  }
+  .site-page-hero .pro-hero-wash {
+    background: linear-gradient(180deg, #fff 0 62%, rgb(255 255 255 / 0.7) 75%, transparent 100%);
+  }
+  .site-page-hero .site-page-hero-note {
+    bottom: 18px;
+    width: 240px;
+    font-size: 1.45rem;
+  }
+}
+
+@media (max-width: 639px) {
+  .home-pro-content .home-pro-label {
+    display: none;
+  }
+  .home-pro-content > h2 {
+    margin-top: 0;
   }
 }

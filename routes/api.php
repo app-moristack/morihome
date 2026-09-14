@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\V1\Admin\AdminCategoriesController;
 use App\Http\Controllers\Api\V1\Admin\AdminDashboardController;
+use App\Http\Controllers\Api\V1\Admin\AdminUsersController;
 use App\Http\Controllers\Api\V1\Admin\PlatformSettingsController;
 use App\Http\Controllers\Api\V1\Admin\ProviderModerationController;
 use App\Http\Controllers\Api\V1\Auth\AuthenticatedSessionController;
@@ -14,9 +16,11 @@ use App\Http\Controllers\Api\V1\Provider\ProviderPortfolioController;
 use App\Http\Controllers\Api\V1\Provider\ProviderProfileController;
 use App\Http\Controllers\Api\V1\Provider\ProviderSubmissionController;
 use App\Http\Controllers\Api\V1\Public\ContactEventsController;
+use App\Http\Controllers\Api\V1\Public\ContactMessagesController;
 use App\Http\Controllers\Api\V1\Public\FeaturedProvidersController;
 use App\Http\Controllers\Api\V1\Public\GeocodingController;
 use App\Http\Controllers\Api\V1\Public\LocalitiesController;
+use App\Http\Controllers\Api\V1\Public\PageViewsController;
 use App\Http\Controllers\Api\V1\Public\ProviderSearchController;
 use App\Http\Controllers\Api\V1\Public\PublicProvidersController;
 use App\Http\Controllers\Api\V1\Public\ServiceCategoriesController;
@@ -26,6 +30,7 @@ use Illuminate\Support\Facades\Route;
 use Lomkit\Rest\Facades\Rest;
 
 Route::prefix('v1')->group(function () {
+    Route::post('page-views', [PageViewsController::class, 'store'])->middleware('throttle:page-views');
     Route::middleware('throttle:public')->group(function () {
         Route::get('categories', [ServiceCategoriesController::class, 'index']);
         Route::get('localities', [LocalitiesController::class, 'index']);
@@ -34,6 +39,8 @@ Route::prefix('v1')->group(function () {
         Route::get('providers/{slug}', [PublicProvidersController::class, 'show']);
         Route::post('providers/{slug}/contact-events', [ContactEventsController::class, 'store'])
             ->middleware('throttle:contact-events');
+        Route::post('contact-message', ContactMessagesController::class)
+            ->middleware('throttle:contact-form');
     });
 
     Route::middleware('throttle:geocoding')->group(function () {
@@ -48,18 +55,18 @@ Route::prefix('v1')->group(function () {
         Route::post('reset-password', [PasswordResetController::class, 'reset']);
     });
 
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
         Route::get('user', [CurrentUserController::class, 'show']);
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy']);
-        Route::put('password', [PasswordController::class, 'update']);
+        Route::put('password', [PasswordController::class, 'update'])->middleware('throttle:password-change');
 
         Route::middleware('provider')->prefix('provider')->group(function () {
             Route::get('profile', [ProviderProfileController::class, 'show']);
             Route::put('profile', [ProviderProfileController::class, 'update']);
             Route::post('profile/submit', [ProviderSubmissionController::class, 'store']);
-            Route::post('profile/images/{kind}', [ProviderImagesController::class, 'store']);
+            Route::post('profile/images/{kind}', [ProviderImagesController::class, 'store'])->middleware('throttle:uploads');
             Route::get('portfolio', [ProviderPortfolioController::class, 'index']);
-            Route::post('portfolio', [ProviderPortfolioController::class, 'store']);
+            Route::post('portfolio', [ProviderPortfolioController::class, 'store'])->middleware('throttle:uploads');
             Route::put('portfolio/order', [ProviderPortfolioController::class, 'update']);
             Route::delete('portfolio/{image}', [ProviderPortfolioController::class, 'destroy']);
             Route::put('opening-hours', [ProviderOpeningHoursController::class, 'update']);
@@ -67,6 +74,10 @@ Route::prefix('v1')->group(function () {
 
         Route::middleware('admin')->prefix('admin')->group(function () {
             Route::get('dashboard', [AdminDashboardController::class, 'index']);
+            Route::get('users', [AdminUsersController::class, 'index']);
+            Route::get('categories', [AdminCategoriesController::class, 'index']);
+            Route::post('categories', [AdminCategoriesController::class, 'store']);
+            Route::put('categories/{category:id}', [AdminCategoriesController::class, 'update']);
             Route::get('providers/{provider:id}', [ProviderModerationController::class, 'show']);
             Route::get('providers/{provider:id}/history', [ProviderModerationController::class, 'history']);
             Route::post('providers/{provider:id}/{action}', [ProviderModerationController::class, 'update'])

@@ -96,7 +96,14 @@ describe('SearchPage', () => {
   })
 
   it('keeps the trust card in the Find a Pro hero', () => {
-    renderWithProviders(<SearchPage />, { route: '/search' })
+    const { container } = renderWithProviders(<SearchPage />, { route: '/search' })
+
+    const heroVideo = container.querySelector('.search-page-hero video')
+    expect(decodeURI(heroVideo?.getAttribute('src') ?? '')).toContain('homepage video.mp4')
+    expect(heroVideo).toHaveAttribute('autoplay')
+    expect(heroVideo).toHaveProperty('muted', true)
+    expect(heroVideo).toHaveAttribute('loop')
+    expect(heroVideo).toHaveAttribute('playsinline')
 
     expect(screen.getByRole('heading', { name: 'Find the right professional near you.' })).toBeInTheDocument()
     expect(screen.getByText(/Trusted local professionals for your home/)).toBeInTheDocument()

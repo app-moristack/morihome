@@ -121,6 +121,13 @@ class ProviderRegistrationTest extends TestCase
             ->assertJsonValidationErrors('service_categories.0');
     }
 
+    public function test_business_is_not_a_separate_provider_type(): void
+    {
+        $this->postJson('/api/v1/register', $this->payload(['provider_type' => 'business']))
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('provider_type');
+    }
+
     public function test_approval_fields_cannot_be_set_from_the_registration_payload(): void
     {
         $this->postJson('/api/v1/register', $this->payload([

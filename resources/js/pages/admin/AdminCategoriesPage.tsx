@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Plus, Save } from 'lucide-react'
 import { useState } from 'react'
+import { useSearchParams } from 'react-router'
 import { ApiError } from '@/api/client'
 import { adminApi } from '@/api/endpoints'
 import { PageHeader } from '@/components/layout/PageHeader'
@@ -37,28 +38,50 @@ function toDraft(category: ServiceCategory): DraftCategory {
     slug: category.slug,
     icon: category.icon ?? 'wrench',
     sort_order: category.sort_order,
-    is_active: true,
+    is_active: category.is_active ?? true,
     is_popular: category.is_popular,
   }
 }
 
 export default function AdminCategoriesPage() {
-  const [draft, setDraft] = useState<DraftCategory | null>(null)
+  const [params, setParams] = useSearchParams()
+  const [draftOverride, setDraft] = useState<DraftCategory | null>(null)
   const queryClient = useQueryClient()
   const { showToast } = useToast()
 
-  const { data: categories = [], isLoading } = useQuery({
+  const {
+    data: categories = [],
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
     queryKey: ['admin', 'categories'],
     queryFn: adminApi.categories,
   })
 
+  const requestedCategory = categories.find((category) => category.id === Number(params.get('edit')))
+  const draft =
+    draftOverride ??
+    (params.get('new') === '1' ? EMPTY_DRAFT : requestedCategory ? toDraft(requestedCategory) : null)
+  const closeEditor = () => {
+    setDraft(null)
+    const next = new URLSearchParams(params)
+    next.delete('new')
+    next.delete('edit')
+    setParams(next, { replace: true })
+  }
+  const term = params.get('term') ?? ''
+  const filteredCategories = categories.filter((category) =>
+    category.name.toLowerCase().includes(term.toLowerCase()),
+  )
+
   const save = useMutation({
     mutationFn: ({ id, ...attributes }: DraftCategory) => adminApi.saveCategory(attributes, id),
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ['admin', 'categories'] })
+      void queryClient.invalidateQueries({ queryKey: ['admin'] })
       void queryClient.invalidateQueries({ queryKey: ['categories'] })
       showToast('Category saved.', 'success')
-      setDraft(null)
+      closeEditor()
     },
     onError: (error) =>
       showToast(
@@ -68,7 +91,7 @@ export default function AdminCategoriesPage() {
   })
 
   return (
-    <div className="container-page max-w-4xl py-8 sm:py-10">
+    <div className="admin-categories-page">
       <PageHeader
         eyebrow="Administration"
         title="Service categories"
@@ -84,7 +107,16 @@ export default function AdminCategoriesPage() {
         <form
           onSubmit={(event) => {
             event.preventDefault()
-            save.mutate({ ...draft, slug: draft.slug || draft.name.toLowerCase().replaceAll(' ', '-') })
+            save.mutate({
+              ...draft,
+              slug:
+                draft.slug ||
+                draft.name
+                  .toLowerCase()
+                  .trim()
+                  .replace(/[^a-z0-9]+/g, '-')
+                  .replace(/^-|-$/g, ''),
+            })
           }}
           className="card mt-6 grid gap-4 p-5 sm:grid-cols-2"
         >
@@ -95,6 +127,7 @@ export default function AdminCategoriesPage() {
           <TextField
             label="Name"
             isRequired
+            required
             value={draft.name}
             onChange={(event) => setDraft({ ...draft, name: event.target.value })}
           />
@@ -142,13 +175,29 @@ export default function AdminCategoriesPage() {
             <Button type="submit" isLoading={save.isPending} leadingIcon={<Save className="size-4" />}>
               Save category
             </Button>
-            <Button type="button" variant="ghost" onClick={() => setDraft(null)}>
+            <Button type="button" variant="ghost" onClick={closeEditor}>
               Cancel
             </Button>
           </div>
         </form>
       ) : null}
 
+      <form
+        className="admin-category-search"
+        onSubmit={(event) => {
+          event.preventDefault()
+          setParams({ term: String(new FormData(event.currentTarget).get('term') ?? '') })
+        }}
+        key={term}
+      >
+        <input
+          aria-label="Search categories"
+          name="term"
+          defaultValue={term}
+          placeholder="Search service categories"
+        />
+        <button type="submit">Search</button>
+      </form>
       <div className="mt-6">
         {isLoading ? (
           <div className="flex flex-col gap-2">
@@ -156,9 +205,13 @@ export default function AdminCategoriesPage() {
               <Skeleton key={index} className="h-14 rounded-xl" />
             ))}
           </div>
+        ) : isError ? (
+          <div role="alert">
+            Could not load categories. <button onClick={() => void refetch()}>Retry</button>
+          </div>
         ) : (
           <ul className="flex flex-col gap-2">
-            {categories.map((category) => (
+            {filteredCategories.map((category) => (
               <li key={category.id} className="card flex items-center gap-3 p-3.5">
                 <span className="min-w-0 flex-1">
                   <span className="block truncate font-semibold text-ink-900">{category.name}</span>
@@ -167,11 +220,17 @@ export default function AdminCategoriesPage() {
                   </span>
                 </span>
                 {category.is_popular ? <Badge tone="brand">Popular</Badge> : null}
+                <Badge tone={category.is_active ? 'success' : 'neutral'}>
+                  {category.is_active ? 'Active' : 'Inactive'}
+                </Badge>
                 <Button size="sm" variant="ghost" onClick={() => setDraft(toDraft(category))}>
                   Edit
                 </Button>
               </li>
             ))}
+            {filteredCategories.length === 0 ? (
+              <li className="admin-empty">No categories match this search.</li>
+            ) : null}
           </ul>
         )}
       </div>

@@ -1,6 +1,7 @@
 import { apiRequest, buildQueryString } from './client'
 import type {
   AdminDashboard,
+  AdminUser,
   AuthenticatedUser,
   ContactChannel,
   GeocodeSuggestion,
@@ -21,6 +22,16 @@ type Envelope<T> = { data: T }
 type EnvelopeWithMeta<T, M> = { data: T; meta: M }
 
 export const publicApi = {
+  recordPageView: (payload: { event_id: string; path: string }) =>
+    apiRequest<void>('/page-views', { method: 'POST', body: payload }),
+  sendContactMessage: (payload: {
+    name: string
+    email: string
+    phone?: string
+    subject: string
+    message: string
+  }) => apiRequest<{ message: string }>('/contact-message', { method: 'POST', body: payload }),
+
   featuredProviders: () =>
     apiRequest<Envelope<ProviderSummary[]>>('/providers/featured').then((response) => response.data),
 
@@ -156,7 +167,10 @@ export const providerApi = {
 }
 
 export const adminApi = {
-  dashboard: () => apiRequest<Envelope<AdminDashboard>>('/admin/dashboard').then((response) => response.data),
+  dashboard: (days = 30) =>
+    apiRequest<Envelope<AdminDashboard>>(`/admin/dashboard?days=${days}`).then((response) => response.data),
+  users: (params: { term?: string; type?: string; status?: string; page?: number }) =>
+    apiRequest<Paginated<AdminUser>>(`/admin/users?${buildQueryString(params)}`),
 
   searchProviders: (payload: { status?: string; term?: string; page?: number; limit?: number }) =>
     apiRequest<{ data: OwnedProvider[]; meta: { total: number; current_page: number; last_page: number } }>(
@@ -192,16 +206,11 @@ export const adminApi = {
     }).then((response) => response.data),
 
   categories: () =>
-    apiRequest<{ data: ServiceCategory[] }>('/admin/rest/service-categories/search', {
-      method: 'POST',
-      body: { search: { sorts: [{ field: 'sort_order', direction: 'asc' }], limit: 100 } },
-    }).then((response) => response.data),
+    apiRequest<{ data: ServiceCategory[] }>('/admin/categories').then((response) => response.data),
 
   saveCategory: (attributes: Record<string, unknown>, id?: number) =>
-    apiRequest<{ data: unknown }>('/admin/rest/service-categories/mutate', {
-      method: 'POST',
-      body: {
-        mutate: [id ? { operation: 'update', key: id, attributes } : { operation: 'create', attributes }],
-      },
+    apiRequest<{ data: unknown }>(id ? `/admin/categories/${id}` : '/admin/categories', {
+      method: id ? 'PUT' : 'POST',
+      body: attributes,
     }),
 }

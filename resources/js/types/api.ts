@@ -1,4 +1,4 @@
-export type ProviderTypeValue = 'individual' | 'agency' | 'business'
+export type ProviderTypeValue = 'individual' | 'agency'
 
 export type ApprovalStatusValue = 'draft' | 'pending' | 'approved' | 'rejected' | 'suspended'
 
@@ -14,6 +14,7 @@ export type ServiceCategoryTag = {
 }
 
 export type ServiceCategory = ServiceCategoryTag & {
+  is_active?: boolean
   description: string | null
   is_popular: boolean
   sort_order: number
@@ -163,10 +164,38 @@ export type ModerationEvent = {
 }
 
 export type AdminDashboard = {
+  period: { days: number; start: string; end: string }
+  metrics: Record<'users' | 'individuals' | 'businesses' | 'views', AdminMetric>
+  user_status: Record<AdminUserStatus, number>
+  overview: { start: string; end: string; individuals: number; businesses: number; views: number }[]
+  recent_users: AdminUser[]
+  categories: Pick<ServiceCategory, 'id' | 'name' | 'slug' | 'icon' | 'is_active' | 'sort_order'>[]
+  top_pages: { path: string; views: number }[]
+  tracking_started_at: string | null
   providers: Record<ApprovalStatusValue, number>
   service_categories: { total: number; active: number }
   contact_events_last_30_days: number
   recent_registrations: ProviderSummary[]
+}
+
+export type AdminMetric = { total: number; current: number; previous: number; change_percent: number | null }
+export type AdminUserStatus = 'active' | 'pending' | 'suspended' | 'inactive'
+export type AdminUser = {
+  id: number
+  name: string
+  account_name: string
+  email: string | null
+  phone: string
+  type: ProviderTypeValue | 'account'
+  roles: string[]
+  locality: string | null
+  logo_url: string | null
+  service: string | null
+  status: AdminUserStatus
+  joined_at: string
+  provider_id: number | null
+  provider_slug: string | null
+  approval_status: ApprovalStatusValue | null
 }
 
 export type PaginationMeta = {

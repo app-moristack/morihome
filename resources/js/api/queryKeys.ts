@@ -10,7 +10,7 @@ export const queryKeys = {
   currentUser: () => ['auth', 'user'] as const,
   providerProfile: () => ['provider', 'profile'] as const,
   providerPortfolio: () => ['provider', 'portfolio'] as const,
-  adminDashboard: () => ['admin', 'dashboard'] as const,
+  adminDashboard: (days = 30) => ['admin', 'dashboard', days] as const,
   adminProviders: (status: string, page: number) => ['admin', 'providers', { status, page }] as const,
   adminProvider: (id: number) => ['admin', 'providers', id] as const,
   adminProviderHistory: (id: number) => ['admin', 'providers', id, 'history'] as const,

@@ -6,6 +6,7 @@ use App\Actions\Providers\StoreProviderImage;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OwnedProviderResource;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
 
 class ProviderImagesController extends Controller
@@ -24,7 +25,8 @@ class ProviderImagesController extends Controller
         $request->validate([
             'image' => [
                 'required',
-                File::image()->types($uploads['mime_types'])->max($uploads['max_kilobytes']),
+                File::image()->types($uploads['mime_types'])->max($uploads['max_kilobytes'])
+                    ->dimensions(Rule::dimensions()->maxWidth($uploads['max_dimension'])->maxHeight($uploads['max_dimension'])),
             ],
         ]);
 
