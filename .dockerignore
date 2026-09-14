@@ -19,3 +19,8 @@ tests
 *.log
 *.tar.gz
 **/*Zone.Identifier*
+
+.github
+tmp
+output
+screens

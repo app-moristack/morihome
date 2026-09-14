@@ -21,6 +21,7 @@ COPY scripts/docker/php.ini /usr/local/etc/php/conf.d/production.ini
 COPY scripts/docker/entrypoint.sh /usr/local/bin/morihome-entrypoint
 RUN sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf \
     && printf '\nServerName localhost\nServerTokens Prod\nServerSignature Off\n' >> /etc/apache2/apache2.conf \
+    && mkdir -p bootstrap/cache \
     && composer dump-autoload --no-dev --optimize \
     && mkdir -p storage/app/public storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs \
     && ln -s /var/www/html/storage/app/public public/storage \
