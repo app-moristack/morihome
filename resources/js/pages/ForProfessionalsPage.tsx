@@ -117,7 +117,7 @@ export default function ForProfessionalsPage() {
           </header>
           <p>Perfect for independent professionals and workers.</p>
           <PlanBenefits items={FREE_BENEFITS} />
-          <Link to="/register/individual" className="pro-plan-button free-button">
+          <Link to="/register?type=individual" className="pro-plan-button free-button">
             Create Free Account <ArrowRight aria-hidden />
           </Link>
           <small>100% free. Always.</small>
@@ -125,9 +125,9 @@ export default function ForProfessionalsPage() {
 
         <article className="pro-plan-card business-plan">
           <span className="free-badge">
-            3 MONTHS
+            6 PAID
             <br />
-            FREE
+            PLANS
           </span>
           <header>
             <span className="pro-plan-icon">
@@ -135,15 +135,15 @@ export default function ForProfessionalsPage() {
             </span>
             <div>
               <h2>Agencies &amp; Companies</h2>
-              <strong>Rs 800 / year</strong>
+              <strong>From Rs 499 / 6 months</strong>
             </div>
           </header>
           <p>Give your business greater visibility on MoriHome.</p>
           <PlanBenefits items={BUSINESS_BENEFITS} business />
-          <Link to="/register/business" className="pro-plan-button">
-            Start 3 Months Free <ArrowRight aria-hidden />
+          <Link to="/register?type=agency" className="pro-plan-button">
+            Choose Agency Plans <ArrowRight aria-hidden />
           </Link>
-          <small>No commitment. Pay manually after the free period.</small>
+          <small>Choose Plus or Pro for Services, Rental and Sales.</small>
         </article>
       </section>
 

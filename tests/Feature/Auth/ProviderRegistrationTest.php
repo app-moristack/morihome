@@ -6,6 +6,7 @@ use App\Enums\ApprovalStatus;
 use App\Enums\UserRole;
 use App\Models\Provider;
 use App\Models\ServiceCategory;
+use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -18,10 +19,13 @@ class ProviderRegistrationTest extends TestCase
     {
         $response = $this->postJson('/api/v1/register', $this->payload());
 
-        $response->assertCreated()->assertJsonPath('data.provider.approval_status', 'draft');
+        $response->assertCreated()
+            ->assertJsonPath('data.provider.approval_status', 'draft')
+            ->assertJsonPath('data.subscriptions.0.membership.state', 'awaiting_approval');
 
         $this->assertDatabaseHas('users', ['phone' => '+23057654321']);
         $this->assertDatabaseHas('providers', ['name' => 'Jean Plombier', 'locality' => 'Port Louis']);
+        $this->assertDatabaseHas('subscription_user', ['starts_at' => null, 'ends_at' => null]);
     }
 
     public function test_a_new_provider_starts_as_a_draft_and_is_not_public(): void
@@ -128,6 +132,66 @@ class ProviderRegistrationTest extends TestCase
             ->assertJsonValidationErrors('provider_type');
     }
 
+    public function test_an_individual_can_request_all_three_free_subscriptions(): void
+    {
+        $freeSubscriptions = Subscription::query()->where('tier', 'free')->pluck('id')->all();
+
+        $this->postJson('/api/v1/register', $this->payload(['subscription_ids' => $freeSubscriptions]))
+            ->assertCreated()
+            ->assertJsonCount(3, 'data.subscriptions');
+
+        $this->assertDatabaseCount('subscription_user', 3);
+    }
+
+    public function test_an_individual_cannot_request_a_paid_subscription(): void
+    {
+        $paidSubscription = Subscription::query()->where('slug', 'services-plus')->firstOrFail();
+
+        $this->postJson('/api/v1/register', $this->payload(['subscription_ids' => [$paidSubscription->id]]))
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('subscription_ids');
+
+        $this->assertDatabaseCount('users', 0);
+    }
+
+    public function test_an_agency_can_request_one_paid_subscription_from_each_category(): void
+    {
+        $paidSubscriptions = Subscription::query()
+            ->whereIn('slug', ['services-plus', 'rental-pro', 'sales-plus'])
+            ->pluck('id')
+            ->all();
+
+        $this->postJson('/api/v1/register', $this->payload([
+            'provider_type' => 'agency',
+            'subscription_ids' => $paidSubscriptions,
+        ]))->assertCreated()->assertJsonCount(3, 'data.subscriptions');
+
+        $this->assertDatabaseCount('subscription_user', 3);
+    }
+
+    public function test_an_agency_cannot_request_a_free_subscription(): void
+    {
+        $freeSubscription = Subscription::query()->where('slug', 'services-free')->firstOrFail();
+
+        $this->postJson('/api/v1/register', $this->payload([
+            'provider_type' => 'agency',
+            'subscription_ids' => [$freeSubscription->id],
+        ]))->assertUnprocessable()->assertJsonValidationErrors('subscription_ids');
+    }
+
+    public function test_registration_rejects_two_subscriptions_from_the_same_category(): void
+    {
+        $serviceSubscriptions = Subscription::query()
+            ->whereIn('slug', ['services-plus', 'services-pro'])
+            ->pluck('id')
+            ->all();
+
+        $this->postJson('/api/v1/register', $this->payload([
+            'provider_type' => 'agency',
+            'subscription_ids' => $serviceSubscriptions,
+        ]))->assertUnprocessable()->assertJsonValidationErrors('subscription_ids');
+    }
+
     public function test_approval_fields_cannot_be_set_from_the_registration_payload(): void
     {
         $this->postJson('/api/v1/register', $this->payload([
@@ -146,6 +210,7 @@ class ProviderRegistrationTest extends TestCase
     private function payload(array $overrides = []): array
     {
         $plumber = ServiceCategory::where('slug', 'plumber')->firstOrFail();
+        $subscription = Subscription::where('slug', 'services-free')->firstOrFail();
 
         return array_merge([
             'provider_type' => 'individual',
@@ -158,6 +223,7 @@ class ProviderRegistrationTest extends TestCase
             'latitude' => -20.1609,
             'longitude' => 57.5012,
             'service_categories' => [$plumber->id],
+            'subscription_ids' => [$subscription->id],
             'accepts_terms' => true,
         ], $overrides);
     }

@@ -49,6 +49,13 @@ export const servicesStepSchema = z.object({
   description: z.string().trim().max(2000).optional(),
 })
 
+export const subscriptionStepSchema = z.object({
+  subscription_ids: z
+    .array(z.number().int().positive())
+    .min(1, 'Choose at least one subscription.')
+    .max(3, 'Choose no more than one subscription from each category.'),
+})
+
 export const credentialsStepSchema = z
   .object({
     password: passwordSchema,
@@ -94,6 +101,7 @@ export const profileSchema = z.object({
 export type AccountStepValues = z.infer<typeof accountStepSchema>
 export type LocationStepValues = z.infer<typeof locationStepSchema>
 export type ServicesStepValues = z.infer<typeof servicesStepSchema>
+export type SubscriptionStepValues = z.infer<typeof subscriptionStepSchema>
 export type CredentialsStepValues = z.infer<typeof credentialsStepSchema>
 export type LoginValues = z.infer<typeof loginSchema>
 export type PasswordChangeValues = z.infer<typeof passwordChangeSchema>

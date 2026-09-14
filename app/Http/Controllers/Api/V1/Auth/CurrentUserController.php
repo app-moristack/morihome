@@ -11,6 +11,7 @@ class CurrentUserController extends Controller
     public function show(Request $request): UserResource
     {
         return new UserResource($request->user()->load([
+            'subscriptions',
             'provider.serviceCategories',
             'provider.portfolioImages',
             'provider.openingHours',

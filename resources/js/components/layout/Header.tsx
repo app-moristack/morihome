@@ -9,7 +9,8 @@ import { Brand } from './Brand'
 
 const NAV_LINKS = [
   { to: '/', label: 'Home' },
-  { to: '/search', label: 'Find a Pro' },
+  { to: '/search', label: 'Services' },
+  { to: '/properties', label: 'Properties' },
   { to: '/for-professionals', label: 'For Professionals' },
   { to: '/about', label: 'About' },
   { to: '/contact', label: 'Contact' },
@@ -96,7 +97,7 @@ export function Header() {
                 <UserRound className="size-5" aria-hidden />
               </Link>
               <Button size="sm" onClick={() => navigate('/for-professionals')} className="min-h-11 px-5">
-                Join as a Pro
+                Start for free
               </Button>
             </>
           )}

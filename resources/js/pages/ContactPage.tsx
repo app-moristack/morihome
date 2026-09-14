@@ -26,7 +26,7 @@ const FAQS = [
   {
     icon: UserRound,
     question: 'How do I register as a professional?',
-    answer: 'Choose “Join as a Pro” and follow the simple registration process.',
+    answer: 'Choose “Start for free” and follow the simple registration process.',
   },
   {
     icon: Settings,

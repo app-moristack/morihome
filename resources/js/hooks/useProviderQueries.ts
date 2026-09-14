@@ -83,3 +83,47 @@ export function useUpdateOpeningHours() {
 
   return useMutation({ mutationFn: providerApi.updateOpeningHours, onSuccess: invalidate })
 }
+
+export function useProviderSubscriptions() {
+  return useQuery({
+    queryKey: queryKeys.providerSubscriptions(),
+    queryFn: providerApi.subscriptions,
+  })
+}
+
+export function useRequestSubscriptions() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: providerApi.requestSubscriptions,
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: queryKeys.providerSubscriptions() })
+      void queryClient.invalidateQueries({ queryKey: queryKeys.currentUser() })
+    },
+  })
+}
+
+export function usePropertyListings() {
+  return useQuery({
+    queryKey: queryKeys.propertyListings(),
+    queryFn: providerApi.propertyListings,
+  })
+}
+
+export function useCreatePropertyListing() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: providerApi.createPropertyListing,
+    onSuccess: () => void queryClient.invalidateQueries({ queryKey: queryKeys.propertyListings() }),
+  })
+}
+
+export function useUploadPropertyImage() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ slug, file }: { slug: string; file: File }) => providerApi.uploadPropertyImage(slug, file),
+    onSuccess: () => void queryClient.invalidateQueries({ queryKey: queryKeys.propertyListings() }),
+  })
+}

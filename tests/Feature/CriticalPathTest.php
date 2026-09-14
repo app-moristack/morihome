@@ -6,6 +6,7 @@ use App\Enums\ContactChannel;
 use App\Enums\UserRole;
 use App\Models\Provider;
 use App\Models\ServiceCategory;
+use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\TestResponse;
@@ -18,6 +19,7 @@ class CriticalPathTest extends TestCase
     public function test_a_provider_registers_is_approved_and_is_then_found_and_contacted(): void
     {
         $plumber = ServiceCategory::where('slug', 'plumber')->firstOrFail();
+        $servicesSubscription = Subscription::where('slug', 'services-free')->firstOrFail();
 
         $registration = $this->postJson('/api/v1/register', [
             'provider_type' => 'individual',
@@ -32,6 +34,7 @@ class CriticalPathTest extends TestCase
             'latitude' => -20.1609,
             'longitude' => 57.5012,
             'service_categories' => [$plumber->id],
+            'subscription_ids' => [$servicesSubscription->id],
             'accepts_terms' => true,
         ])->assertCreated();
 

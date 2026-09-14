@@ -22,17 +22,21 @@ class PageMetaResolver
             '' => $this->home(),
             'providers' => $this->provider($segments[1] ?? null),
             'search' => $this->search($request),
+            'properties' => $this->staticPage(
+                'Property for rent and sale in Mauritius',
+                'Search houses, apartments, land and commercial property for rent or sale across Mauritius.',
+            ),
             'for-professionals' => $this->staticPage(
                 'Grow your business with MoriHome',
                 'Compare MoriHome plans for individual professionals, agencies and companies in Mauritius.',
             ),
             'register' => $this->staticPage(
-                ($segments[1] ?? null) === 'business' ? 'Register your business' : 'Register as an individual',
-                'Register your construction, renovation or maintenance business and reach customers across Mauritius.',
+                'Create your MoriHome account',
+                'Register as an individual or agency and choose subscriptions for services, property rentals or property sales.',
             ),
             'about' => $this->staticPage(
                 'About MoriHome',
-                'MoriHome connects people in Mauritius with reviewed construction, renovation and home-service professionals.',
+                'MoriHome connects people in Mauritius with reviewed home-service professionals and properties for rent or sale.',
             ),
             'contact' => $this->staticPage('Contact MoriHome', 'Get in touch with the MoriHome team.'),
             'terms' => $this->staticPage('Terms of use', 'The terms that govern the use of MoriHome.'),
@@ -54,15 +58,15 @@ class PageMetaResolver
             ->pluck('name');
 
         return new PageMeta(
-            title: 'MoriHome — Find trusted construction & renovation professionals in Mauritius',
-            description: 'Search plumbers, masons, electricians, painters and more near you in Mauritius. '
-                .'Every listed professional is reviewed before appearing. '.self::TAGLINE,
+            title: 'MoriHome — Find services and property in Mauritius',
+            description: 'Search trusted home-service professionals and browse property for rent or sale across Mauritius. '
+                .self::TAGLINE,
             canonical: url('/'),
             structuredData: $this->websiteSchema(),
             noscript: $categories->isEmpty()
                 ? null
-                : '<h1>Find trusted construction &amp; renovation professionals near you in Mauritius</h1>'
-                    .'<p>Popular services: '.e($categories->implode(', ')).'.</p>',
+                : '<h1>Find trusted services and property in Mauritius</h1>'
+                    .'<p>Browse property for rent or sale. Popular services: '.e($categories->implode(', ')).'.</p>',
         );
     }
 

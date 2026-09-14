@@ -53,7 +53,7 @@ describe('Contact page', () => {
     )
 
     const question = await screen.findByText('How do I register as a professional?')
-    const answer = screen.getByText('Choose “Join as a Pro” and follow the simple registration process.')
+    const answer = screen.getByText('Choose “Start for free” and follow the simple registration process.')
 
     expect(answer).not.toBeVisible()
     await userEvent.click(question)

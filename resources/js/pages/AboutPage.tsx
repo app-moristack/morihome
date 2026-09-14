@@ -61,8 +61,8 @@ export default function AboutPage() {
               together.
             </h1>
             <p className="about-intro">
-              MoriHome connects you with trusted local professionals for construction, renovation, repairs and
-              maintenance across Mauritius.
+              MoriHome connects you with trusted local professionals and properties for rent or sale across
+              Mauritius.
             </p>
             <div className="about-hero-promises">
               {[
@@ -98,9 +98,8 @@ export default function AboutPage() {
             to find reliable, skilled professionals for their projects.
           </p>
           <p>
-            We know how important it is to have the right people for the job — whether it’s a small repair or
-            a major renovation. That’s why we created MoriHome: a platform that brings together trusted local
-            professionals and people who need their services, all in one place.
+            Whether you need the right person for a repair, a home to rent or a property to buy, MoriHome
+            brings trusted local professionals and property listings together in one place.
           </p>
         </div>
         <div className="about-story-visual">

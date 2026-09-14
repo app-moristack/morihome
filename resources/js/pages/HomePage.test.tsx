@@ -1,5 +1,6 @@
 ﻿import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { waitFor } from '@testing-library/dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useLocation } from 'react-router'
 import { HomePage } from './HomePage'
@@ -49,6 +50,11 @@ beforeEach(() => {
   vi.spyOn(publicApi, 'categories').mockResolvedValue(categories)
   vi.spyOn(publicApi, 'featuredProviders').mockResolvedValue([provider])
   vi.spyOn(publicApi, 'suggestAddresses').mockResolvedValue([])
+  vi.spyOn(publicApi, 'searchProperties').mockResolvedValue({
+    data: [],
+    links: { first: null, last: null, prev: null, next: null },
+    meta: { current_page: 1, from: null, last_page: 1, per_page: 24, to: null, total: 0 },
+  })
 })
 
 describe('HomePage', () => {
@@ -80,6 +86,7 @@ describe('HomePage', () => {
     const sections = container.querySelectorAll('.home-model-section')
     expect(Array.from(sections, (section) => section.getAttribute('aria-labelledby'))).toEqual([
       'featured-title',
+      'featured-properties-title',
       'why-title',
     ])
     expect(container.querySelectorAll('.home-model-page > [aria-hidden="true"]')).toHaveLength(1)
@@ -114,13 +121,17 @@ describe('HomePage', () => {
     renderWithProviders(<HomePage />)
 
     expect(
-      screen.getByRole('heading', { name: 'Need work done at home? Find the right local pro.' }),
+      screen.getByRole('heading', { name: 'Services and properties, all in one local place.' }),
     ).toBeInTheDocument()
-    expect(screen.getByText(/Find local professionals near you for repairs, renovation/)).toBeInTheDocument()
-    expect(screen.queryByText('Look for the Verified badge on professional profiles.')).not.toBeInTheDocument()
+    expect(
+      screen.getByText(/Find trusted local professionals, homes for rent and properties for sale/),
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByText('Look for the Verified badge on professional profiles.'),
+    ).not.toBeInTheDocument()
     expect(screen.getByLabelText('Made for Mauritius')).toBeInTheDocument()
     expect(screen.getAllByText('Built for Mauritius')).toHaveLength(2)
-    expect(screen.getByText('Reviewed profiles')).toBeInTheDocument()
+    expect(screen.getByText('Trusted listings')).toBeInTheDocument()
   })
 
   it('prioritizes finding and joining over the installation prompt', () => {
@@ -131,20 +142,21 @@ describe('HomePage', () => {
     )
 
     expect(sectionIds).toEqual([
+      'property-title',
       'services-title',
       'featured-title',
+      'featured-properties-title',
       'how-title',
       'why-title',
       'join-title',
       'app-title',
     ])
-    expect(screen.getByRole('link', { name: 'Create Your Free Account' })).toHaveAttribute(
-      'href',
-      '/register',
-    )
+    expect(screen.getByRole('link', { name: 'Create Your Account' })).toHaveAttribute('href', '/register')
     expect(screen.queryByRole('link', { name: 'Report a concern' })).not.toBeInTheDocument()
     expect(screen.queryByRole('link', { name: 'Learn about your privacy' })).not.toBeInTheDocument()
-    expect(screen.getByText('Get discovered by customers looking for your services near you.')).toBeInTheDocument()
+    expect(
+      screen.getByText(/Reach customers looking for trusted services, rentals and properties for sale/),
+    ).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Add to your phone' })).toHaveAttribute('href', '/install')
   })
 
@@ -165,6 +177,47 @@ describe('HomePage', () => {
     expect(route).toContain('category_id=7')
     expect(route).toContain('address=Port+Louis')
     expect(route).toContain('radius=20')
+  })
+
+  it('uses distinct property type and budget filters for property searches', async () => {
+    renderWithProviders(
+      <>
+        <HomePage />
+        <LocationOutput />
+      </>,
+    )
+
+    await userEvent.click(screen.getByRole('tab', { name: 'Properties' }))
+    expect(screen.getByRole('button', { name: 'House for rent' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'House for sale' })).toBeInTheDocument()
+    await userEvent.selectOptions(screen.getByLabelText('I am looking for'), 'rental')
+    await userEvent.selectOptions(screen.getByLabelText('Property type'), 'house')
+    await userEvent.type(screen.getByRole('combobox', { name: 'Where in Mauritius?' }), 'Grand Baie')
+    await userEvent.selectOptions(screen.getByLabelText('Maximum budget'), '30000')
+    await userEvent.click(screen.getByRole('button', { name: 'Search properties' }))
+
+    const route = screen.getByLabelText('Current route').textContent ?? ''
+    expect(route).toContain('/properties?')
+    expect(route).toContain('purpose=rental')
+    expect(route).toContain('property_type=house')
+    expect(route).toContain('location=Grand+Baie')
+    expect(route).toContain('max_price=30000')
+  })
+
+  it('turns property popular searches into relevant property filters', async () => {
+    renderWithProviders(
+      <>
+        <HomePage />
+        <LocationOutput />
+      </>,
+    )
+
+    await userEvent.click(screen.getByRole('tab', { name: 'Properties' }))
+    await userEvent.click(screen.getByRole('button', { name: 'House for sale' }))
+
+    expect(screen.getByLabelText('Current route')).toHaveTextContent(
+      '/properties?purpose=sales&property_type=house',
+    )
   })
 
   it('requires a category or location before submitting the search', async () => {
@@ -196,6 +249,24 @@ describe('HomePage', () => {
     expect(publicApi.recordContact).toHaveBeenCalledWith(
       'local-plumber',
       expect.objectContaining({ source: 'home' }),
+    )
+  })
+
+  it('switches featured properties between rent and sale', async () => {
+    renderWithProviders(<HomePage />)
+
+    expect(screen.getByRole('heading', { name: 'Featured Properties' })).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: 'For rent' })).toHaveAttribute('aria-selected', 'true')
+    expect(publicApi.searchProperties).toHaveBeenCalledWith({ purpose: 'rental', featured_only: true })
+
+    await userEvent.click(screen.getByRole('tab', { name: 'For sale' }))
+
+    await waitFor(() =>
+      expect(publicApi.searchProperties).toHaveBeenCalledWith({ purpose: 'sales', featured_only: true }),
+    )
+    expect(screen.getByRole('link', { name: 'View all properties for sale' })).toHaveAttribute(
+      'href',
+      '/properties?purpose=sales',
     )
   })
 

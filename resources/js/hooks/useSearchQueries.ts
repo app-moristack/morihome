@@ -14,10 +14,26 @@ export function useFeaturedProviders() {
   })
 }
 
+export function useFeaturedProperties(purpose: 'rental' | 'sales') {
+  return useQuery({
+    queryKey: queryKeys.featuredProperties(purpose),
+    queryFn: () => publicApi.searchProperties({ purpose, featured_only: true }),
+    staleTime: 60_000,
+  })
+}
+
 export function useCategories(popularOnly = false) {
   return useQuery({
     queryKey: queryKeys.categories(popularOnly),
     queryFn: () => publicApi.categories(popularOnly),
+    staleTime: CATEGORY_STALE_MS,
+  })
+}
+
+export function useSubscriptions() {
+  return useQuery({
+    queryKey: queryKeys.subscriptions(),
+    queryFn: publicApi.subscriptions,
     staleTime: CATEGORY_STALE_MS,
   })
 }

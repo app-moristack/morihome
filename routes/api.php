@@ -5,25 +5,31 @@ use App\Http\Controllers\Api\V1\Admin\AdminDashboardController;
 use App\Http\Controllers\Api\V1\Admin\AdminUsersController;
 use App\Http\Controllers\Api\V1\Admin\PlatformSettingsController;
 use App\Http\Controllers\Api\V1\Admin\ProviderModerationController;
+use App\Http\Controllers\Api\V1\Admin\SubscriptionsController as AdminSubscriptionsController;
 use App\Http\Controllers\Api\V1\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Api\V1\Auth\CurrentUserController;
 use App\Http\Controllers\Api\V1\Auth\PasswordController;
 use App\Http\Controllers\Api\V1\Auth\PasswordResetController;
 use App\Http\Controllers\Api\V1\Auth\RegisteredProvidersController;
+use App\Http\Controllers\Api\V1\Provider\PropertyListingImagesController;
+use App\Http\Controllers\Api\V1\Provider\PropertyListingsController;
 use App\Http\Controllers\Api\V1\Provider\ProviderImagesController;
 use App\Http\Controllers\Api\V1\Provider\ProviderOpeningHoursController;
 use App\Http\Controllers\Api\V1\Provider\ProviderPortfolioController;
 use App\Http\Controllers\Api\V1\Provider\ProviderProfileController;
 use App\Http\Controllers\Api\V1\Provider\ProviderSubmissionController;
+use App\Http\Controllers\Api\V1\Provider\SubscriptionsController as ProviderSubscriptionsController;
 use App\Http\Controllers\Api\V1\Public\ContactEventsController;
 use App\Http\Controllers\Api\V1\Public\ContactMessagesController;
 use App\Http\Controllers\Api\V1\Public\FeaturedProvidersController;
 use App\Http\Controllers\Api\V1\Public\GeocodingController;
 use App\Http\Controllers\Api\V1\Public\LocalitiesController;
 use App\Http\Controllers\Api\V1\Public\PageViewsController;
+use App\Http\Controllers\Api\V1\Public\PropertySearchController;
 use App\Http\Controllers\Api\V1\Public\ProviderSearchController;
 use App\Http\Controllers\Api\V1\Public\PublicProvidersController;
 use App\Http\Controllers\Api\V1\Public\ServiceCategoriesController;
+use App\Http\Controllers\Api\V1\Public\SubscriptionsController;
 use App\Rest\Controllers\ProvidersController as RestProvidersController;
 use App\Rest\Controllers\ServiceCategoriesController as RestServiceCategoriesController;
 use Illuminate\Support\Facades\Route;
@@ -33,8 +39,10 @@ Route::prefix('v1')->group(function () {
     Route::post('page-views', [PageViewsController::class, 'store'])->middleware('throttle:page-views');
     Route::middleware('throttle:public')->group(function () {
         Route::get('categories', [ServiceCategoriesController::class, 'index']);
+        Route::get('subscriptions', SubscriptionsController::class);
         Route::get('localities', [LocalitiesController::class, 'index']);
         Route::get('providers/search', ProviderSearchController::class);
+        Route::get('properties/search', PropertySearchController::class);
         Route::get('providers/featured', FeaturedProvidersController::class);
         Route::get('providers/{slug}', [PublicProvidersController::class, 'show']);
         Route::post('providers/{slug}/contact-events', [ContactEventsController::class, 'store'])
@@ -70,6 +78,12 @@ Route::prefix('v1')->group(function () {
             Route::put('portfolio/order', [ProviderPortfolioController::class, 'update']);
             Route::delete('portfolio/{image}', [ProviderPortfolioController::class, 'destroy']);
             Route::put('opening-hours', [ProviderOpeningHoursController::class, 'update']);
+            Route::get('subscriptions', [ProviderSubscriptionsController::class, 'index']);
+            Route::post('subscriptions', [ProviderSubscriptionsController::class, 'store']);
+            Route::get('property-listings', [PropertyListingsController::class, 'index']);
+            Route::post('property-listings', [PropertyListingsController::class, 'store']);
+            Route::post('property-listings/{propertyListing}/images', [PropertyListingImagesController::class, 'store'])
+                ->middleware('throttle:uploads');
         });
 
         Route::middleware('admin')->prefix('admin')->group(function () {
@@ -84,6 +98,8 @@ Route::prefix('v1')->group(function () {
                 ->whereIn('action', ['approved', 'rejected', 'suspended', 'reactivated']);
             Route::get('settings', [PlatformSettingsController::class, 'index']);
             Route::put('settings', [PlatformSettingsController::class, 'update']);
+            Route::get('subscriptions', [AdminSubscriptionsController::class, 'index']);
+            Route::put('subscriptions/{membership}', [AdminSubscriptionsController::class, 'update']);
 
             Route::prefix('rest')->group(function () {
                 Rest::resource('providers', RestProvidersController::class)->only(['details', 'search']);

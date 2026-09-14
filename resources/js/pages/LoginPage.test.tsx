@@ -20,10 +20,13 @@ describe('Login page', () => {
     )
     expect(screen.getByRole('link', { name: 'Create Account' })).toHaveAttribute(
       'href',
-      '/register/individual',
+      '/register?type=individual',
     )
     await userEvent.click(screen.getByRole('radio', { name: /Business/ }))
-    expect(screen.getByRole('link', { name: 'Create Account' })).toHaveAttribute('href', '/register/business')
+    expect(screen.getByRole('link', { name: 'Create Account' })).toHaveAttribute(
+      'href',
+      '/register?type=agency',
+    )
     const password = screen.getByLabelText(/^Password/)
     await userEvent.type(password, 'sample-password')
     await userEvent.click(screen.getByRole('button', { name: 'Show password' }))

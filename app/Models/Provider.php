@@ -94,6 +94,11 @@ class Provider extends Model
         return $this->hasMany(ContactEvent::class);
     }
 
+    public function propertyListings(): HasMany
+    {
+        return $this->hasMany(PropertyListing::class);
+    }
+
     public function coordinates(): Coordinates
     {
         return new Coordinates($this->latitude, $this->longitude);

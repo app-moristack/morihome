@@ -1,5 +1,99 @@
 export type ProviderTypeValue = 'individual' | 'agency'
 
+export type SubscriptionCategoryValue = 'services' | 'rental' | 'sales'
+
+export type SubscriptionTierValue = 'free' | 'plus' | 'pro'
+
+export type Subscription = {
+  id: number
+  category: SubscriptionCategoryValue
+  category_label: string
+  tier: SubscriptionTierValue
+  tier_label: string
+  slug: string
+  name: string
+  description: string
+  price_rupees: number
+  duration_months: number | null
+  active_item_limit: number
+  photos_per_item_limit: number
+  item_duration_months: number | null
+  business_verification_eligible: boolean
+  priority_in_search: boolean
+  featured_items: boolean
+  homepage_exposure: boolean
+  membership?: {
+    id: number
+    starts_at: string | null
+    ends_at: string | null
+    state: 'awaiting_approval' | 'active' | 'inactive'
+    approved_at: string | null
+  }
+}
+
+export type SubscriptionMembership = {
+  id: number
+  state: 'awaiting_approval' | 'active' | 'inactive'
+  starts_at: string | null
+  ends_at: string | null
+  requested_at: string
+  approved_at: string | null
+  subscription: Subscription
+  user: {
+    id: number
+    name: string
+    phone: string
+    email: string | null
+    provider_type: ProviderTypeValue
+  }
+}
+
+export type PropertyListingImage = {
+  id: number
+  url: string
+  caption: string | null
+  width: number | null
+  height: number | null
+  sort_order: number
+}
+
+export type PropertyListing = {
+  id: number
+  slug: string
+  purpose: 'rental' | 'sales'
+  property_type: 'house' | 'apartment' | 'villa' | 'land' | 'commercial' | 'other'
+  title: string
+  description: string
+  price_rupees: number
+  bedrooms: number | null
+  bathrooms: number | null
+  area_sqm: number | null
+  is_furnished: boolean | null
+  address: string
+  locality: string
+  latitude: number
+  longitude: number
+  status: 'draft' | 'published' | 'archived' | 'expired'
+  expires_at: string | null
+  images: PropertyListingImage[]
+  photo_limit: number
+  provider?: {
+    name: string
+    slug: string
+    phone: string
+    whatsapp_phone: string | null
+    is_verified: boolean
+  }
+}
+
+export type PropertyListingLimit = {
+  plan: string
+  listing_limit: number
+  used: number
+  remaining: number
+  photos_per_listing: number
+}
+
 export type ApprovalStatusValue = 'draft' | 'pending' | 'approved' | 'rejected' | 'suspended'
 
 export type ContactChannel = 'whatsapp' | 'phone' | 'email' | 'website'
@@ -143,6 +237,7 @@ export type AuthenticatedUser = {
   phone: string
   email: string | null
   roles: string[]
+  subscriptions?: Subscription[]
   provider?: OwnedProvider
 }
 

@@ -15,6 +15,7 @@ class UserResource extends JsonResource
             'phone' => $this->phone,
             'email' => $this->email,
             'roles' => $this->getRoleNames(),
+            'subscriptions' => SubscriptionResource::collection($this->whenLoaded('subscriptions')),
             'provider' => new OwnedProviderResource($this->whenLoaded('provider')),
         ];
     }

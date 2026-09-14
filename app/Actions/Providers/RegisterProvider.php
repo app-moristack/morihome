@@ -2,6 +2,7 @@
 
 namespace App\Actions\Providers;
 
+use App\Actions\Subscriptions\RequestSubscriptions;
 use App\Enums\ApprovalStatus;
 use App\Enums\UserRole;
 use App\Models\Provider;
@@ -12,7 +13,10 @@ use Illuminate\Support\Str;
 
 class RegisterProvider
 {
-    public function __construct(private readonly SyncProviderServiceCategories $syncServiceCategories) {}
+    public function __construct(
+        private readonly SyncProviderServiceCategories $syncServiceCategories,
+        private readonly RequestSubscriptions $requestSubscriptions,
+    ) {}
 
     public function handle(array $input): Provider
     {
@@ -28,6 +32,7 @@ class RegisterProvider
             ]);
 
             $user->assignRole(UserRole::Provider->value);
+            $this->requestSubscriptions->handle($user, $input['subscription_ids']);
 
             $provider = $user->provider()->make([
                 'provider_type' => $input['provider_type'],

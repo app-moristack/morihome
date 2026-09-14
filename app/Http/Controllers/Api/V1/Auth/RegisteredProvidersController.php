@@ -20,7 +20,7 @@ class RegisteredProvidersController extends Controller
         Auth::login($provider->user);
         $request->session()->regenerate();
 
-        return (new UserResource($provider->user->load('provider.serviceCategories')))
+        return (new UserResource($provider->user->load(['provider.serviceCategories', 'subscriptions'])))
             ->response()
             ->setStatusCode(JsonResponse::HTTP_CREATED);
     }

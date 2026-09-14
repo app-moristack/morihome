@@ -3,11 +3,14 @@
 namespace App\Http\Requests;
 
 use App\Enums\ProviderType;
+use App\Enums\SubscriptionTier;
+use App\Models\Subscription;
 use App\Rules\ValidPhoneNumber;
 use App\Support\PhoneNumber;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Validator;
 
 class RegisterProviderRequest extends FormRequest
 {
@@ -37,7 +40,53 @@ class RegisterProviderRequest extends FormRequest
             'service_areas.*' => ['string', 'max:120'],
             'service_categories' => ['required', 'array', 'min:1', 'max:10'],
             'service_categories.*' => ['integer', Rule::exists('service_categories', 'id')->where('is_active', true)],
+            'subscription_ids' => ['required', 'array', 'min:1', 'max:3'],
+            'subscription_ids.*' => [
+                'integer',
+                'distinct',
+                Rule::exists('subscriptions', 'id')->where('is_active', true),
+            ],
             'accepts_terms' => ['accepted'],
+        ];
+    }
+
+    public function after(): array
+    {
+        return [
+            function (Validator $validator): void {
+                if ($validator->errors()->hasAny(['provider_type', 'subscription_ids', 'subscription_ids.*'])) {
+                    return;
+                }
+
+                $subscriptions = Subscription::query()
+                    ->whereKey($this->input('subscription_ids'))
+                    ->get();
+
+                if ($subscriptions->map(
+                    fn (Subscription $subscription): string => $subscription->category->value,
+                )->unique()->count() !== $subscriptions->count()) {
+                    $validator->errors()->add(
+                        'subscription_ids',
+                        'Choose no more than one subscription from each category.',
+                    );
+                }
+
+                $isIndividual = $this->string('provider_type')->toString() === ProviderType::Individual->value;
+                $hasIneligiblePlan = $subscriptions->contains(
+                    fn (Subscription $subscription): bool => $isIndividual
+                        ? $subscription->tier !== SubscriptionTier::Free
+                        : $subscription->tier === SubscriptionTier::Free,
+                );
+
+                if ($hasIneligiblePlan) {
+                    $validator->errors()->add(
+                        'subscription_ids',
+                        $isIndividual
+                            ? 'Individuals can only choose free subscriptions.'
+                            : 'Agencies must choose from the paid subscriptions.',
+                    );
+                }
+            },
         ];
     }
 

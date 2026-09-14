@@ -106,7 +106,7 @@ describe('SearchPage', () => {
     expect(heroVideo).toHaveAttribute('playsinline')
 
     expect(screen.getByRole('heading', { name: 'Find the right professional near you.' })).toBeInTheDocument()
-    expect(screen.getByText(/Trusted local professionals for your home/)).toBeInTheDocument()
+    expect(screen.getByText(/Trusted services and property listings for your home/)).toBeInTheDocument()
     expect(screen.getByText('Local people')).toBeInTheDocument()
     expect(screen.getByText('Verified listings')).toBeInTheDocument()
     expect(screen.getByText('Faster support')).toBeInTheDocument()

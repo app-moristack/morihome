@@ -17,15 +17,18 @@ const StaticPage = lazy(() => import('@/pages/StaticPage'))
 const AboutPage = lazy(() => import('@/pages/AboutPage'))
 const ContactPage = lazy(() => import('@/pages/ContactPage'))
 const InstallPage = lazy(() => import('@/pages/InstallPage'))
+const PropertySearchPage = lazy(() => import('@/pages/PropertySearchPage'))
 const ProviderDashboardPage = lazy(() => import('@/pages/provider/ProviderDashboardPage'))
 const ProviderProfileEditPage = lazy(() => import('@/pages/provider/ProviderProfileEditPage'))
 const ProviderPortfolioPage = lazy(() => import('@/pages/provider/ProviderPortfolioPage'))
 const ProviderSecurityPage = lazy(() => import('@/pages/provider/ProviderSecurityPage'))
+const ProviderPropertiesPage = lazy(() => import('@/pages/provider/ProviderPropertiesPage'))
 const AdminDashboardPage = lazy(() => import('@/pages/admin/AdminDashboardPage'))
 const AdminUsersPage = lazy(() => import('@/pages/admin/AdminUsersPage'))
 const AdminReviewQueuePage = lazy(() => import('@/pages/admin/AdminReviewQueuePage'))
 const AdminProviderReviewPage = lazy(() => import('@/pages/admin/AdminProviderReviewPage'))
 const AdminCategoriesPage = lazy(() => import('@/pages/admin/AdminCategoriesPage'))
+const AdminSubscriptionsPage = lazy(() => import('@/pages/admin/AdminSubscriptionsPage'))
 
 export function App() {
   return (
@@ -33,6 +36,14 @@ export function App() {
       <Route element={<RootLayout />}>
         <Route index element={<HomePage />} />
         <Route path="search" element={<SearchPage />} />
+        <Route
+          path="properties"
+          element={
+            <Suspense fallback={<Spinner label="Loading properties" />}>
+              <PropertySearchPage />
+            </Suspense>
+          }
+        />
 
         <Route
           path="providers/:slug"
@@ -51,23 +62,16 @@ export function App() {
             </Suspense>
           }
         />
-        <Route path="register" element={<Navigate to="/for-professionals" replace />} />
         <Route
-          path="register/individual"
+          path="register"
           element={
             <Suspense fallback={<Spinner label="Loading registration" />}>
-              <RegisterPage providerType="individual" />
+              <RegisterPage />
             </Suspense>
           }
         />
-        <Route
-          path="register/business"
-          element={
-            <Suspense fallback={<Spinner label="Loading registration" />}>
-              <RegisterPage providerType="agency" />
-            </Suspense>
-          }
-        />
+        <Route path="register/individual" element={<Navigate to="/register?type=individual" replace />} />
+        <Route path="register/business" element={<Navigate to="/register?type=agency" replace />} />
         <Route
           path="login"
           element={
@@ -157,6 +161,14 @@ export function App() {
               </Suspense>
             }
           />
+          <Route
+            path="properties"
+            element={
+              <Suspense fallback={<Spinner label="Loading properties" />}>
+                <ProviderPropertiesPage />
+              </Suspense>
+            }
+          />
         </Route>
 
         <Route path="admin" element={<RequireAdmin />}>
@@ -198,6 +210,14 @@ export function App() {
               element={
                 <Suspense fallback={<Spinner />}>
                   <AdminCategoriesPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="subscriptions"
+              element={
+                <Suspense fallback={<Spinner label="Loading subscriptions" />}>
+                  <AdminSubscriptionsPage />
                 </Suspense>
               }
             />

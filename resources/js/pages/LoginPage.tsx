@@ -96,7 +96,7 @@ export default function LoginPage() {
               {
                 icon: ChartNoAxesCombined,
                 title: 'Reach more clients',
-                text: 'Get discovered by people looking for home services across Mauritius.',
+                text: 'Get discovered by people looking for services and properties across Mauritius.',
               },
             ].map(({ icon: Icon, title, text }) => (
               <li key={title}>
@@ -122,7 +122,9 @@ export default function LoginPage() {
       <section className="login-panel" aria-labelledby="login-title">
         <div className="login-signup">
           <span>Don’t have an account?</span>
-          <Link to={`/register/${accountType}`}>Create Account</Link>
+          <Link to={`/register?type=${accountType === 'business' ? 'agency' : 'individual'}`}>
+            Create Account
+          </Link>
         </div>
         <div className="login-content">
           <h1 id="login-title">

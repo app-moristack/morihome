@@ -13,9 +13,9 @@ export function Footer() {
         <div className="footer-brand flex flex-col items-center text-center">
           <Brand footer />
           <p className="mt-3 max-w-52 text-xs leading-relaxed text-white/60">
-            Build. Renovate. Repair. Maintain.
+            Build. Renovate. Rent. Buy.
             <br />
-            Together, for a better Mauritius.
+            Everything for home in Mauritius.
           </p>
         </div>
         <nav aria-label="Quick links">
@@ -24,6 +24,7 @@ export function Footer() {
             {[
               { to: '/', label: 'Home' },
               { to: '/search', label: 'Find a Pro' },
+              { to: '/properties', label: 'Find Property' },
               { to: '/for-professionals', label: 'For Professionals' },
               { to: '/about', label: 'About' },
               { to: '/contact', label: 'Contact' },
@@ -106,7 +107,7 @@ export function Footer() {
             Terms
           </Link>
         </div>
-        <p>Better homes. Brighter lives.</p>
+        <p>Services and property. One local platform.</p>
       </div>
     </footer>
   )

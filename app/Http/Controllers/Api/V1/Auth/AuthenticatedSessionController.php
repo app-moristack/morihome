@@ -22,7 +22,7 @@ class AuthenticatedSessionController extends Controller
         $user = $request->user();
         $user->forceFill(['last_login_at' => now()])->save();
 
-        return new UserResource($user->load('provider.serviceCategories'));
+        return new UserResource($user->load(['provider.serviceCategories', 'subscriptions']));
     }
 
     public function destroy(Request $request): JsonResponse

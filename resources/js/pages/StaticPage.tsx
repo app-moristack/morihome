@@ -10,7 +10,7 @@ const CONTENT: Record<string, { title: string; intro: string; sections: Section[
   about: {
     title: 'About MoriHome',
     intro:
-      'MoriHome is a Mauritian directory for construction, renovation, maintenance and home services. We exist so that finding a reliable tradesperson near you does not depend on who you happen to know.',
+      'MoriHome is a Mauritian platform for trusted home services and properties for rent or sale. We make it easier to find a reliable tradesperson or your next property in one place.',
     sections: [
       {
         heading: 'Why we review every professional',

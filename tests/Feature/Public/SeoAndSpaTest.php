@@ -15,7 +15,7 @@ class SeoAndSpaTest extends TestCase
     {
         $this->get('/')
             ->assertOk()
-            ->assertSee('Find trusted construction &amp; renovation professionals in Mauritius', false)
+            ->assertSee('Find services and property in Mauritius', false)
             ->assertSee('<meta name="description"', false);
     }
 

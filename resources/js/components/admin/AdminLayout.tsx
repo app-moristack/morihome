@@ -1,5 +1,17 @@
 import { useQuery } from '@tanstack/react-query'
-import { Bell, ChevronDown, ExternalLink, Grid2X2, House, LogOut, Menu, Search, Users, X } from 'lucide-react'
+import {
+  Bell,
+  ChevronDown,
+  CreditCard,
+  ExternalLink,
+  Grid2X2,
+  House,
+  LogOut,
+  Menu,
+  Search,
+  Users,
+  X,
+} from 'lucide-react'
 import { useState } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router'
 import { adminApi } from '@/api/endpoints'
@@ -92,6 +104,15 @@ export function AdminLayout() {
           >
             <Grid2X2 size={18} />
             Service Categories
+          </Link>
+          <Link
+            to="/admin/subscriptions"
+            className={pathname === '/admin/subscriptions' ? 'is-active' : ''}
+            aria-current={pathname === '/admin/subscriptions' ? 'page' : undefined}
+            onClick={() => setSidebarOpen(false)}
+          >
+            <CreditCard size={18} />
+            Subscriptions
           </Link>
         </nav>
         <Link to="/" className="admin-view-site">

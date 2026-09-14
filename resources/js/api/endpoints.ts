@@ -12,10 +12,14 @@ import type {
   Paginated,
   PortfolioImage,
   ProfileCompleteness,
+  PropertyListing,
+  PropertyListingLimit,
   ProviderSummary,
   PublicProvider,
   SearchParams,
   ServiceCategory,
+  Subscription,
+  SubscriptionMembership,
 } from '@/types/api'
 
 type Envelope<T> = { data: T }
@@ -40,6 +44,9 @@ export const publicApi = {
       (response) => response.data,
     ),
 
+  subscriptions: () =>
+    apiRequest<Envelope<Subscription[]>>('/subscriptions').then((response) => response.data),
+
   localities: () => apiRequest<Envelope<Locality[]>>('/localities').then((response) => response.data),
 
   suggestAddresses: (term: string, signal?: AbortSignal) =>
@@ -54,6 +61,17 @@ export const publicApi = {
 
   searchProviders: (params: SearchParams, signal?: AbortSignal) =>
     apiRequest<Paginated<ProviderSummary>>(`/providers/search?${buildQueryString(params)}`, { signal }),
+
+  searchProperties: (params: {
+    purpose?: 'rental' | 'sales'
+    property_type?: 'house' | 'apartment' | 'villa' | 'land' | 'commercial' | 'other'
+    location?: string
+    min_price?: number
+    max_price?: number
+    bedrooms?: number
+    featured_only?: boolean
+    page?: number
+  }) => apiRequest<Paginated<PropertyListing>>(`/properties/search?${buildQueryString(params)}`),
 
   provider: (slug: string) =>
     apiRequest<Envelope<PublicProvider>>(`/providers/${slug}`).then((response) => response.data),
@@ -79,6 +97,7 @@ export type RegistrationPayload = {
   longitude: number
   service_areas?: string[]
   service_categories: number[]
+  subscription_ids: number[]
   accepts_terms: boolean
 }
 
@@ -164,6 +183,33 @@ export const providerApi = {
     apiRequest<Envelope<OpeningHour[]>>('/provider/opening-hours', { method: 'PUT', body: { hours } }).then(
       (response) => response.data,
     ),
+
+  subscriptions: () =>
+    apiRequest<Envelope<Subscription[]>>('/provider/subscriptions').then((response) => response.data),
+
+  requestSubscriptions: (subscriptionIds: number[]) =>
+    apiRequest<Envelope<Subscription[]>>('/provider/subscriptions', {
+      method: 'POST',
+      body: { subscription_ids: subscriptionIds },
+    }).then((response) => response.data),
+
+  propertyListings: () =>
+    apiRequest<
+      EnvelopeWithMeta<PropertyListing[], { limits: Record<'rental' | 'sales', PropertyListingLimit | null> }>
+    >('/provider/property-listings'),
+
+  createPropertyListing: (payload: Record<string, unknown>) =>
+    apiRequest<Envelope<PropertyListing>>('/provider/property-listings', {
+      method: 'POST',
+      body: payload,
+    }).then((response) => response.data),
+
+  uploadPropertyImage: (slug: string, file: File) => {
+    const body = new FormData()
+    body.append('image', file)
+
+    return apiRequest(`/provider/property-listings/${slug}/images`, { method: 'POST', body })
+  },
 }
 
 export const adminApi = {
@@ -213,4 +259,13 @@ export const adminApi = {
       method: id ? 'PUT' : 'POST',
       body: attributes,
     }),
+
+  subscriptions: (params: { state?: string; term?: string; page?: number }) =>
+    apiRequest<Paginated<SubscriptionMembership>>(`/admin/subscriptions?${buildQueryString(params)}`),
+
+  activateSubscription: (membershipId: number, startsAt: string, endsAt: string) =>
+    apiRequest<Envelope<SubscriptionMembership>>(`/admin/subscriptions/${membershipId}`, {
+      method: 'PUT',
+      body: { starts_at: startsAt, ends_at: endsAt },
+    }).then((response) => response.data),
 }

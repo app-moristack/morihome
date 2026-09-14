@@ -1,7 +1,11 @@
 import {
   ArrowRight,
+  Bath,
+  BedDouble,
+  Building2,
   CircleCheck,
   House,
+  KeyRound,
   List,
   MapPin,
   MessageCircle,
@@ -10,29 +14,29 @@ import {
   ShieldCheck,
   Smartphone,
 } from 'lucide-react'
-import { createElement } from 'react'
+import { createElement, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { HomeHeroScene } from '@/components/search/HomeHeroScene'
 import { SearchHero } from '@/components/search/SearchHero'
 import { WhatsappButton } from '@/components/provider/WhatsappButton'
 import { Skeleton } from '@/components/ui/Skeleton'
-import { useCategories, useFeaturedProviders } from '@/hooks/useSearchQueries'
+import { useCategories, useFeaturedProperties, useFeaturedProviders } from '@/hooks/useSearchQueries'
 import { resolveCategoryIcon } from '@/lib/categoryIcons'
 import { emptySearchState, writeSearchState, type SearchFormState } from '@/lib/searchParams'
 import { initialsOf } from '@/lib/format'
-import type { ProviderSummary } from '@/types/api'
-import professionalBanner from '../../images/Grow your business with MoriHome.png'
+import type { PropertyListing, ProviderSummary } from '@/types/api'
+import professionalBanner from '../../images/Grow your business with MoriHome-services-properties.png'
 
 const TRUST = [
   { icon: MapPin, title: 'Built for Mauritius', body: 'Your town, village or district' },
-  { icon: ShieldCheck, title: 'Reviewed profiles', body: 'Checked before publication' },
-  { icon: MessageCircle, title: 'Direct contact', body: 'Message on WhatsApp' },
-  { icon: Search, title: 'Search freely', body: 'No customer account needed' },
+  { icon: ShieldCheck, title: 'Trusted listings', body: 'Services and properties in one place' },
+  { icon: MessageCircle, title: 'Direct contact', body: 'Contact providers and property listers' },
+  { icon: Search, title: 'Search freely', body: 'Find a service, rental or property for sale' },
 ]
 const STEPS = [
-  { icon: Search, title: 'Search', body: 'Select a service, enter your location and choose a radius.' },
-  { icon: List, title: 'Browse', body: 'View matching professionals near you.' },
-  { icon: MessageCircle, title: 'Contact', body: 'Get in touch directly via WhatsApp.' },
+  { icon: Search, title: 'Search', body: 'Choose Services or Property and tell us where to look.' },
+  { icon: List, title: 'Browse', body: 'Compare professionals, rentals and properties for sale.' },
+  { icon: MessageCircle, title: 'Contact', body: 'Get in touch directly with the person who listed it.' },
 ]
 const BENEFITS = [
   {
@@ -53,7 +57,7 @@ const BENEFITS = [
   {
     icon: House,
     title: 'Built for Mauritius',
-    body: 'A local platform for Mauritian homeowners and businesses.',
+    body: 'A local platform for home services, rentals and property sales.',
   },
 ]
 
@@ -156,8 +160,67 @@ function FeaturedCard({ provider }: { provider: ProviderSummary }) {
   )
 }
 
+function FeaturedPropertyCard({ listing }: { listing: PropertyListing }) {
+  return (
+    <article className="flex min-w-0 flex-col overflow-hidden rounded-xl border border-white/15 bg-[#14384d] shadow-card">
+      <div className="relative h-40 bg-[#0c2b3e]">
+        {listing.images[0] ? (
+          <img
+            src={listing.images[0].url}
+            alt={listing.title}
+            loading="lazy"
+            decoding="async"
+            width={400}
+            height={240}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <div className="grid h-full place-items-center">
+            <Building2 className="size-12 text-brand-300/70" aria-hidden />
+          </div>
+        )}
+        <span className="absolute top-3 left-3 rounded-full bg-brand-400 px-2.5 py-1 text-xs font-bold text-ink-950">
+          {listing.purpose === 'rental' ? 'For rent' : 'For sale'}
+        </span>
+      </div>
+      <div className="flex flex-1 flex-col gap-3 p-4 text-white">
+        <div>
+          <h3 className="line-clamp-2 font-bold">{listing.title}</h3>
+          <p className="mt-1 text-lg font-extrabold text-brand-300">
+            Rs {listing.price_rupees.toLocaleString('en-MU')}
+            {listing.purpose === 'rental' ? <small className="text-xs font-medium"> / month</small> : null}
+          </p>
+        </div>
+        <p className="flex items-center gap-1.5 text-xs text-white/75">
+          <MapPin className="size-3.5 shrink-0" aria-hidden />
+          <span className="truncate">{listing.locality}</span>
+        </p>
+        <div className="flex gap-4 text-xs text-white/75">
+          {listing.bedrooms !== null ? (
+            <span className="flex items-center gap-1">
+              <BedDouble className="size-4" aria-hidden /> {listing.bedrooms} beds
+            </span>
+          ) : null}
+          {listing.bathrooms !== null ? (
+            <span className="flex items-center gap-1">
+              <Bath className="size-4" aria-hidden /> {listing.bathrooms} baths
+            </span>
+          ) : null}
+        </div>
+        <Link
+          to={`/properties?purpose=${listing.purpose}&location=${encodeURIComponent(listing.locality)}`}
+          className="mt-auto inline-flex min-h-10 items-center justify-center gap-2 rounded-full bg-brand-400 px-4 text-sm font-bold text-ink-950 hover:bg-brand-300"
+        >
+          View property <ArrowRight className="size-4" aria-hidden />
+        </Link>
+      </div>
+    </article>
+  )
+}
+
 export function HomePage() {
   const navigate = useNavigate()
+  const [featuredPropertyPurpose, setFeaturedPropertyPurpose] = useState<'rental' | 'sales'>('rental')
   const {
     data: categories = [],
     isLoading: categoriesLoading,
@@ -169,9 +232,28 @@ export function HomePage() {
     isError: providersError,
     refetch,
   } = useFeaturedProviders()
+  const {
+    data: featuredPropertyResults,
+    isLoading: featuredPropertiesLoading,
+    isError: featuredPropertiesError,
+    refetch: refetchFeaturedProperties,
+  } = useFeaturedProperties(featuredPropertyPurpose)
+  const featuredProperties = featuredPropertyResults?.data ?? []
   const categoryLink = (id: number) =>
     `/search?${writeSearchState({ ...emptySearchState(), categoryId: id }).toString()}`
   const runSearch = (state: SearchFormState) => navigate(`/search?${writeSearchState(state).toString()}`)
+  const runPropertySearch = (search: {
+    purpose: 'rental' | 'sales'
+    propertyType: string
+    location: string
+    maxPrice: number | null
+  }) => {
+    const params = new URLSearchParams({ purpose: search.purpose })
+    if (search.propertyType) params.set('property_type', search.propertyType)
+    if (search.location) params.set('location', search.location)
+    if (search.maxPrice) params.set('max_price', String(search.maxPrice))
+    navigate(`/properties?${params.toString()}`)
+  }
 
   return (
     <div className="home-page home-model-page bg-surface">
@@ -179,11 +261,12 @@ export function HomePage() {
       <SearchHero
         state={emptySearchState()}
         onSearch={runSearch}
+        onPropertySearch={runPropertySearch}
         categories={categories}
-        title="Need work done at home?"
-        highlightedTitle="Find the right local pro."
+        title="Services and properties,"
+        highlightedTitle="all in one local place."
         description={
-          'Find local professionals near you for repairs, renovation, maintenance and construction across Mauritius.'
+          'Find trusted local professionals, homes for rent and properties for sale — anywhere in Mauritius.'
         }
         aside={
           <p
@@ -209,6 +292,48 @@ export function HomePage() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="home-soft-bg" aria-labelledby="property-title">
+        <div className="container-page home-section">
+          <div className="home-section-heading">
+            <div>
+              <h2 id="property-title">Find your next property</h2>
+              <p>Browse homes and spaces for rent or sale across Mauritius.</p>
+            </div>
+            <SectionLink to="/properties">View all properties</SectionLink>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Link
+              to="/properties?purpose=rental"
+              className="card flex items-center gap-4 p-5 transition-all hover:border-brand-300 hover:shadow-lifted"
+            >
+              <span className="grid size-14 place-items-center rounded-xl bg-brand-100">
+                <KeyRound className="size-7" aria-hidden />
+              </span>
+              <span>
+                <strong className="block text-lg">Property for rent</strong>
+                <small className="text-ink-500">Find houses, apartments and commercial spaces to rent.</small>
+              </span>
+              <ArrowRight className="ml-auto size-5" aria-hidden />
+            </Link>
+            <Link
+              to="/properties?purpose=sales"
+              className="card flex items-center gap-4 p-5 transition-all hover:border-brand-300 hover:shadow-lifted"
+            >
+              <span className="grid size-14 place-items-center rounded-xl bg-brand-100">
+                <House className="size-7" aria-hidden />
+              </span>
+              <span>
+                <strong className="block text-lg">Property for sale</strong>
+                <small className="text-ink-500">
+                  Discover homes, land and commercial properties for sale.
+                </small>
+              </span>
+              <ArrowRight className="ml-auto size-5" aria-hidden />
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -306,12 +431,82 @@ export function HomePage() {
         </div>
       </section>
 
+      <section className="home-model-section" aria-labelledby="featured-properties-title">
+        <div className="container-page home-section pt-0">
+          <div className="home-section-heading items-end">
+            <div>
+              <h2 id="featured-properties-title">Featured Properties</h2>
+              <p>Discover highlighted homes and spaces across Mauritius.</p>
+            </div>
+            <div className="flex flex-col items-start gap-3 sm:items-end">
+              <div
+                role="tablist"
+                aria-label="Featured property type"
+                className="flex rounded-full border border-white/20 bg-[#0b2b3d] p-1"
+              >
+                {(['rental', 'sales'] as const).map((purpose) => (
+                  <button
+                    key={purpose}
+                    type="button"
+                    role="tab"
+                    aria-selected={featuredPropertyPurpose === purpose}
+                    onClick={() => setFeaturedPropertyPurpose(purpose)}
+                    className={`min-h-9 rounded-full px-4 text-sm font-bold transition-colors ${featuredPropertyPurpose === purpose ? 'bg-brand-400 text-ink-950' : 'text-white hover:bg-white/10'}`}
+                  >
+                    {purpose === 'rental' ? 'For rent' : 'For sale'}
+                  </button>
+                ))}
+              </div>
+              <SectionLink to={`/properties?purpose=${featuredPropertyPurpose}`}>
+                View all {featuredPropertyPurpose === 'rental' ? 'rentals' : 'properties for sale'}
+              </SectionLink>
+            </div>
+          </div>
+          {featuredPropertiesLoading ? (
+            <div className="home-featured-carousel" aria-label="Loading featured properties">
+              {Array.from({ length: 5 }, (_, i) => (
+                <Skeleton key={i} className="h-80 rounded-xl" />
+              ))}
+            </div>
+          ) : featuredPropertiesError ? (
+            <div className="home-empty">
+              <p>We couldn’t load the featured properties.</p>
+              <button
+                type="button"
+                onClick={() => void refetchFeaturedProperties()}
+                className="mt-3 min-h-11 font-semibold underline"
+              >
+                Try again
+              </button>
+            </div>
+          ) : featuredProperties.length ? (
+            <div className="home-featured-carousel" aria-label="Featured properties">
+              {featuredProperties.slice(0, 5).map((listing) => (
+                <FeaturedPropertyCard key={listing.id} listing={listing} />
+              ))}
+            </div>
+          ) : (
+            <div className="home-empty flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h3 className="font-bold">
+                  No featured properties {featuredPropertyPurpose === 'rental' ? 'for rent' : 'for sale'} yet.
+                </h3>
+                <p className="mt-1 text-sm text-ink-500">Browse all available property listings.</p>
+              </div>
+              <Link to={`/properties?purpose=${featuredPropertyPurpose}`} className="home-cta">
+                Browse properties <ArrowRight className="size-4" aria-hidden />
+              </Link>
+            </div>
+          )}
+        </div>
+      </section>
+
       <section className="home-soft-bg" aria-labelledby="how-title">
         <div className="container-page home-section relative">
           <div className="home-section-heading">
             <div>
               <h2 id="how-title">How MoriHome works</h2>
-              <p>Get the help you need in just a few simple steps.</p>
+              <p>Find a professional or property in just a few simple steps.</p>
             </div>
             <p className="home-handwritten hidden sm:block">
               Simple.
@@ -377,32 +572,33 @@ export function HomePage() {
         <div className="home-pro-shade pointer-events-none absolute inset-0 -z-10" />
         <div className="container-page py-12 sm:py-16 lg:py-18">
           <div className="home-pro-content">
-            <p className="home-pro-label">
-              For local professionals · Free registration
-            </p>
-            <h2 id="join-title" className="mt-5 text-4xl leading-[1.02] font-extrabold tracking-[-0.045em] sm:text-5xl lg:text-6xl">
+            <p className="home-pro-label">For service and property professionals</p>
+            <h2
+              id="join-title"
+              className="mt-5 text-4xl leading-[1.02] font-extrabold tracking-[-0.045em] sm:text-5xl lg:text-6xl"
+            >
               Grow your business
               <br />
               with <span className="text-brand-400">MoriHome</span>
             </h2>
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-600 sm:text-lg">
-              Get discovered by customers looking for your services near you.
+              Reach customers looking for trusted services, rentals and properties for sale across Mauritius.
             </p>
             <ul className="mt-8 grid max-w-2xl gap-x-8 gap-y-5 text-sm font-semibold sm:grid-cols-2 sm:text-base">
-            {[
-              'Create your professional profile',
-              'Showcase your services and project photos',
-              'Hear from customers directly on WhatsApp',
-              'Build your local presence',
-            ].map((benefit) => (
-              <li key={benefit} className="flex items-start gap-3">
-                <CircleCheck className="size-6 shrink-0 text-brand-500" aria-hidden />
-                {benefit}
-              </li>
-            ))}
+              {[
+                'Create an individual or agency profile',
+                'Showcase services or property listings',
+                'Receive enquiries directly on WhatsApp',
+                'Manage Services, Rental and Sales plans',
+              ].map((benefit) => (
+                <li key={benefit} className="flex items-start gap-3">
+                  <CircleCheck className="size-6 shrink-0 text-brand-500" aria-hidden />
+                  {benefit}
+                </li>
+              ))}
             </ul>
             <Link to="/register" className="home-cta mt-9">
-              Create Your Free Account <ArrowRight className="size-4" aria-hidden />
+              Create Your Account <ArrowRight className="size-4" aria-hidden />
             </Link>
           </div>
         </div>

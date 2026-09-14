@@ -1,7 +1,8 @@
-import { Images, KeyRound, TriangleAlert, UserPen } from 'lucide-react'
+import { Building2, Images, KeyRound, TriangleAlert, UserPen } from 'lucide-react'
 import { Link } from 'react-router'
 import { ApiError } from '@/api/client'
 import { ApprovalStatusCard } from '@/components/dashboard/ApprovalStatusCard'
+import { SubscriptionManager } from '@/components/dashboard/SubscriptionManager'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
@@ -16,6 +17,12 @@ const QUICK_LINKS = [
     icon: UserPen,
     title: 'Edit profile',
     body: 'Contact details, services and location.',
+  },
+  {
+    to: '/dashboard/properties',
+    icon: Building2,
+    title: 'Properties',
+    body: 'Create rental and sale listings within your plan limits.',
   },
   {
     to: '/dashboard/portfolio',
@@ -86,9 +93,11 @@ export default function ProviderDashboardPage() {
           isSubmitting={submitForReview.isPending}
         />
 
+        <SubscriptionManager providerType={provider.provider_type} />
+
         <section>
           <h2 className="text-lg font-bold text-ink-900">Manage your listing</h2>
-          <ul className="mt-3 grid gap-3 sm:grid-cols-3">
+          <ul className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {QUICK_LINKS.map((link) => (
               <li key={link.to}>
                 <Link
