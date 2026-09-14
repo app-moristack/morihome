@@ -49,7 +49,7 @@ with tarfile.open(sys.argv[1], 'r:gz') as archive:
     assert len(manifest)==1 and manifest[0].get('RepoTags')==[sys.argv[2]], 'Unexpected image tags'
 PY
 bash "$root/scripts/backup-production.sh" </dev/null
-previous=$(docker inspect "$app-app-1" --format '{{.Image}}')
+previous=$(docker image inspect "$app:production" --format '{{.Id}}')
 docker tag "$previous" "$app:rollback"
 cp "$root/compose.production.yaml" "$work/previous-compose.yaml"
 docker load < "$work/image.tar.gz"
