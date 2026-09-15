@@ -13,7 +13,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         if (! app()->isProduction()) {
-            $this->call(DemoProviderSeeder::class);
+            $this->call([
+                DemoProviderSeeder::class,
+                DemoPropertySeeder::class,
+            ]);
         }
 
         $this->command->comment('Seeding complete.');

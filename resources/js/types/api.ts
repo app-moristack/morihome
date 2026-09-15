@@ -238,7 +238,7 @@ export type AuthenticatedUser = {
   email: string | null
   roles: string[]
   subscriptions?: Subscription[]
-  provider?: OwnedProvider
+  provider?: OwnedProvider | null
 }
 
 export type ProfileCompleteness = {

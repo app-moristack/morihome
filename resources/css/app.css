@@ -241,6 +241,10 @@
     color: #fff;
     background: linear-gradient(110deg, #071e30ed, #102c3fd9 60%, #102c3fc4);
   }
+  .home-properties-section {
+    color: #102c3f;
+    background: linear-gradient(110deg, #f3f7f8ed, #f3f7f8d9 60%, #f3f7f8c4);
+  }
   .home-services-section {
     background: #f4f6f9;
     color: #171717;

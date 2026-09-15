@@ -31,8 +31,10 @@ const STATUS_TONES: Record<ApprovalStatusValue, 'neutral' | 'brand' | 'success' 
 
 export default function AdminReviewQueuePage() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const status = searchParams.get('status') ?? 'pending'
-  const page = Number(searchParams.get('page') ?? 1)
+  const requestedStatus = searchParams.get('status') ?? 'pending'
+  const status = STATUS_TABS.some((tab) => tab.value === requestedStatus) ? requestedStatus : 'pending'
+  const requestedPage = Number(searchParams.get('page') ?? 1)
+  const page = Number.isSafeInteger(requestedPage) && requestedPage > 0 ? requestedPage : 1
 
   const { data, isLoading, isError } = useQuery({
     queryKey: queryKeys.adminProviders(status, page),
@@ -108,7 +110,7 @@ export default function AdminReviewQueuePage() {
                     </span>
                   </span>
                   <Badge tone={STATUS_TONES[provider.approval_status]}>
-                    {provider.approval_status_label}
+                    {STATUS_TABS.find((tab) => tab.value === provider.approval_status)?.label}
                   </Badge>
                   <Button size="sm" variant="ghost">
                     Review
@@ -119,6 +121,25 @@ export default function AdminReviewQueuePage() {
           </ul>
         )}
       </div>
+      {data && data.last_page > 1 ? (
+        <nav className="admin-pagination mt-6" aria-label="Review queue pages">
+          <span>{data.total} providers</span>
+          <div>
+            <button disabled={page <= 1} onClick={() => setSearchParams({ status, page: String(page - 1) })}>
+              Previous
+            </button>
+            <span>
+              Page {data.current_page} of {data.last_page}
+            </span>
+            <button
+              disabled={page >= data.last_page}
+              onClick={() => setSearchParams({ status, page: String(page + 1) })}
+            >
+              Next
+            </button>
+          </div>
+        </nav>
+      ) : null}
     </div>
   )
 }

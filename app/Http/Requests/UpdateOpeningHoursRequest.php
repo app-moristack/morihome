@@ -15,7 +15,7 @@ class UpdateOpeningHoursRequest extends FormRequest
     {
         return [
             'hours' => ['present', 'array', 'max:7'],
-            'hours.*.day_of_week' => ['required', 'integer', 'between:0,6'],
+            'hours.*.day_of_week' => ['required', 'integer', 'between:0,6', 'distinct'],
             'hours.*.is_closed' => ['boolean'],
             'hours.*.opens_at' => ['nullable', 'required_if:hours.*.is_closed,false', 'date_format:H:i'],
             'hours.*.closes_at' => ['nullable', 'required_if:hours.*.is_closed,false', 'date_format:H:i', 'after:hours.*.opens_at'],

@@ -162,8 +162,8 @@ function FeaturedCard({ provider }: { provider: ProviderSummary }) {
 
 function FeaturedPropertyCard({ listing }: { listing: PropertyListing }) {
   return (
-    <article className="flex min-w-0 flex-col overflow-hidden rounded-xl border border-white/15 bg-[#14384d] shadow-card">
-      <div className="relative h-40 bg-[#0c2b3e]">
+    <article className="flex min-w-0 flex-col overflow-hidden rounded-xl border border-ink-100 bg-surface shadow-card">
+      <div className="relative h-40 bg-[#e3edf1]">
         {listing.images[0] ? (
           <img
             src={listing.images[0].url}
@@ -176,26 +176,26 @@ function FeaturedPropertyCard({ listing }: { listing: PropertyListing }) {
           />
         ) : (
           <div className="grid h-full place-items-center">
-            <Building2 className="size-12 text-brand-300/70" aria-hidden />
+            <Building2 className="size-12 text-[#527182]" aria-hidden />
           </div>
         )}
         <span className="absolute top-3 left-3 rounded-full bg-brand-400 px-2.5 py-1 text-xs font-bold text-ink-950">
           {listing.purpose === 'rental' ? 'For rent' : 'For sale'}
         </span>
       </div>
-      <div className="flex flex-1 flex-col gap-3 p-4 text-white">
+      <div className="flex flex-1 flex-col gap-3 p-4 text-[#102c3f]">
         <div>
           <h3 className="line-clamp-2 font-bold">{listing.title}</h3>
-          <p className="mt-1 text-lg font-extrabold text-brand-300">
+          <p className="mt-1 text-lg font-extrabold">
             Rs {listing.price_rupees.toLocaleString('en-MU')}
             {listing.purpose === 'rental' ? <small className="text-xs font-medium"> / month</small> : null}
           </p>
         </div>
-        <p className="flex items-center gap-1.5 text-xs text-white/75">
+        <p className="flex items-center gap-1.5 text-xs text-ink-500">
           <MapPin className="size-3.5 shrink-0" aria-hidden />
           <span className="truncate">{listing.locality}</span>
         </p>
-        <div className="flex gap-4 text-xs text-white/75">
+        <div className="flex gap-4 text-xs text-ink-500">
           {listing.bedrooms !== null ? (
             <span className="flex items-center gap-1">
               <BedDouble className="size-4" aria-hidden /> {listing.bedrooms} beds
@@ -431,8 +431,8 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="home-model-section" aria-labelledby="featured-properties-title">
-        <div className="container-page home-section pt-0">
+      <section className="home-properties-section" aria-labelledby="featured-properties-title">
+        <div className="container-page home-section">
           <div className="home-section-heading items-end">
             <div>
               <h2 id="featured-properties-title">Featured Properties</h2>
@@ -442,7 +442,7 @@ export function HomePage() {
               <div
                 role="tablist"
                 aria-label="Featured property type"
-                className="flex rounded-full border border-white/20 bg-[#0b2b3d] p-1"
+                className="flex rounded-full border border-ink-100 bg-surface p-1"
               >
                 {(['rental', 'sales'] as const).map((purpose) => (
                   <button
@@ -451,7 +451,7 @@ export function HomePage() {
                     role="tab"
                     aria-selected={featuredPropertyPurpose === purpose}
                     onClick={() => setFeaturedPropertyPurpose(purpose)}
-                    className={`min-h-9 rounded-full px-4 text-sm font-bold transition-colors ${featuredPropertyPurpose === purpose ? 'bg-brand-400 text-ink-950' : 'text-white hover:bg-white/10'}`}
+                    className={`min-h-9 rounded-full px-4 text-sm font-bold transition-colors ${featuredPropertyPurpose === purpose ? 'bg-brand-400 text-ink-950' : 'text-ink-600 hover:bg-ink-50'}`}
                   >
                     {purpose === 'rental' ? 'For rent' : 'For sale'}
                   </button>

@@ -3,11 +3,14 @@
 namespace Tests\Feature\Public;
 
 use App\Mail\ContactMessage;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class ContactMessageTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_a_valid_contact_message_is_sent_to_support_and_returns_202(): void
     {
         Mail::fake();

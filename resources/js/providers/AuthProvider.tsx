@@ -41,7 +41,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isLoading,
       isAuthenticated: user !== null,
       isAdmin: user?.roles.includes('admin') ?? false,
-      isProvider: user?.provider !== undefined,
+      isProvider: user?.provider != null,
       login: loginMutation.mutateAsync,
       register: registerMutation.mutateAsync,
       logout: async () => {

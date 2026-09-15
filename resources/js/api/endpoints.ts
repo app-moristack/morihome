@@ -219,23 +219,26 @@ export const adminApi = {
     apiRequest<Paginated<AdminUser>>(`/admin/users?${buildQueryString(params)}`),
 
   searchProviders: (payload: { status?: string; term?: string; page?: number; limit?: number }) =>
-    apiRequest<{ data: OwnedProvider[]; meta: { total: number; current_page: number; last_page: number } }>(
-      '/admin/rest/providers/search',
-      {
-        method: 'POST',
-        body: {
-          search: {
-            filters: payload.status
-              ? [{ field: 'approval_status', operator: '=', value: payload.status }]
-              : [],
-            ...(payload.term ? { text: { value: payload.term } } : {}),
-            sorts: [{ field: 'created_at', direction: 'desc' }],
-            page: payload.page ?? 1,
-            limit: payload.limit ?? 25,
-          },
+    apiRequest<{
+      data: Pick<
+        OwnedProvider,
+        'id' | 'name' | 'locality' | 'phone' | 'submitted_at' | 'approved_at' | 'approval_status'
+      >[]
+      total: number
+      current_page: number
+      last_page: number
+    }>('/admin/rest/providers/search', {
+      method: 'POST',
+      body: {
+        search: {
+          filters: payload.status ? [{ field: 'approval_status', operator: '=', value: payload.status }] : [],
+          ...(payload.term ? { text: { value: payload.term } } : {}),
+          sorts: [{ field: 'created_at', direction: 'desc' }],
+          page: payload.page ?? 1,
+          limit: payload.limit ?? 25,
         },
       },
-    ),
+    }),
 
   provider: (id: number) =>
     apiRequest<Envelope<OwnedProvider>>(`/admin/providers/${id}`).then((response) => response.data),

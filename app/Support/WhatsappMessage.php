@@ -2,14 +2,18 @@
 
 namespace App\Support;
 
+use App\Models\PlatformSetting;
+
 final class WhatsappMessage
 {
     public static function forService(?string $serviceName = null): string
     {
+        $settings = PlatformSetting::current();
+
         return str_replace(
             [':app', ':service'],
-            [config('app.name'), $serviceName ?? __('whatsapp.generic_service')],
-            config('morihome.whatsapp.message_template'),
+            [$settings['app_name'], $serviceName ?? __('whatsapp.generic_service')],
+            $settings['whatsapp_message_template'],
         );
     }
 }

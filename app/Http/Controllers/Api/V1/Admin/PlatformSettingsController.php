@@ -22,8 +22,14 @@ class PlatformSettingsController extends Controller
         $validated = $request->validate([
             'settings' => ['required', 'array'],
             'settings.*.key' => ['required', Rule::in(self::EDITABLE_KEYS)],
-            'settings.*.value' => ['nullable', 'string', 'max:500'],
+            'settings.*.value' => ['present', 'nullable', 'string', 'max:500'],
         ]);
+
+        foreach ($validated['settings'] as $index => $setting) {
+            if ($setting['key'] === 'support_email') {
+                $request->validate(["settings.{$index}.value" => ['nullable', 'email:rfc']]);
+            }
+        }
 
         foreach ($validated['settings'] as $setting) {
             PlatformSetting::updateOrCreate(['key' => $setting['key']], ['value' => $setting['value']]);
@@ -34,17 +40,6 @@ class PlatformSettingsController extends Controller
 
     private function currentSettings(): array
     {
-        $stored = PlatformSetting::pluck('value', 'key');
-
-        $defaults = [
-            'app_name' => config('app.name'),
-            'support_email' => config('morihome.support_email'),
-            'support_whatsapp' => config('morihome.support_whatsapp'),
-            'whatsapp_message_template' => config('morihome.whatsapp.message_template'),
-        ];
-
-        return collect(self::EDITABLE_KEYS)
-            ->mapWithKeys(fn (string $key) => [$key => $stored[$key] ?? $defaults[$key] ?? null])
-            ->all();
+        return PlatformSetting::current();
     }
 }

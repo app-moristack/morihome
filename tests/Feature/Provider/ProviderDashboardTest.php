@@ -13,6 +13,23 @@ use Tests\TestCase;
 
 class ProviderDashboardTest extends TestCase
 {
+    public function test_opening_hours_can_be_saved_and_duplicate_days_are_rejected(): void
+    {
+        $provider = Provider::factory()->create();
+        $hour = ['day_of_week' => 1, 'is_closed' => false, 'opens_at' => '08:00', 'closes_at' => '17:00'];
+        $this->loginAs($provider->user);
+
+        $this->putJson('/api/v1/provider/opening-hours', ['hours' => [$hour]])
+            ->assertOk()->assertJsonCount(1, 'data');
+        $this->assertDatabaseHas('provider_opening_hours', [
+            'provider_id' => $provider->id, 'day_of_week' => 1, 'opens_at' => '08:00:00',
+        ]);
+
+        $this->putJson('/api/v1/provider/opening-hours', ['hours' => [$hour, $hour]])
+            ->assertUnprocessable()->assertJsonValidationErrors('hours.1.day_of_week');
+        $this->assertDatabaseCount('provider_opening_hours', 1);
+    }
+
     use RefreshDatabase;
 
     public function test_a_provider_reads_its_own_profile_with_completeness(): void

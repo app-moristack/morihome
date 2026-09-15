@@ -83,7 +83,7 @@ describe('HomePage', () => {
   it('shares the model background with exactly the three marked content sections', () => {
     const { container } = renderWithProviders(<HomePage />)
 
-    const sections = container.querySelectorAll('.home-model-section')
+    const sections = container.querySelectorAll('.home-model-section, .home-properties-section')
     expect(Array.from(sections, (section) => section.getAttribute('aria-labelledby'))).toEqual([
       'featured-title',
       'featured-properties-title',

@@ -16,4 +16,18 @@ class PlatformSetting extends Model
         'key',
         'value',
     ];
+
+    /** @return array<string, string|null> */
+    public static function current(): array
+    {
+        $stored = static::query()->pluck('value', 'key');
+        $defaults = [
+            'app_name' => config('app.name'),
+            'support_email' => config('morihome.support_email'),
+            'support_whatsapp' => config('morihome.support_whatsapp'),
+            'whatsapp_message_template' => config('morihome.whatsapp.message_template'),
+        ];
+
+        return collect($defaults)->mapWithKeys(fn ($default, string $key) => [$key => $stored[$key] ?? $default])->all();
+    }
 }
