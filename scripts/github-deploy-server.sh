@@ -6,7 +6,7 @@ umask 077
 app=${1:-}
 command=${2:-}
 case "$app" in
-  morihome) site=https://moristack.duckdns.org ;;
+  morihome) site=https://morihom.duckdns.org ;;
   moricar) site=https://moricar.duckdns.org ;;
   *) echo 'Unknown application' >&2; exit 2 ;;
 esac

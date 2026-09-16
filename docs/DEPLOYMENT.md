@@ -8,7 +8,7 @@ Push to `master` to run `.github/workflows/deploy-production.yml`. The Actions t
 4. Database, uploads and configuration are backed up before changes. Source is synchronized from the same immutable GitHub commit; production secrets, uploads and runtime directories are preserved.
 5. The image is activated, migrations run, app/queue start, and Docker plus public HTTPS health checks must pass.
 
-Site: https://moristack.duckdns.org
+Site: https://morihom.duckdns.org
 Server directory: `/srv/apps/morihome`
 Backup directory: `/var/backups/morihome`
 Last successful commit: `/srv/apps/morihome/.last-deployed-sha`

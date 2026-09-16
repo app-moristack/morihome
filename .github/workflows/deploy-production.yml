@@ -19,7 +19,7 @@ jobs:
     timeout-minutes: 45
     environment:
       name: production
-      url: https://moristack.duckdns.org
+      url: https://morihom.duckdns.org
     env:
       APP: morihome
       DEPLOY_HOST: 62.83.10.197
@@ -51,7 +51,7 @@ jobs:
             -o ServerAliveInterval=15 -o ServerAliveCountMax=120 \
             "$DEPLOY_USER@$DEPLOY_HOST" "deploy $GITHUB_SHA"
       - name: Check public HTTPS endpoint
-        run: curl --fail --silent --show-error --retry 5 --retry-delay 5 https://moristack.duckdns.org/up > /dev/null
+        run: curl --fail --silent --show-error --retry 5 --retry-delay 5 https://morihom.duckdns.org/up > /dev/null
       - name: Remove temporary SSH key
         if: always()
         run: rm -f "$HOME/.ssh/deploy_key"
