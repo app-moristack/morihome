@@ -1,3 +1,6 @@
+import { categoryLabel } from '@/i18n/labels'
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { MessageCircle } from 'lucide-react'
 import { publicApi } from '@/api/endpoints'
 import { Button } from '@/components/ui/Button'
@@ -27,6 +30,7 @@ export function WhatsappButton({
   isFullWidth = false,
   label = 'WhatsApp',
 }: WhatsappButtonProps) {
+  useLocale()
   const { showToast } = useToast()
   const href = buildWhatsappUrl({ number, serviceName })
 
@@ -57,9 +61,13 @@ export function WhatsappButton({
         handleClick()
         window.open(href, '_blank', 'noopener,noreferrer')
       }}
-      aria-label={`Contact on WhatsApp${serviceName ? ` about ${serviceName}` : ''}`}
+      aria-label={
+        serviceName
+          ? t('Contact on WhatsApp about {service}', { service: categoryLabel(serviceName) })
+          : t('Contact on WhatsApp')
+      }
     >
-      {label}
+      {t(label)}
     </Button>
   )
 }

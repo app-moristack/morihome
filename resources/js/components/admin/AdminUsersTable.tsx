@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { MapPin } from 'lucide-react'
 import { Link } from 'react-router'
 import { formatDate, initialsOf } from '@/lib/format'
@@ -5,18 +7,19 @@ import type { AdminUser } from '@/types/api'
 import { USER_STATUS_LABELS } from '@/lib/admin'
 
 export function AdminUsersTable({ users }: { users: AdminUser[] }) {
+  useLocale()
   return (
     <div className="admin-table-scroll">
       <table className="admin-table">
         <thead>
           <tr>
             <th>#</th>
-            <th>Name / Business</th>
-            <th>Type</th>
-            <th>Location</th>
-            <th>Status</th>
-            <th>Joined</th>
-            <th>Actions</th>
+            <th>{t('Name / Business')}</th>
+            <th>{t('Type')}</th>
+            <th>{t('Location')}</th>
+            <th>{t('Status')}</th>
+            <th>{t('Joined')}</th>
+            <th>{t('Actions')}</th>
           </tr>
         </thead>
         <tbody>
@@ -34,7 +37,7 @@ export function AdminUsersTable({ users }: { users: AdminUser[] }) {
                     <strong>{user.name}</strong>
                     <small>
                       {user.service ??
-                        (user.roles.includes('admin') ? 'Administrator' : (user.email ?? 'Account'))}
+                        (user.roles.includes('admin') ? t('Administrator') : (user.email ?? t('Account')))}
                     </small>
                   </span>
                 </div>
@@ -42,10 +45,10 @@ export function AdminUsersTable({ users }: { users: AdminUser[] }) {
               <td>
                 <span className={`admin-type admin-type-${user.type}`}>
                   {user.type === 'individual'
-                    ? 'Individual'
+                    ? t('Individual')
                     : user.type === 'agency'
-                      ? 'Business'
-                      : 'Account'}
+                      ? t('Business')
+                      : t('Account')}
                 </span>
               </td>
               <td>
@@ -62,7 +65,7 @@ export function AdminUsersTable({ users }: { users: AdminUser[] }) {
               </td>
               <td>
                 <span className={`admin-status admin-status-${user.status}`}>
-                  {USER_STATUS_LABELS[user.status]}
+                  {t(USER_STATUS_LABELS[user.status])}
                 </span>
               </td>
               <td className="admin-date">{formatDate(user.joined_at)}</td>
@@ -71,9 +74,9 @@ export function AdminUsersTable({ users }: { users: AdminUser[] }) {
                   <Link
                     className="admin-row-action"
                     to={`/admin/providers/${user.provider_id}`}
-                    aria-label={`Manage ${user.name}`}
+                    aria-label={t('Manage {name}', { name: user.name })}
                   >
-                    Manage
+                    {t('Manage')}
                   </Link>
                 ) : (
                   <span className="admin-muted">—</span>
@@ -83,7 +86,7 @@ export function AdminUsersTable({ users }: { users: AdminUser[] }) {
           ))}
         </tbody>
       </table>
-      {users.length === 0 ? <p className="admin-empty">No users match this selection.</p> : null}
+      {users.length === 0 ? <p className="admin-empty">{t('No users match this selection.')}</p> : null}
     </div>
   )
 }

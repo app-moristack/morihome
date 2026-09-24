@@ -1,4 +1,7 @@
-import { House, MapPin, Navigation } from 'lucide-react'
+import { categoryLabel } from '@/i18n/labels'
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
+import { ArrowRight, House, MapPin, Navigation } from 'lucide-react'
 import { Link } from 'react-router'
 import { WhatsappButton } from './WhatsappButton'
 import { VerifiedBadge } from './VerifiedBadge'
@@ -15,6 +18,7 @@ type ProviderCardProps = {
 const MAX_VISIBLE_CATEGORIES = 3
 
 export function ProviderCard({ provider, activeCategoryId, variant = 'list' }: ProviderCardProps) {
+  useLocale()
   const distance = formatDistance(provider.distance_km)
   const activeCategory = provider.service_categories.find((category) => category.id === activeCategoryId)
   const visibleCategories = provider.service_categories.slice(0, MAX_VISIBLE_CATEGORIES)
@@ -26,12 +30,18 @@ export function ProviderCard({ provider, activeCategoryId, variant = 'list' }: P
         <Link
           to={`/providers/${provider.slug}`}
           className="grid h-44 place-items-center overflow-hidden bg-gradient-to-br from-brand-50 to-ink-100 dark:from-ink-800 dark:to-ink-900"
-          aria-label={`View ${provider.name}'s profile`}
+          aria-label={t("View {name}'s profile", { name: provider.name })}
         >
           {provider.cover_url ? (
             <img
               src={provider.cover_url}
-              alt={`${provider.name}, ${activeCategory?.name ?? visibleCategories[0]?.name ?? 'home professional'} in ${provider.locality}`}
+              alt={t('{name} — {service} in {locality}', {
+                name: provider.name,
+                service: categoryLabel(
+                  activeCategory?.name ?? visibleCategories[0]?.name ?? t('home professional'),
+                ),
+                locality: provider.locality,
+              })}
               loading="lazy"
               decoding="async"
               width={420}
@@ -67,7 +77,9 @@ export function ProviderCard({ provider, activeCategoryId, variant = 'list' }: P
                 </Link>
               </h3>
               <p className="mt-0.5 truncate text-xs font-semibold text-blue-700 dark:text-blue-300">
-                {activeCategory?.name ?? visibleCategories[0]?.name ?? provider.provider_type_label}
+                {categoryLabel(
+                  activeCategory?.name ?? visibleCategories[0]?.name ?? provider.provider_type_label,
+                )}
               </p>
             </div>
           </div>
@@ -92,7 +104,7 @@ export function ProviderCard({ provider, activeCategoryId, variant = 'list' }: P
                     className="px-2 py-1 text-[10px]"
                     tone={category.id === activeCategoryId ? 'dark' : 'neutral'}
                   >
-                    {category.name}
+                    {categoryLabel(category.name)}
                   </Badge>
                 </li>
               ))}
@@ -100,6 +112,13 @@ export function ProviderCard({ provider, activeCategoryId, variant = 'list' }: P
           ) : null}
 
           <div className="mt-auto grid gap-2 pt-2">
+            <Link
+              to={`/providers/${provider.slug}`}
+              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-pill border border-ink-200 px-3.5 text-sm font-semibold text-ink-800 hover:bg-ink-50"
+            >
+              {t('View profile')}
+              <ArrowRight className="size-4" aria-hidden />
+            </Link>
             <WhatsappButton
               slug={provider.slug}
               number={provider.whatsapp_number}
@@ -109,16 +128,8 @@ export function ProviderCard({ provider, activeCategoryId, variant = 'list' }: P
               size="sm"
               variant="primary"
               isFullWidth
-              label="Contact via WhatsApp"
+              label={t('Contact via WhatsApp')}
             />
-            {!provider.whatsapp_number ? (
-              <Link
-                to={`/providers/${provider.slug}`}
-                className="inline-flex min-h-10 items-center justify-center rounded-lg border border-ink-200 text-xs font-semibold hover:bg-ink-50"
-              >
-                View profile
-              </Link>
-            ) : null}
           </div>
         </div>
       </article>
@@ -185,12 +196,16 @@ export function ProviderCard({ provider, activeCategoryId, variant = 'list' }: P
         <ul className="mt-3 flex flex-wrap gap-1.5">
           {visibleCategories.map((category) => (
             <li key={category.id}>
-              <Badge tone={category.id === activeCategoryId ? 'dark' : 'neutral'}>{category.name}</Badge>
+              <Badge tone={category.id === activeCategoryId ? 'dark' : 'neutral'}>
+                {categoryLabel(category.name)}
+              </Badge>
             </li>
           ))}
           {hiddenCount > 0 ? (
             <li>
-              <Badge tone="neutral">+{hiddenCount} more</Badge>
+              <Badge tone="neutral">
+                +{hiddenCount} {t('more')}
+              </Badge>
             </li>
           ) : null}
         </ul>
@@ -210,7 +225,7 @@ export function ProviderCard({ provider, activeCategoryId, variant = 'list' }: P
           to={`/providers/${provider.slug}`}
           className="inline-flex min-h-9 items-center justify-center rounded-pill border border-ink-200 px-3.5 text-sm font-semibold text-ink-800 hover:bg-ink-50"
         >
-          View profile
+          {t('View profile')}
         </Link>
       </div>
     </article>

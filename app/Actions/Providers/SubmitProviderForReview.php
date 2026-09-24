@@ -24,7 +24,12 @@ class SubmitProviderForReview
 
         if ($missing !== []) {
             throw new UnprocessableEntityHttpException(
-                __('provider.incomplete_profile', ['fields' => implode(', ', $missing)]),
+                __('provider.incomplete_profile', ['fields' => implode(', ', array_map(
+                    fn (string $field): string => __('validation.attributes.'.$field) === 'validation.attributes.'.$field
+                        ? $field
+                        : __('validation.attributes.'.$field),
+                    $missing,
+                ))]),
             );
         }
 

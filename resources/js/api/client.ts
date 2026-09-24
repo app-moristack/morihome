@@ -1,3 +1,4 @@
+import { getLocale, t } from '@/i18n'
 const API_ROOT = '/api/v1'
 const CSRF_COOKIE = 'XSRF-TOKEN'
 
@@ -51,7 +52,7 @@ type RequestOptions = {
 }
 
 async function toApiError(response: Response): Promise<ApiError> {
-  let message = response.statusText || 'Request failed'
+  let message = response.statusText || t('Request failed')
   let errors: Record<string, string[]> = {}
 
   try {
@@ -62,7 +63,7 @@ async function toApiError(response: Response): Promise<ApiError> {
     // A non-JSON error body leaves the status-derived message in place.
   }
 
-  return new ApiError(response.status, message, errors)
+  return new ApiError(response.status, t(message), errors)
 }
 
 export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
@@ -74,7 +75,7 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
     await ensureCsrfCookie()
   }
 
-  const headers: Record<string, string> = { Accept: 'application/json' }
+  const headers: Record<string, string> = { Accept: 'application/json', 'Accept-Language': getLocale() }
   const token = readCsrfToken()
 
   if (isMutation && token) {

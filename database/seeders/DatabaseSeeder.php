@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
             $this->call([
                 DemoProviderSeeder::class,
                 DemoPropertySeeder::class,
+                DemoListingImageSeeder::class,
+                DemoMixedAgencySeeder::class,
             ]);
         }
 

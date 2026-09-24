@@ -1,3 +1,6 @@
+import { categoryLabel } from '@/i18n/labels'
+import { t, getFormatLocale } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { useQuery } from '@tanstack/react-query'
 import {
   ArrowDownRight,
@@ -22,9 +25,9 @@ import { useAuth } from '@/hooks/useAuth'
 import { resolveCategoryIcon } from '@/lib/categoryIcons'
 import type { AdminDashboard, AdminMetric, AdminUserStatus } from '@/types/api'
 
-const number = (value: number) => value.toLocaleString()
+const number = (value: number) => value.toLocaleString(getFormatLocale())
 const shortDate = (value: string) =>
-  new Date(value + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+  new Date(value + 'T12:00:00').toLocaleDateString(getFormatLocale(), { day: 'numeric', month: 'short' })
 const STATUS_COLORS: Record<AdminUserStatus, string> = {
   active: '#34bf72',
   pending: '#ffc72c',
@@ -33,14 +36,15 @@ const STATUS_COLORS: Record<AdminUserStatus, string> = {
 }
 
 function MetricChange({ metric }: { metric: AdminMetric }) {
+  useLocale()
   if (metric.change_percent === null)
-    return <span className="admin-metric-new">{metric.current ? 'New' : '—'}</span>
+    return <span className="admin-metric-new">{metric.current ? t('New') : '—'}</span>
   const positive = metric.change_percent >= 0
   const Icon = positive ? ArrowUpRight : ArrowDownRight
   return (
     <span
       className={positive ? 'admin-change-positive' : 'admin-change-negative'}
-      title="New activity compared with the previous period"
+      title={t('New activity compared with the previous period')}
     >
       <Icon size={13} />
       {positive ? '+' : ''}
@@ -50,13 +54,16 @@ function MetricChange({ metric }: { metric: AdminMetric }) {
 }
 
 function Overview({ rows, views = false }: { rows: AdminDashboard['overview']; views?: boolean }) {
+  useLocale()
   const maximum = Math.max(1, ...rows.map((row) => (views ? row.views : row.individuals + row.businesses)))
   const ceiling = Math.max(5, Math.ceil(maximum / 5) * 5)
   return (
     <div
       className="admin-chart"
       role="group"
-      aria-label={views ? 'Website views by period' : 'New individual and business registrations by period'}
+      aria-label={
+        views ? t('Website views by period') : t('New individual and business registrations by period')
+      }
     >
       <div className="admin-chart-axis">
         {[1, 0.75, 0.5, 0.25, 0].map((fraction) => (
@@ -69,7 +76,7 @@ function Overview({ rows, views = false }: { rows: AdminDashboard['overview']; v
           <div
             key={row.start}
             className="admin-chart-column"
-            title={`${shortDate(row.start)}–${shortDate(row.end)}: ${views ? row.views + ' views' : row.individuals + ' individuals, ' + row.businesses + ' businesses'}`}
+            title={`${shortDate(row.start)}–${shortDate(row.end)}: ${views ? t('{count} views', { count: row.views }) : t('{count} individuals, {businesses} businesses', { count: row.individuals, businesses: row.businesses })}`}
           >
             <div className="admin-chart-stack">
               {views ? (
@@ -92,19 +99,19 @@ function Overview({ rows, views = false }: { rows: AdminDashboard['overview']; v
         ))}
       </div>
       <table className="sr-only">
-        <caption>{views ? 'Website views' : 'New registrations'}</caption>
+        <caption>{views ? t('Website views') : t('New registrations')}</caption>
         <thead>
           <tr>
-            <th>Period</th>
-            <th>{views ? 'Views' : 'Individuals'}</th>
-            {!views ? <th>Businesses</th> : null}
+            <th>{t('Period')}</th>
+            <th>{views ? t('Views') : t('Individuals')}</th>
+            {!views ? <th>{t('Businesses')}</th> : null}
           </tr>
         </thead>
         <tbody>
           {rows.map((row) => (
             <tr key={row.start}>
               <th>
-                {row.start} to {row.end}
+                {row.start} {t('to')} {row.end}
               </th>
               <td>{views ? row.views : row.individuals}</td>
               {!views ? <td>{row.businesses}</td> : null}
@@ -117,9 +124,10 @@ function Overview({ rows, views = false }: { rows: AdminDashboard['overview']; v
 }
 
 export default function AdminDashboardPage() {
+  useLocale()
   const { user } = useAuth()
   const [params, setParams] = useSearchParams()
-  const parsedDays = Number(params.get('days') ?? 30)
+  const parsedDays = Number(params.get(t('days')) ?? 30)
   const days = [7, 30, 90].includes(parsedDays) ? parsedDays : 30
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: queryKeys.adminDashboard(days),
@@ -128,7 +136,7 @@ export default function AdminDashboardPage() {
 
   if (isLoading)
     return (
-      <div aria-label="Loading dashboard">
+      <div aria-label={t('Loading dashboard')}>
         <Skeleton className="mb-6 h-12 w-80" />
         <div className="admin-metrics">
           {[0, 1, 2, 3].map((i) => (
@@ -141,9 +149,9 @@ export default function AdminDashboardPage() {
   if (isError || !data)
     return (
       <div className="admin-empty" role="alert">
-        <h1>Could not load the dashboard</h1>
-        <p>Please try again.</p>
-        <button onClick={() => void refetch()}>Retry</button>
+        <h1>{t('Could not load the dashboard')}</h1>
+        <p>{t('Please try again.')}</p>
+        <button onClick={() => void refetch()}>{t('Retry')}</button>
       </div>
     )
 
@@ -173,20 +181,20 @@ export default function AdminDashboardPage() {
       <div className="admin-heading">
         <div>
           <h1>
-            Welcome back, {user?.name.split(' ')[0] ?? 'Admin'}! <span aria-hidden>👋</span>
+            {t('Welcome back,')} {user?.name.split(' ')[0] ?? t('Admin')}! <span aria-hidden>👋</span>
           </h1>
-          <p>Here’s what’s happening on MoriHome today.</p>
+          <p>{t('Here’s what’s happening on MoriHome today.')}</p>
         </div>
         <label className="admin-period">
           <CalendarDays size={17} aria-hidden />
           <select
-            aria-label="Dashboard period"
+            aria-label={t('Dashboard period')}
             value={days}
             onChange={(event) => setParams({ days: event.target.value })}
           >
-            <option value={7}>Last 7 days</option>
-            <option value={30}>Last 30 days</option>
-            <option value={90}>Last 90 days</option>
+            <option value={7}>{t('Last 7 days')}</option>
+            <option value={30}>{t('Last 30 days')}</option>
+            <option value={90}>{t('Last 90 days')}</option>
           </select>
         </label>
       </div>
@@ -209,21 +217,21 @@ export default function AdminDashboardPage() {
               <Icon />
             </span>
             <div>
-              <h2>{label}</h2>
+              <h2>{t(label)}</h2>
               <div className="admin-metric-value">
                 <strong>{number(data.metrics[key].total)}</strong>
                 <MetricChange metric={data.metrics[key]} />
               </div>
               <p>
-                {key === 'views' ? 'Page views' : '+' + number(data.metrics[key].current) + ' joined'} in the
-                last {days} days
+                {key === 'views' ? t('Page views') : '+' + number(data.metrics[key].current) + ' joined'}{' '}
+                {t('in the last')} {days} {t('days')}
               </p>
             </div>
           </Link>
         ))}
       </div>
       <p className="admin-metrics-note">
-        User totals are all-time. Growth compares new activity with the previous {days} days.
+        {t('User totals are all-time. Growth compares new activity with the previous')} {days} {t('days.')}
       </p>
 
       <div className="admin-dashboard-grid">
@@ -232,10 +240,10 @@ export default function AdminDashboardPage() {
             <div className="admin-panel-heading">
               <h2>
                 <Users size={19} />
-                Recent Users
+                {t('Recent Users')}
               </h2>
               <Link to="/admin/users">
-                View all <ArrowRight size={14} />
+                {t('View all')} <ArrowRight size={14} />
               </Link>
             </div>
             <AdminUsersTable users={data.recent_users} />
@@ -244,15 +252,15 @@ export default function AdminDashboardPage() {
             <div className="admin-panel-heading">
               <h2>
                 <Grid2X2 size={19} />
-                Service Categories
+                {t('Service Categories')}
               </h2>
               <div>
                 <Link to="/admin/categories">
-                  View all <ArrowRight size={14} />
+                  {t('View all')} <ArrowRight size={14} />
                 </Link>
                 <Link className="admin-primary-button" to="/admin/categories?new=1">
                   <Plus size={14} />
-                  Add Category
+                  {t('Add Category')}
                 </Link>
               </div>
             </div>
@@ -261,10 +269,10 @@ export default function AdminDashboardPage() {
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Category Name</th>
-                    <th>Icon</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                    <th>{t('Category Name')}</th>
+                    <th>{t('Icon')}</th>
+                    <th>{t('Status')}</th>
+                    <th>{t('Actions')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -274,7 +282,7 @@ export default function AdminDashboardPage() {
                       <tr key={category.id}>
                         <td>{index + 1}</td>
                         <td>
-                          <strong>{category.name}</strong>
+                          <strong>{categoryLabel(category.name)}</strong>
                         </td>
                         <td>
                           <Icon size={20} className="admin-category-icon" aria-hidden />
@@ -283,16 +291,16 @@ export default function AdminDashboardPage() {
                           <span
                             className={`admin-status admin-status-${category.is_active ? 'active' : 'inactive'}`}
                           >
-                            {category.is_active ? 'Active' : 'Inactive'}
+                            {category.is_active ? t('Active') : t('Inactive')}
                           </span>
                         </td>
                         <td>
                           <Link
                             className="admin-row-action"
-                            aria-label={`Edit ${category.name}`}
+                            aria-label={t('Edit {name}', { name: categoryLabel(category.name) })}
                             to={`/admin/categories?edit=${category.id}`}
                           >
-                            Edit
+                            {t('Edit')}
                           </Link>
                         </td>
                       </tr>
@@ -301,7 +309,7 @@ export default function AdminDashboardPage() {
                 </tbody>
               </table>
               {data.categories.length === 0 ? (
-                <p className="admin-empty">No categories yet. Add your first service category.</p>
+                <p className="admin-empty">{t('No categories yet. Add your first service category.')}</p>
               ) : null}
             </div>
           </section>
@@ -311,27 +319,27 @@ export default function AdminDashboardPage() {
             <div className="admin-panel-heading">
               <h2>
                 <BarChart3 size={19} />
-                Users Overview
+                {t('Users Overview')}
               </h2>
             </div>
             <div className="admin-chart-legend">
               <span>
                 <i style={{ background: '#2f8cff' }} />
-                Individuals
+                {t('Individuals')}
               </span>
               <span>
                 <i style={{ background: '#ffc72c' }} />
-                Businesses
+                {t('Businesses')}
               </span>
             </div>
             <Overview rows={data.overview} />
-            <p className="admin-chart-caption">New provider accounts in the selected period</p>
+            <p className="admin-chart-caption">{t('New provider accounts in the selected period')}</p>
           </section>
           <section className="admin-panel">
             <div className="admin-panel-heading">
               <h2>
                 <Users size={19} />
-                User Status
+                {t('User Status')}
               </h2>
             </div>
             <div className="admin-status-chart">
@@ -341,7 +349,7 @@ export default function AdminDashboardPage() {
               >
                 <div>
                   <strong>{number(total)}</strong>
-                  <span>Users</span>
+                  <span>{t('Users')}</span>
                 </div>
               </div>
               <ul>
@@ -349,7 +357,7 @@ export default function AdminDashboardPage() {
                   <li key={status}>
                     <Link to={`/admin/users?status=${status}`}>
                       <i style={{ background: STATUS_COLORS[status] }} />
-                      {USER_STATUS_LABELS[status]}
+                      {t(USER_STATUS_LABELS[status])}
                     </Link>
                     <strong>{number(count)}</strong>
                     <span>{total ? Math.round((count / total) * 100) : 0}%</span>
@@ -357,7 +365,9 @@ export default function AdminDashboardPage() {
                 ))}
               </ul>
             </div>
-            <p className="admin-chart-caption">Inactive includes draft, rejected and unpublished profiles.</p>
+            <p className="admin-chart-caption">
+              {t('Inactive includes draft, rejected and unpublished profiles.')}
+            </p>
           </section>
         </div>
       </div>
@@ -365,29 +375,29 @@ export default function AdminDashboardPage() {
         <div className="admin-panel-heading">
           <h2>
             <Eye size={19} />
-            Website Views
+            {t('Website Views')}
           </h2>
           <span className="admin-muted">
-            {number(data.metrics.views.total)} in the last {days} days
+            {number(data.metrics.views.total)} {t('in the last')} {days} {t('days')}
           </span>
         </div>
         <div className="admin-views-grid">
           <Overview rows={data.overview} views />
           <div className="admin-top-pages">
-            <h3>Most viewed pages</h3>
+            <h3>{t('Most viewed pages')}</h3>
             {data.top_pages.length ? (
               <table className="admin-table">
                 <thead>
                   <tr>
-                    <th>Page</th>
-                    <th>Views</th>
+                    <th>{t('Page')}</th>
+                    <th>{t('Views')}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {data.top_pages.map((page) => (
                     <tr key={page.path}>
                       <td>
-                        <Link to={page.path}>{page.path === '/' ? 'Home' : page.path}</Link>
+                        <Link to={page.path}>{page.path === '/' ? t('Home') : page.path}</Link>
                       </td>
                       <td>{number(Number(page.views))}</td>
                     </tr>
@@ -396,16 +406,19 @@ export default function AdminDashboardPage() {
               </table>
             ) : (
               <p className="admin-empty">
-                No visits recorded in this period. Real visits will appear here as people browse the website.
+                {t(
+                  'No visits recorded in this period. Real visits will appear here as people browse the website.',
+                )}
               </p>
             )}
           </div>
         </div>
         <p className="admin-chart-caption">
-          Public page loads and navigation, excluding administrator visits. These are page views, not unique
-          visitors.
+          {t(
+            'Public page loads and navigation, excluding administrator visits. These are page views, not unique visitors.',
+          )}
           {data.tracking_started_at
-            ? ` Tracking since ${shortDate(data.tracking_started_at.slice(0, 10))}.`
+            ? ' ' + t('Tracking since {date}', { date: shortDate(data.tracking_started_at.slice(0, 10)) })
             : ''}
         </p>
       </section>

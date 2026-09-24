@@ -1,8 +1,8 @@
-New MoriHome contact message
+{{ __('New MoriHome contact message') }}
 
-Name: {{ $senderName }}
-Email: {{ $senderEmail }}
-Phone: {{ $senderPhone ?: 'Not provided' }}
-Subject: {{ $subjectLine }}
+{{ __('Name:') }} {{ $senderName }}
+{{ __('Email:') }} {{ $senderEmail }}
+{{ __('Phone:') }} {{ $senderPhone ?: __('Not provided') }}
+{{ __('Subject:') }} {{ $subjectLine }}
 
 {{ $bodyText }}

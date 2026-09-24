@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { useQuery } from '@tanstack/react-query'
 import { Inbox } from 'lucide-react'
 import { Link, useSearchParams } from 'react-router'
@@ -30,6 +32,7 @@ const STATUS_TONES: Record<ApprovalStatusValue, 'neutral' | 'brand' | 'success' 
 }
 
 export default function AdminReviewQueuePage() {
+  useLocale()
   const [searchParams, setSearchParams] = useSearchParams()
   const requestedStatus = searchParams.get('status') ?? 'pending'
   const status = STATUS_TABS.some((tab) => tab.value === requestedStatus) ? requestedStatus : 'pending'
@@ -46,12 +49,12 @@ export default function AdminReviewQueuePage() {
   return (
     <div className="container-page py-8 sm:py-10">
       <PageHeader
-        eyebrow="Administration"
-        title="Provider review queue"
-        description="Approve, reject or suspend listings. Every decision is written to the audit trail."
+        eyebrow={t('Administration')}
+        title={t('Provider review queue')}
+        description={t('Approve, reject or suspend listings. Every decision is written to the audit trail.')}
       />
 
-      <div className="mt-5 flex gap-2 overflow-x-auto pb-1" role="tablist" aria-label="Filter by status">
+      <div className="mt-5 flex gap-2 overflow-x-auto pb-1" role="tablist" aria-label={t('Filter by status')}>
         {STATUS_TABS.map((tab) => (
           <button
             key={tab.value}
@@ -66,7 +69,7 @@ export default function AdminReviewQueuePage() {
                 : 'border-ink-200 text-ink-700 hover:bg-ink-50',
             )}
           >
-            {tab.label}
+            {t(tab.label)}
           </button>
         ))}
       </div>
@@ -81,17 +84,17 @@ export default function AdminReviewQueuePage() {
         ) : isError ? (
           <EmptyState
             tone="danger"
-            title="Could not load the queue"
-            description="Please refresh and try again."
+            title={t('Could not load the queue')}
+            description={t('Please refresh and try again.')}
           />
         ) : providers.length === 0 ? (
           <EmptyState
             icon={<Inbox className="size-6" aria-hidden />}
-            title="Nothing here"
+            title={t('Nothing here')}
             description={
               status === 'pending'
-                ? 'No registrations are waiting for review. Good work.'
-                : 'No providers match this status.'
+                ? t('No registrations are waiting for review. Good work.')
+                : t('No providers match this status.')
             }
           />
         ) : (
@@ -105,15 +108,15 @@ export default function AdminReviewQueuePage() {
                   <span className="min-w-0 flex-1">
                     <span className="block truncate font-bold text-ink-900">{provider.name}</span>
                     <span className="block text-xs text-ink-500">
-                      {provider.locality} · {provider.phone} · registered{' '}
+                      {provider.locality} · {provider.phone} {t('· registered')}{' '}
                       {formatDate(provider.submitted_at ?? provider.approved_at) ?? 'recently'}
                     </span>
                   </span>
                   <Badge tone={STATUS_TONES[provider.approval_status]}>
-                    {STATUS_TABS.find((tab) => tab.value === provider.approval_status)?.label}
+                    {t(STATUS_TABS.find((tab) => tab.value === provider.approval_status)?.label ?? '')}
                   </Badge>
                   <Button size="sm" variant="ghost">
-                    Review
+                    {t('Review')}
                   </Button>
                 </Link>
               </li>
@@ -122,20 +125,22 @@ export default function AdminReviewQueuePage() {
         )}
       </div>
       {data && data.last_page > 1 ? (
-        <nav className="admin-pagination mt-6" aria-label="Review queue pages">
-          <span>{data.total} providers</span>
+        <nav className="admin-pagination mt-6" aria-label={t('Review queue pages')}>
+          <span>
+            {data.total} {t('providers')}
+          </span>
           <div>
             <button disabled={page <= 1} onClick={() => setSearchParams({ status, page: String(page - 1) })}>
-              Previous
+              {t('Previous')}
             </button>
             <span>
-              Page {data.current_page} of {data.last_page}
+              {t('Page')} {data.current_page} {t('of')} {data.last_page}
             </span>
             <button
               disabled={page >= data.last_page}
               onClick={() => setSearchParams({ status, page: String(page + 1) })}
             >
-              Next
+              {t('Next')}
             </button>
           </div>
         </nav>

@@ -13,7 +13,7 @@ function useInvalidateProfile() {
   const queryClient = useQueryClient()
 
   return () => {
-    void queryClient.invalidateQueries({ queryKey: queryKeys.providerProfile() })
+    void queryClient.invalidateQueries({ queryKey: ['provider', 'profile'] })
     void queryClient.invalidateQueries({ queryKey: queryKeys.currentUser() })
   }
 }
@@ -51,8 +51,8 @@ function useInvalidatePortfolio() {
   const queryClient = useQueryClient()
 
   return () => {
-    void queryClient.invalidateQueries({ queryKey: queryKeys.providerPortfolio() })
-    void queryClient.invalidateQueries({ queryKey: queryKeys.providerProfile() })
+    void queryClient.invalidateQueries({ queryKey: ['provider', 'portfolio'] })
+    void queryClient.invalidateQueries({ queryKey: ['provider', 'profile'] })
   }
 }
 
@@ -97,7 +97,7 @@ export function useRequestSubscriptions() {
   return useMutation({
     mutationFn: providerApi.requestSubscriptions,
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: queryKeys.providerSubscriptions() })
+      void queryClient.invalidateQueries({ queryKey: ['provider', 'subscriptions'] })
       void queryClient.invalidateQueries({ queryKey: queryKeys.currentUser() })
     },
   })
@@ -115,7 +115,7 @@ export function useCreatePropertyListing() {
 
   return useMutation({
     mutationFn: providerApi.createPropertyListing,
-    onSuccess: () => void queryClient.invalidateQueries({ queryKey: queryKeys.propertyListings() }),
+    onSuccess: () => void queryClient.invalidateQueries({ queryKey: ['provider', 'property-listings'] }),
   })
 }
 
@@ -124,6 +124,6 @@ export function useUploadPropertyImage() {
 
   return useMutation({
     mutationFn: ({ slug, file }: { slug: string; file: File }) => providerApi.uploadPropertyImage(slug, file),
-    onSuccess: () => void queryClient.invalidateQueries({ queryKey: queryKeys.propertyListings() }),
+    onSuccess: () => void queryClient.invalidateQueries({ queryKey: ['provider', 'property-listings'] }),
   })
 }

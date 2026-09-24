@@ -1,3 +1,6 @@
+import { categoryLabel, enumLabel } from '@/i18n/labels'
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { Check, MapPin, RotateCcw } from 'lucide-react'
 import { AddressAutocomplete, type ResolvedLocation } from './AddressAutocomplete'
 import { Button } from '@/components/ui/Button'
@@ -15,6 +18,7 @@ type SearchFiltersProps = {
 }
 
 export function SearchFilters({ state, onChange, onClose }: SearchFiltersProps) {
+  useLocale()
   const { data: categories = [] } = useCategories()
   const radiusIndex = Math.max(0, bootstrap.radiusOptionsKm.indexOf(state.radiusKm))
 
@@ -48,19 +52,19 @@ export function SearchFilters({ state, onChange, onClose }: SearchFiltersProps) 
   return (
     <div className="search-filter-card card flex flex-col gap-6 p-4">
       <div className="flex items-center justify-between gap-3 border-b border-ink-100 pb-4">
-        <h2 className="text-lg font-extrabold">Filters</h2>
+        <h2 className="text-lg font-extrabold">{t('Filters')}</h2>
         <button
           type="button"
           onClick={clearFilters}
           className="inline-flex min-h-10 items-center gap-1.5 text-xs font-semibold text-blue-700 hover:text-blue-900 dark:text-blue-300"
         >
           <RotateCcw className="size-3.5" aria-hidden />
-          Clear all
+          {t('Clear all')}
         </button>
       </div>
 
       <fieldset>
-        <legend className="mb-2 text-xs font-bold">Service category</legend>
+        <legend className="mb-2 text-xs font-bold">{t('Service category')}</legend>
         <select
           value={state.categoryId ?? ''}
           onChange={(event) =>
@@ -71,12 +75,12 @@ export function SearchFilters({ state, onChange, onClose }: SearchFiltersProps) 
             })
           }
           className="min-h-11 w-full rounded-lg border border-ink-200 bg-surface px-3 text-sm"
-          aria-label="Filter by service category"
+          aria-label={t('Filter by service category')}
         >
-          <option value="">All services</option>
+          <option value="">{t('All services')}</option>
           {categories.map((category) => (
             <option key={category.id} value={category.id}>
-              {category.name}
+              {categoryLabel(category.name)}
             </option>
           ))}
         </select>
@@ -96,7 +100,7 @@ export function SearchFilters({ state, onChange, onClose }: SearchFiltersProps) 
                 )}
               >
                 <Icon className="size-4 shrink-0" aria-hidden />
-                <span className="truncate">{category.name}</span>
+                <span className="truncate">{categoryLabel(category.name)}</span>
                 {selected ? <Check className="ml-auto size-4" aria-hidden /> : null}
               </button>
             )
@@ -105,21 +109,23 @@ export function SearchFilters({ state, onChange, onClose }: SearchFiltersProps) 
       </fieldset>
 
       <fieldset>
-        <legend className="mb-2 text-xs font-bold">Location</legend>
+        <legend className="mb-2 text-xs font-bold">{t('Location')}</legend>
         <div className="search-filter-location">
           <AddressAutocomplete
             value={state.address}
             onChange={(address) => onChange({ ...state, address, latitude: null, longitude: null })}
             onResolve={resolveLocation}
-            label="Filter by location"
+            label={t('Filter by location')}
           />
         </div>
       </fieldset>
 
       <fieldset>
         <div className="mb-2 flex items-center justify-between gap-3">
-          <legend className="text-xs font-bold">Radius</legend>
-          <span className="rounded-full bg-ink-50 px-2.5 py-1 text-xs font-bold">{state.radiusKm} km</span>
+          <legend className="text-xs font-bold">{t('Radius')}</legend>
+          <span className="rounded-full bg-ink-50 px-2.5 py-1 text-xs font-bold">
+            {state.radiusKm} {'km'}
+          </span>
         </div>
         <input
           type="range"
@@ -136,16 +142,20 @@ export function SearchFilters({ state, onChange, onClose }: SearchFiltersProps) 
             })
           }
           className="w-full accent-brand-400"
-          aria-label="Search radius"
+          aria-label={t('Search radius')}
         />
         <div className="mt-1 flex justify-between text-[10px] text-ink-500">
-          <span>{bootstrap.radiusOptionsKm[0]} km</span>
-          <span>{bootstrap.radiusOptionsKm.at(-1)} km</span>
+          <span>
+            {bootstrap.radiusOptionsKm[0]} {'km'}
+          </span>
+          <span>
+            {bootstrap.radiusOptionsKm.at(-1)} {'km'}
+          </span>
         </div>
       </fieldset>
 
       <fieldset>
-        <legend className="mb-2 text-xs font-bold">Professional type</legend>
+        <legend className="mb-2 text-xs font-bold">{t('Professional type')}</legend>
         <div className="flex flex-wrap gap-2">
           {bootstrap.providerTypes.map((type) => {
             const selected = state.providerTypes.includes(type.value as ProviderTypeValue)
@@ -160,7 +170,7 @@ export function SearchFilters({ state, onChange, onClose }: SearchFiltersProps) 
                   selected ? 'border-ink-900 bg-ink-900 text-white' : 'border-ink-200 hover:bg-ink-50',
                 )}
               >
-                {type.label}
+                {enumLabel(type.value)}
               </button>
             )
           })}
@@ -168,7 +178,7 @@ export function SearchFilters({ state, onChange, onClose }: SearchFiltersProps) 
       </fieldset>
 
       <fieldset className="flex flex-col gap-2">
-        <legend className="mb-1 text-xs font-bold">Trust & contact</legend>
+        <legend className="mb-1 text-xs font-bold">{t('Trust & contact')}</legend>
         <label className="flex min-h-10 items-center gap-3 text-xs font-medium">
           <input
             type="checkbox"
@@ -176,7 +186,7 @@ export function SearchFilters({ state, onChange, onClose }: SearchFiltersProps) 
             onChange={(event) => onChange({ ...state, verifiedOnly: event.target.checked, page: 1 })}
             className="size-5 rounded accent-brand-500"
           />
-          Verified profiles only
+          {t('Verified profiles only')}
         </label>
         <label className="flex min-h-10 items-center gap-3 text-xs font-medium">
           <input
@@ -185,13 +195,13 @@ export function SearchFilters({ state, onChange, onClose }: SearchFiltersProps) 
             onChange={(event) => onChange({ ...state, hasWhatsapp: event.target.checked, page: 1 })}
             className="size-5 rounded accent-brand-500"
           />
-          Reachable on WhatsApp
+          {t('Reachable on WhatsApp')}
         </label>
       </fieldset>
 
       {onClose ? (
         <Button isFullWidth onClick={onClose} leadingIcon={<MapPin className="size-4" />}>
-          Show results
+          {t('Show results')}
         </Button>
       ) : null}
     </div>

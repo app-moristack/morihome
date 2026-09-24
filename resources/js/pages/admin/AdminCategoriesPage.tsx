@@ -1,3 +1,6 @@
+import { categoryLabel } from '@/i18n/labels'
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Plus, Save } from 'lucide-react'
 import { useState } from 'react'
@@ -44,6 +47,7 @@ function toDraft(category: ServiceCategory): DraftCategory {
 }
 
 export default function AdminCategoriesPage() {
+  useLocale()
   const [params, setParams] = useSearchParams()
   const [draftOverride, setDraft] = useState<DraftCategory | null>(null)
   const queryClient = useQueryClient()
@@ -85,7 +89,9 @@ export default function AdminCategoriesPage() {
     },
     onError: (error) =>
       showToast(
-        error instanceof ApiError ? (Object.values(error.errors)[0]?.[0] ?? error.message) : 'Save failed.',
+        error instanceof ApiError
+          ? (Object.values(error.errors)[0]?.[0] ?? error.message)
+          : t('Save failed.'),
         'error',
       ),
   })
@@ -93,12 +99,14 @@ export default function AdminCategoriesPage() {
   return (
     <div className="admin-categories-page">
       <PageHeader
-        eyebrow="Administration"
-        title="Service categories"
-        description="Categories drive the search dropdown and the popular-services grid on the home page."
+        eyebrow={t('Administration')}
+        title={t('Service categories')}
+        description={t(
+          'Categories drive the search dropdown and the popular-services grid on the home page.',
+        )}
         action={
           <Button onClick={() => setDraft(EMPTY_DRAFT)} leadingIcon={<Plus className="size-4" />}>
-            New category
+            {t('New category')}
           </Button>
         }
       />
@@ -121,30 +129,30 @@ export default function AdminCategoriesPage() {
           className="card mt-6 grid gap-4 p-5 sm:grid-cols-2"
         >
           <h2 className="text-lg font-bold text-ink-900 sm:col-span-2">
-            {draft.id ? `Edit ${draft.name}` : 'New category'}
+            {draft.id ? t('Edit {name}', { name: draft.name }) : t('New category')}
           </h2>
 
           <TextField
-            label="Name"
+            label={t('Name')}
             isRequired
             required
             value={draft.name}
             onChange={(event) => setDraft({ ...draft, name: event.target.value })}
           />
           <TextField
-            label="Slug"
+            label={t('Slug')}
             value={draft.slug}
-            placeholder="auto-generated from the name"
+            placeholder={t('auto-generated from the name')}
             onChange={(event) => setDraft({ ...draft, slug: event.target.value })}
           />
           <TextField
-            label="Lucide icon name"
+            label={t('Lucide icon name')}
             value={draft.icon}
-            hint="e.g. wrench, zap, droplets"
+            hint={t('e.g. wrench, zap, droplets')}
             onChange={(event) => setDraft({ ...draft, icon: event.target.value })}
           />
           <TextField
-            label="Sort order"
+            label={t('Sort order')}
             type="number"
             value={draft.sort_order}
             onChange={(event) => setDraft({ ...draft, sort_order: Number(event.target.value) })}
@@ -158,7 +166,7 @@ export default function AdminCategoriesPage() {
                 onChange={(event) => setDraft({ ...draft, is_active: event.target.checked })}
                 className="size-5 rounded accent-brand-500"
               />
-              Active — providers can choose it and customers can search it
+              {t('Active — providers can choose it and customers can search it')}
             </label>
             <label className="flex items-center gap-3 text-sm font-medium text-ink-700">
               <input
@@ -167,16 +175,16 @@ export default function AdminCategoriesPage() {
                 onChange={(event) => setDraft({ ...draft, is_popular: event.target.checked })}
                 className="size-5 rounded accent-brand-500"
               />
-              Show in the popular-services grid on the home page
+              {t('Show in the popular-services grid on the home page')}
             </label>
           </div>
 
           <div className="flex gap-2 sm:col-span-2">
             <Button type="submit" isLoading={save.isPending} leadingIcon={<Save className="size-4" />}>
-              Save category
+              {t('Save category')}
             </Button>
             <Button type="button" variant="ghost" onClick={closeEditor}>
-              Cancel
+              {t('Cancel')}
             </Button>
           </div>
         </form>
@@ -191,12 +199,12 @@ export default function AdminCategoriesPage() {
         key={term}
       >
         <input
-          aria-label="Search categories"
+          aria-label={t('Search categories')}
           name="term"
           defaultValue={term}
-          placeholder="Search service categories"
+          placeholder={t('Search service categories')}
         />
-        <button type="submit">Search</button>
+        <button type="submit">{t('Search')}</button>
       </form>
       <div className="mt-6">
         {isLoading ? (
@@ -207,29 +215,32 @@ export default function AdminCategoriesPage() {
           </div>
         ) : isError ? (
           <div role="alert">
-            Could not load categories. <button onClick={() => void refetch()}>Retry</button>
+            {t('Could not load categories.')} <button onClick={() => void refetch()}>{t('Retry')}</button>
           </div>
         ) : (
           <ul className="flex flex-col gap-2">
             {filteredCategories.map((category) => (
               <li key={category.id} className="card flex items-center gap-3 p-3.5">
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate font-semibold text-ink-900">{category.name}</span>
+                  <span className="block truncate font-semibold text-ink-900">
+                    {categoryLabel(category.name)}
+                  </span>
                   <span className="block text-xs text-ink-500">
-                    /{category.slug} · icon: {category.icon ?? '—'} · order {category.sort_order}
+                    /{category.slug} {t('· icon:')} {category.icon ?? '—'} {t('· order')}{' '}
+                    {category.sort_order}
                   </span>
                 </span>
-                {category.is_popular ? <Badge tone="brand">Popular</Badge> : null}
+                {category.is_popular ? <Badge tone="brand">{t('Popular')}</Badge> : null}
                 <Badge tone={category.is_active ? 'success' : 'neutral'}>
-                  {category.is_active ? 'Active' : 'Inactive'}
+                  {category.is_active ? t('Active') : t('Inactive')}
                 </Badge>
                 <Button size="sm" variant="ghost" onClick={() => setDraft(toDraft(category))}>
-                  Edit
+                  {t('Edit')}
                 </Button>
               </li>
             ))}
             {filteredCategories.length === 0 ? (
-              <li className="admin-empty">No categories match this search.</li>
+              <li className="admin-empty">{t('No categories match this search.')}</li>
             ) : null}
           </ul>
         )}

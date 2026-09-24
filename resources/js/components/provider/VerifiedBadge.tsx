@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { BadgeCheck, Star } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
 
@@ -7,16 +9,17 @@ type VerifiedBadgeProps = {
 }
 
 export function VerifiedBadge({ isVerified, isFeatured = false }: VerifiedBadgeProps) {
+  useLocale()
   return (
     <>
       {isFeatured ? (
         <Badge tone="brand" icon={<Star className="size-3.5 fill-current" aria-hidden />}>
-          Featured
+          {t('Featured')}
         </Badge>
       ) : null}
       {isVerified ? (
         <Badge tone="success" icon={<BadgeCheck className="size-3.5" aria-hidden />}>
-          Verified
+          {t('Verified')}
         </Badge>
       ) : null}
     </>

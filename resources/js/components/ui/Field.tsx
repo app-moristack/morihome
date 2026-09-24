@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import {
   useId,
   type InputHTMLAttributes,
@@ -32,20 +34,21 @@ export function FieldShell({
   children,
   className,
 }: FieldShellProps) {
+  useLocale()
   return (
     <div className={cn('flex flex-col gap-1.5', className)}>
       <label htmlFor={htmlFor} className="text-sm font-semibold text-ink-800">
-        {label}
+        {t(label)}
         {isRequired ? <span className="ml-0.5 text-danger">*</span> : null}
       </label>
       {children}
       {error ? (
         <p id={`${htmlFor}-error`} role="alert" className="text-sm font-medium text-danger">
-          {error}
+          {t(error)}
         </p>
       ) : hint ? (
         <p id={`${htmlFor}-hint`} className="text-sm text-ink-500">
-          {hint}
+          {t(hint)}
         </p>
       ) : null}
     </div>
@@ -69,12 +72,13 @@ export function TextField({
   id,
   ...props
 }: TextFieldProps) {
+  useLocale()
   const generatedId = useId()
   const fieldId = id ?? generatedId
 
   return (
     <FieldShell
-      label={label}
+      label={t(label)}
       htmlFor={fieldId}
       error={error}
       hint={hint}
@@ -100,11 +104,12 @@ type TextAreaFieldProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
 }
 
 export function TextAreaField({ label, error, hint, isRequired, id, ...props }: TextAreaFieldProps) {
+  useLocale()
   const generatedId = useId()
   const fieldId = id ?? generatedId
 
   return (
-    <FieldShell label={label} htmlFor={fieldId} error={error} hint={hint} isRequired={isRequired}>
+    <FieldShell label={t(label)} htmlFor={fieldId} error={error} hint={hint} isRequired={isRequired}>
       <textarea
         {...props}
         id={fieldId}
@@ -124,11 +129,12 @@ type SelectFieldProps = SelectHTMLAttributes<HTMLSelectElement> & {
 }
 
 export function SelectField({ label, error, hint, isRequired, id, children, ...props }: SelectFieldProps) {
+  useLocale()
   const generatedId = useId()
   const fieldId = id ?? generatedId
 
   return (
-    <FieldShell label={label} htmlFor={fieldId} error={error} hint={hint} isRequired={isRequired}>
+    <FieldShell label={t(label)} htmlFor={fieldId} error={error} hint={hint} isRequired={isRequired}>
       <select
         {...props}
         id={fieldId}

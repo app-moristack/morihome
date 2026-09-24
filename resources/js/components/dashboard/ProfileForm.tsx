@@ -1,3 +1,6 @@
+import { enumLabel } from '@/i18n/labels'
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Save } from 'lucide-react'
 import { useState } from 'react'
@@ -18,6 +21,7 @@ import type { OwnedProvider } from '@/types/api'
  * rather than needing an effect to resynchronise every field.
  */
 export function ProfileForm({ provider }: { provider: OwnedProvider }) {
+  useLocale()
   const updateProfile = useUpdateProfile()
   const { showToast } = useToast()
 
@@ -63,15 +67,15 @@ export function ProfileForm({ provider }: { provider: OwnedProvider }) {
         onSuccess: (updated) =>
           showToast(
             updated.approval_status === 'pending' && provider.approval_status === 'approved'
-              ? 'Saved. Your profile is back in review because you changed key details.'
-              : 'Your profile has been saved.',
+              ? t('Saved. Your profile is back in review because you changed key details.')
+              : t('Your profile has been saved.'),
             'success',
           ),
         onError: (error) =>
           showToast(
             error instanceof ApiError
               ? (Object.values(error.errors)[0]?.[0] ?? error.message)
-              : 'We could not save your profile.',
+              : t('We could not save your profile.'),
             'error',
           ),
       },
@@ -80,39 +84,39 @@ export function ProfileForm({ provider }: { provider: OwnedProvider }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="card flex flex-col gap-4 p-5 sm:p-6" noValidate>
-      <h2 className="text-lg font-bold text-ink-900">Business details</h2>
+      <h2 className="text-lg font-bold text-ink-900">{t('Business details')}</h2>
 
       <SelectField
-        label="Type of professional"
+        label={t('Type of professional')}
         isRequired
         {...(errors.provider_type?.message ? { error: errors.provider_type.message } : {})}
         {...register('provider_type')}
       >
         {bootstrap.providerTypes.map((type) => (
           <option key={type.value} value={type.value}>
-            {type.label}
+            {enumLabel(type.value)}
           </option>
         ))}
       </SelectField>
 
       <TextField
-        label="Name or business name"
+        label={t('Name or business name')}
         isRequired
         {...(errors.name?.message ? { error: errors.name.message } : {})}
         {...register('name')}
       />
 
       <TextAreaField
-        label="About your work"
+        label={t('About your work')}
         maxLength={2000}
         {...(errors.description?.message ? { error: errors.description.message } : {})}
         {...register('description')}
       />
 
-      <h2 className="mt-2 text-lg font-bold text-ink-900">Contact</h2>
+      <h2 className="mt-2 text-lg font-bold text-ink-900">{t('Contact')}</h2>
 
       <TextField
-        label="Mobile number"
+        label={t('Mobile number')}
         isRequired
         type="tel"
         {...(errors.phone?.message ? { error: errors.phone.message } : {})}
@@ -120,31 +124,31 @@ export function ProfileForm({ provider }: { provider: OwnedProvider }) {
       />
 
       <TextField
-        label="WhatsApp number"
+        label={t('WhatsApp number')}
         type="tel"
         {...(errors.whatsapp_phone?.message ? { error: errors.whatsapp_phone.message } : {})}
         {...register('whatsapp_phone')}
       />
 
       <TextField
-        label="Email"
+        label={t('Email')}
         type="email"
         {...(errors.email?.message ? { error: errors.email.message } : {})}
         {...register('email')}
       />
 
       <TextField
-        label="Website"
+        label={t('Website')}
         type="url"
-        placeholder="https://"
+        placeholder={'https://'}
         {...(errors.website?.message ? { error: errors.website.message } : {})}
         {...register('website')}
       />
 
-      <h2 className="mt-2 text-lg font-bold text-ink-900">Location</h2>
+      <h2 className="mt-2 text-lg font-bold text-ink-900">{t('Location')}</h2>
 
       <AddressAutocomplete
-        label="Search a new address"
+        label={t('Search a new address')}
         value={addressInput}
         onChange={(value) => {
           setAddressInput(value)
@@ -165,18 +169,18 @@ export function ProfileForm({ provider }: { provider: OwnedProvider }) {
       />
 
       <TextField
-        label="Town or village shown publicly"
+        label={t('Town or village shown publicly')}
         isRequired
         {...(errors.locality?.message ? { error: errors.locality.message } : {})}
         {...register('locality')}
       />
 
       <p className="text-xs text-ink-500">
-        Pinned at {coordinates.latitude.toFixed(4)}, {coordinates.longitude.toFixed(4)} — used to measure
-        distance only, never shown publicly.
+        {t('Pinned at')} {coordinates.latitude.toFixed(4)}, {coordinates.longitude.toFixed(4)}{' '}
+        {t('— used to measure distance only, never shown publicly.')}
       </p>
 
-      <h2 className="mt-2 text-lg font-bold text-ink-900">Services</h2>
+      <h2 className="mt-2 text-lg font-bold text-ink-900">{t('Services')}</h2>
       <ServiceCategoryPicker selectedIds={categoryIds} onChange={setCategoryIds} />
 
       <Button
@@ -186,7 +190,7 @@ export function ProfileForm({ provider }: { provider: OwnedProvider }) {
         isLoading={updateProfile.isPending}
         leadingIcon={<Save className="size-5" />}
       >
-        Save changes
+        {t('Save changes')}
       </Button>
     </form>
   )

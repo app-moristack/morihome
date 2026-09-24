@@ -1,9 +1,12 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { RefreshCw } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { registerServiceWorker } from '@/lib/serviceWorker'
 
 export function UpdatePrompt() {
+  useLocale()
   const [applyUpdate, setApplyUpdate] = useState<(() => void) | null>(null)
 
   useEffect(() => {
@@ -24,9 +27,11 @@ export function UpdatePrompt() {
     >
       <div className="card animate-rise mx-auto flex max-w-md items-center gap-3 p-3.5 shadow-lifted">
         <RefreshCw className="size-5 shrink-0 text-brand-600" aria-hidden />
-        <p className="flex-1 text-sm font-semibold text-ink-800">A new version of MoriHome is ready.</p>
+        <p className="flex-1 text-sm font-semibold text-ink-800">
+          {t('A new version of MoriHome is ready.')}
+        </p>
         <Button size="sm" onClick={applyUpdate}>
-          Reload
+          {t('Reload')}
         </Button>
       </div>
     </div>

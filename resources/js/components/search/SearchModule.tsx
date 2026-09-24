@@ -1,3 +1,6 @@
+import { categoryLabel } from '@/i18n/labels'
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { Search } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { AddressAutocomplete, type ResolvedLocation } from './AddressAutocomplete'
@@ -21,6 +24,7 @@ export function SearchModule({
   variant = 'hero',
   isBusy = false,
 }: SearchModuleProps) {
+  useLocale()
   const [state, setState] = useState<SearchFormState>(initialState)
   const [addressError, setAddressError] = useState<string>()
   const { data: categories = [], isLoading: isLoadingCategories } = useCategories()
@@ -39,7 +43,7 @@ export function SearchModule({
     event.preventDefault()
 
     if (!hasSearchLocation(state) && !state.categoryId) {
-      setAddressError('Choose a service category or enter a location to search.')
+      setAddressError(t('Choose a service category or enter a location to search.'))
 
       return
     }
@@ -57,10 +61,10 @@ export function SearchModule({
           : 'sm:grid-cols-2 lg:grid-cols-4',
       )}
       role="search"
-      aria-label="Find professionals near you"
+      aria-label={t('Find professionals near you')}
     >
       <SelectField
-        label="What do you need?"
+        label={t('What do you need?')}
         value={state.categoryId ?? ''}
         disabled={isLoadingCategories}
         onChange={(event) =>
@@ -70,10 +74,10 @@ export function SearchModule({
           }))
         }
       >
-        <option value="">All services</option>
+        <option value="">{t('All services')}</option>
         {categories.map((category) => (
           <option key={category.id} value={category.id}>
-            {category.name}
+            {categoryLabel(category.name)}
           </option>
         ))}
       </SelectField>
@@ -86,14 +90,14 @@ export function SearchModule({
       />
 
       <SelectField
-        label="Search radius"
+        label={t('Search radius')}
         disabled={!hasSearchLocation(state)}
         value={state.radiusKm}
         onChange={(event) => setState((current) => ({ ...current, radiusKm: Number(event.target.value) }))}
       >
         {bootstrap.radiusOptionsKm.map((radius) => (
           <option key={radius} value={radius}>
-            Within {radius} km
+            {radius}km
           </option>
         ))}
       </SelectField>
@@ -107,7 +111,7 @@ export function SearchModule({
           leadingIcon={<Search className="size-5" />}
           className="lg:min-w-36"
         >
-          Search
+          {t('Search')}
         </Button>
       </div>
     </form>

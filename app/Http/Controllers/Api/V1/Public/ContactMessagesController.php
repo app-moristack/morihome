@@ -24,7 +24,7 @@ class ContactMessagesController extends Controller
         ));
 
         return response()->json([
-            'message' => 'Your message has been sent. We will get back to you shortly.',
+            'message' => __('messages.contact_sent'),
         ], JsonResponse::HTTP_ACCEPTED);
     }
 }

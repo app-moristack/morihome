@@ -178,6 +178,39 @@ class PropertyListingEntitlementTest extends TestCase
             ->assertJsonPath('data.0.title', 'House within budget');
     }
 
+    public function test_property_attributes_and_all_selected_amenities_are_filtered_on_the_server(): void
+    {
+        $provider = Provider::factory()->ofType(ProviderType::Agency)->create();
+        $this->activate($provider, 'sales-plus');
+        foreach ([
+            ['title' => 'Matching furnished home', 'is_furnished' => true, 'amenities' => ['pool', 'parking']],
+            ['title' => 'Home missing parking', 'is_furnished' => true, 'amenities' => ['pool']],
+            ['title' => 'Unfurnished small home', 'is_furnished' => false, 'bedrooms' => 1, 'bathrooms' => 1, 'area_sqm' => 50, 'amenities' => ['pool', 'parking']],
+        ] as $attributes) {
+            $this->loginAs($provider->user)
+                ->postJson('/api/v1/provider/property-listings', $this->payload($attributes))
+                ->assertCreated()
+                ->assertJsonPath('data.amenities', $attributes['amenities']);
+        }
+        $this->getJson('/api/v1/properties/search?purpose=sales&bedrooms=3&bathrooms=2&min_area=100&is_furnished=1&amenities[]=pool&amenities[]=parking')
+            ->assertOk()->assertJsonCount(1, 'data')
+            ->assertJsonPath('data.0.title', 'Matching furnished home');
+        $this->getJson('/api/v1/properties/search?purpose=sales&is_furnished=0')
+            ->assertOk()->assertJsonCount(1, 'data')
+            ->assertJsonPath('data.0.title', 'Unfurnished small home');
+        foreach (['bedrooms=4', 'bathrooms=3', 'min_area=200'] as $filter) {
+            $this->getJson('/api/v1/properties/search?'.$filter)
+                ->assertOk()->assertJsonCount(0, 'data');
+        }
+    }
+
+    public function test_property_filter_validation_rejects_invalid_attributes(): void
+    {
+        $this->getJson('/api/v1/properties/search?bathrooms=-1&min_area=-1&is_furnished=maybe&amenities[]=unknown')
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['bathrooms', 'min_area', 'is_furnished', 'amenities.0']);
+    }
+
     private function activate(Provider $provider, string $slug): SubscriptionUser
     {
         $subscription = Subscription::query()->where('slug', $slug)->firstOrFail();

@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { ImagePlus } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { ApiError } from '@/api/client'
@@ -12,6 +14,7 @@ type BrandImageUploaderProps = {
 }
 
 export function BrandImageUploader({ provider }: BrandImageUploaderProps) {
+  useLocale()
   const logoInput = useRef<HTMLInputElement>(null)
   const coverInput = useRef<HTMLInputElement>(null)
   const [busyKind, setBusyKind] = useState<'logo' | 'cover' | null>(null)
@@ -28,10 +31,10 @@ export function BrandImageUploader({ provider }: BrandImageUploaderProps) {
     try {
       const optimised = await compressImage(file, kind === 'logo' ? 512 : 1600)
       await uploadImage.mutateAsync({ kind, file: optimised })
-      showToast(`Your ${kind} has been updated.`, 'success')
+      showToast(t(kind === 'logo' ? 'Logo updated.' : 'Cover updated.'), 'success')
     } catch (error) {
       showToast(
-        error instanceof ApiError ? (error.firstErrorFor('image') ?? error.message) : 'Upload failed.',
+        error instanceof ApiError ? (error.firstErrorFor('image') ?? error.message) : t('Upload failed.'),
         'error',
       )
     } finally {
@@ -56,7 +59,7 @@ export function BrandImageUploader({ provider }: BrandImageUploaderProps) {
           leadingIcon={<ImagePlus className="size-4" />}
           onClick={() => coverInput.current?.click()}
         >
-          Cover
+          {t('Cover')}
         </Button>
         <input
           ref={coverInput}
@@ -64,7 +67,7 @@ export function BrandImageUploader({ provider }: BrandImageUploaderProps) {
           accept="image/jpeg,image/png,image/webp"
           className="sr-only"
           onChange={(event) => handleFile('cover', event.target.files?.[0])}
-          aria-label="Upload a cover image"
+          aria-label={t('Upload a cover image')}
         />
       </div>
 
@@ -72,7 +75,7 @@ export function BrandImageUploader({ provider }: BrandImageUploaderProps) {
         {provider.logo_url ? (
           <img
             src={provider.logo_url}
-            alt="Your logo"
+            alt={t('Your logo')}
             width={72}
             height={72}
             className="-mt-12 size-18 rounded-2xl border-4 border-surface bg-surface object-cover shadow-sm"
@@ -84,9 +87,9 @@ export function BrandImageUploader({ provider }: BrandImageUploaderProps) {
         )}
 
         <div className="flex-1">
-          <p className="text-sm font-bold text-ink-900">Logo &amp; cover</p>
+          <p className="text-sm font-bold text-ink-900">{t('Logo & cover')}</p>
           <p className="text-xs leading-relaxed text-ink-500">
-            Images are resized on your phone before upload, so they stay light on data.
+            {t('Images are resized on your phone before upload, so they stay light on data.')}
           </p>
         </div>
 
@@ -96,7 +99,7 @@ export function BrandImageUploader({ provider }: BrandImageUploaderProps) {
           isLoading={busyKind === 'logo'}
           onClick={() => logoInput.current?.click()}
         >
-          Change logo
+          {t('Change logo')}
         </Button>
         <input
           ref={logoInput}
@@ -104,7 +107,7 @@ export function BrandImageUploader({ provider }: BrandImageUploaderProps) {
           accept="image/jpeg,image/png,image/webp"
           className="sr-only"
           onChange={(event) => handleFile('logo', event.target.files?.[0])}
-          aria-label="Upload a logo"
+          aria-label={t('Upload a logo')}
         />
       </div>
     </section>

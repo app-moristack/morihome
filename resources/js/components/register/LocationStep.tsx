@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useState } from 'react'
 import { AddressAutocomplete, type ResolvedLocation } from '@/components/search/AddressAutocomplete'
@@ -12,6 +14,7 @@ type LocationStepProps = {
 }
 
 export function LocationStep({ defaultValues, onSubmit, onBack }: LocationStepProps) {
+  useLocale()
   const [address, setAddress] = useState(defaultValues.address ?? '')
   const [locality, setLocality] = useState(defaultValues.locality ?? '')
   const [coordinates, setCoordinates] = useState<{ latitude: number; longitude: number } | null>(
@@ -64,14 +67,15 @@ export function LocationStep({ defaultValues, onSubmit, onBack }: LocationStepPr
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
-      <h2 className="text-lg font-bold text-ink-900">Where do you work from?</h2>
+      <h2 className="text-lg font-bold text-ink-900">{t('Where do you work from?')}</h2>
       <p className="-mt-2 text-sm leading-relaxed text-ink-500">
-        We use this to measure the distance to customers. Your exact address is never shown publicly — only
-        your town or village.
+        {t(
+          'We use this to measure the distance to customers. Your exact address is never shown publicly — only your town or village.',
+        )}
       </p>
 
       <AddressAutocomplete
-        label="Search your town, village or address"
+        label={t('Search your town, village or address')}
         value={address}
         onChange={setAddress}
         onResolve={handleResolve}
@@ -79,24 +83,26 @@ export function LocationStep({ defaultValues, onSubmit, onBack }: LocationStepPr
       />
 
       <TextField
-        label="Town or village shown publicly"
+        label={t('Town or village shown publicly')}
         isRequired
         value={locality}
         onChange={(event) => setLocality(event.target.value)}
-        placeholder="e.g. Quatre Bornes"
+        placeholder={t('e.g. Quatre Bornes')}
         {...(errors.locality ? { error: errors.locality } : {})}
       />
 
       <TextField
-        label="Other areas you serve"
+        label={t('Other areas you serve')}
         value={serviceAreas}
         onChange={(event) => setServiceAreas(event.target.value)}
-        placeholder="Rose Hill, Vacoas, Curepipe"
-        hint="Separate each area with a comma."
+        placeholder={'Rose Hill, Vacoas, Curepipe'}
+        hint={t('Separate each area with a comma.')}
       />
 
       {coordinates ? (
-        <p className="text-sm font-medium text-success">Location pinned. Customers nearby will find you.</p>
+        <p className="text-sm font-medium text-success">
+          {t('Location pinned. Customers nearby will find you.')}
+        </p>
       ) : null}
 
       <div className="flex gap-3">
@@ -107,10 +113,10 @@ export function LocationStep({ defaultValues, onSubmit, onBack }: LocationStepPr
           onClick={onBack}
           leadingIcon={<ArrowLeft className="size-5" />}
         >
-          Back
+          {t('Back')}
         </Button>
         <Button type="submit" size="lg" isFullWidth leadingIcon={<ArrowRight className="size-5" />}>
-          Continue
+          {t('Continue')}
         </Button>
       </div>
     </form>

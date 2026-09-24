@@ -1,3 +1,6 @@
+import { categoryLabel } from '@/i18n/labels'
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { Building2, Images, KeyRound, TriangleAlert, UserPen } from 'lucide-react'
 import { Link } from 'react-router'
 import { ApiError } from '@/api/client'
@@ -34,6 +37,7 @@ const QUICK_LINKS = [
 ]
 
 export default function ProviderDashboardPage() {
+  useLocale()
   const { data, isLoading, isError } = useOwnProfile()
   const submitForReview = useSubmitForReview()
   const { showToast } = useToast()
@@ -54,8 +58,8 @@ export default function ProviderDashboardPage() {
         <EmptyState
           tone="danger"
           icon={<TriangleAlert className="size-6" aria-hidden />}
-          title="We could not load your dashboard"
-          description="Please refresh the page or sign in again."
+          title={t('We could not load your dashboard')}
+          description={t('Please refresh the page or sign in again.')}
         />
       </div>
     )
@@ -68,16 +72,19 @@ export default function ProviderDashboardPage() {
     submitForReview.mutate(undefined, {
       onSuccess: () => showToast('Your profile has been sent for review.', 'success'),
       onError: (error) =>
-        showToast(error instanceof ApiError ? error.message : 'We could not submit your profile.', 'error'),
+        showToast(
+          error instanceof ApiError ? error.message : t('We could not submit your profile.'),
+          'error',
+        ),
     })
   }
 
   return (
     <div className="container-page py-8 sm:py-10">
       <PageHeader
-        eyebrow="Provider dashboard"
+        eyebrow={t('Provider dashboard')}
         title={provider.name}
-        description="Keep your details current — customers see this information when they search."
+        description={t('Keep your details current — customers see this information when they search.')}
         action={
           <Badge tone={provider.is_publicly_visible ? 'success' : 'warning'}>
             {provider.approval_status_label}
@@ -96,7 +103,7 @@ export default function ProviderDashboardPage() {
         <SubscriptionManager providerType={provider.provider_type} />
 
         <section>
-          <h2 className="text-lg font-bold text-ink-900">Manage your listing</h2>
+          <h2 className="text-lg font-bold text-ink-900">{t('Manage your listing')}</h2>
           <ul className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {QUICK_LINKS.map((link) => (
               <li key={link.to}>
@@ -107,8 +114,8 @@ export default function ProviderDashboardPage() {
                   <span className="grid size-10 place-items-center rounded-xl bg-brand-100 text-brand-800">
                     <link.icon className="size-5" aria-hidden />
                   </span>
-                  <span className="font-bold text-ink-900">{link.title}</span>
-                  <span className="text-sm leading-relaxed text-ink-500">{link.body}</span>
+                  <span className="font-bold text-ink-900">{t(link.title)}</span>
+                  <span className="text-sm leading-relaxed text-ink-500">{t(link.body)}</span>
                 </Link>
               </li>
             ))}
@@ -116,22 +123,22 @@ export default function ProviderDashboardPage() {
         </section>
 
         <section className="card p-5">
-          <h2 className="text-lg font-bold text-ink-900">Your services</h2>
+          <h2 className="text-lg font-bold text-ink-900">{t('Your services')}</h2>
           {provider.service_categories.length === 0 ? (
             <p className="mt-2 text-sm text-ink-500">
-              No services selected yet.{' '}
+              {t('No services selected yet.')}{' '}
               <Link
                 to="/dashboard/profile"
                 className="font-semibold text-ink-900 underline underline-offset-2"
               >
-                Add your trades
+                {t('Add your trades')}
               </Link>
             </p>
           ) : (
             <ul className="mt-3 flex flex-wrap gap-2">
               {provider.service_categories.map((category) => (
                 <li key={category.id}>
-                  <Badge tone={category.is_primary ? 'dark' : 'brand'}>{category.name}</Badge>
+                  <Badge tone={category.is_primary ? 'dark' : 'brand'}>{categoryLabel(category.name)}</Badge>
                 </li>
               ))}
             </ul>
@@ -139,7 +146,7 @@ export default function ProviderDashboardPage() {
 
           <dl className="mt-5 grid gap-3 text-sm text-ink-600 sm:grid-cols-2">
             <div>
-              <dt className="text-xs font-bold tracking-wide text-ink-400 uppercase">Base location</dt>
+              <dt className="text-xs font-bold tracking-wide text-ink-400 uppercase">{t('Base location')}</dt>
               <dd className="mt-0.5">{provider.locality}</dd>
             </div>
             <div>
@@ -151,7 +158,7 @@ export default function ProviderDashboardPage() {
           <div className="mt-5">
             <Link to="/dashboard/profile">
               <Button variant="secondary" leadingIcon={<UserPen className="size-4" />}>
-                Edit these details
+                {t('Edit these details')}
               </Button>
             </Link>
           </div>

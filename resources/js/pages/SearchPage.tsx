@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import {
   ArrowRight,
   BadgeCheck,
@@ -36,6 +38,7 @@ type ResultsView = 'grid' | 'list' | 'map'
 const AREA_IMAGE_POSITIONS = ['35%', '45%', '52%', '59%', '67%', '73%', '80%', '88%']
 
 export function SearchPage() {
+  useLocale()
   const [searchParams, setSearchParams] = useSearchParams()
   const [areFiltersOpen, setAreFiltersOpen] = useState(false)
   const [resultsView, setResultsView] = useState<ResultsView>('grid')
@@ -88,20 +91,24 @@ export function SearchPage() {
       />
 
       <div className="container-page grid max-w-none gap-5 py-5 lg:grid-cols-[250px_minmax(0,1fr)] lg:items-start">
-        <aside className="sticky top-24 hidden lg:block" aria-label="Search filters">
+        <aside className="sticky top-24 hidden lg:block" aria-label={t('Search filters')}>
           <SearchFilters state={state} onChange={updateState} />
         </aside>
 
-        <main className="min-w-0" aria-label="Professional search results">
+        <main className="min-w-0" aria-label={t('Professional search results')}>
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-ink-100 bg-surface px-4 py-3">
             <p aria-live="polite" className="text-sm">
               {apiParams === null ? (
-                <span className="text-ink-600">Choose a category or location to start searching</span>
+                <span className="text-ink-600">{t('Choose a category or location to start searching')}</span>
               ) : isLoading ? (
-                <span className="text-ink-600">Searching…</span>
+                <span className="text-ink-600">{t('Searching…')}</span>
               ) : (
                 <>
-                  <strong>{total}</strong> {total === 1 ? 'professional' : 'professionals'} found
+                  <strong>
+                    {t(total === 1 ? '{count} professional found' : '{count} professionals found', {
+                      count: total,
+                    })}
+                  </strong>
                 </>
               )}
             </p>
@@ -116,10 +123,10 @@ export function SearchPage() {
                 aria-controls="mobile-search-filters"
                 className="lg:hidden"
               >
-                Filters
+                {t('Filters')}
               </Button>
               <label htmlFor="search-sort" className="text-xs text-ink-500">
-                Sort by
+                {t('Sort by')}
               </label>
               <select
                 id="search-sort"
@@ -129,19 +136,19 @@ export function SearchPage() {
                 }
                 className="min-h-10 rounded-lg border border-ink-200 bg-surface px-3 text-xs font-semibold"
               >
-                <option value="recommended">Most relevant</option>
+                <option value="recommended">{t('Most relevant')}</option>
                 <option value="distance" disabled={!hasLocation}>
-                  Nearest first
+                  {t('Nearest first')}
                 </option>
               </select>
-              <div className="flex rounded-lg bg-ink-50 p-1" aria-label="Results view">
+              <div className="flex rounded-lg bg-ink-50 p-1" aria-label={t('Results view')}>
                 <button
                   type="button"
                   onClick={() => setResultsView('grid')}
                   aria-pressed={resultsView === 'grid'}
                   className={`search-view-button ${resultsView === 'grid' ? 'search-view-button-active' : ''}`}
                 >
-                  <Grid2X2 className="size-4" aria-hidden /> Grid
+                  <Grid2X2 className="size-4" aria-hidden /> {t('Grid')}
                 </button>
                 <button
                   type="button"
@@ -149,7 +156,7 @@ export function SearchPage() {
                   aria-pressed={resultsView === 'list'}
                   className={`search-view-button ${resultsView === 'list' ? 'search-view-button-active' : ''}`}
                 >
-                  <List className="size-4" aria-hidden /> List
+                  <List className="size-4" aria-hidden /> {t('List')}
                 </button>
                 <button
                   type="button"
@@ -157,7 +164,7 @@ export function SearchPage() {
                   aria-pressed={resultsView === 'map'}
                   className={`search-view-button ${resultsView === 'map' ? 'search-view-button-active' : ''}`}
                 >
-                  <Map className="size-4" aria-hidden /> Map
+                  <Map className="size-4" aria-hidden /> {t('Map')}
                 </button>
               </div>
             </div>
@@ -167,8 +174,10 @@ export function SearchPage() {
             {apiParams === null ? (
               <EmptyState
                 icon={<MapPinOff className="size-6" aria-hidden />}
-                title="Where should we look?"
-                description="Choose a service category to search across Mauritius, or enter a town, village or address to find nearby professionals."
+                title={t('Where should we look?')}
+                description={t(
+                  'Choose a service category to search across Mauritius, or enter a town, village or address to find nearby professionals.',
+                )}
               />
             ) : isLoading ? (
               resultsView === 'grid' ? (
@@ -180,13 +189,13 @@ export function SearchPage() {
               <EmptyState
                 tone="danger"
                 icon={<SearchX className="size-6" aria-hidden />}
-                title="We could not run that search"
+                title={t('We could not run that search')}
                 description={
-                  error instanceof Error ? error.message : 'Please check your connection and try again.'
+                  error instanceof Error ? error.message : t('Please check your connection and try again.')
                 }
                 action={
                   <Button onClick={() => void refetch()} variant="secondary">
-                    Try again
+                    {t('Try again')}
                   </Button>
                 }
               />
@@ -194,17 +203,19 @@ export function SearchPage() {
               <EmptyState
                 icon={<SearchX className="size-6" aria-hidden />}
                 title={
-                  hasLocation ? 'No professionals in this radius yet' : 'No professionals match your filters'
+                  hasLocation
+                    ? t('No professionals in this radius yet')
+                    : t('No professionals match your filters')
                 }
                 description={
                   hasLocation
-                    ? 'Try widening the radius, removing a filter, or searching a nearby town.'
-                    : 'Try another service category or remove a filter.'
+                    ? t('Try widening the radius, removing a filter, or searching a nearby town.')
+                    : t('Try another service category or remove a filter.')
                 }
                 action={
                   hasLocation && state.radiusKm < 50 ? (
                     <Button onClick={() => updateState({ ...state, radiusKm: 50, page: 1 })}>
-                      Widen to 50 km
+                      {t('Widen to 50 km')}
                     </Button>
                   ) : null
                 }
@@ -215,7 +226,7 @@ export function SearchPage() {
                   <Suspense
                     fallback={
                       <div role="status" className="card grid h-96 place-items-center">
-                        Loading map…
+                        {t('Loading map…')}
                       </div>
                     }
                   >
@@ -244,24 +255,24 @@ export function SearchPage() {
                 {lastPage > 1 ? (
                   <nav
                     className="mt-7 flex items-center justify-center gap-3"
-                    aria-label="Search results pages"
+                    aria-label={t('Search results pages')}
                   >
                     <Button
                       variant="ghost"
                       disabled={state.page <= 1}
                       onClick={() => updateState({ ...state, page: state.page - 1 })}
                     >
-                      Previous
+                      {t('Previous')}
                     </Button>
                     <span className="text-sm font-medium text-ink-600">
-                      Page {state.page} of {lastPage}
+                      {t('Page')} {state.page} {t('of')} {lastPage}
                     </span>
                     <Button
                       variant="ghost"
                       disabled={state.page >= lastPage}
                       onClick={() => updateState({ ...state, page: state.page + 1 })}
                     >
-                      Next
+                      {t('Next')}
                     </Button>
                   </nav>
                 ) : null}
@@ -276,33 +287,33 @@ export function SearchPage() {
             <div className="grid gap-6 p-6 sm:grid-cols-[1fr_auto] sm:items-center lg:px-8">
               <div>
                 <h2 id="search-pro-title" className="text-2xl font-extrabold">
-                  Are you a professional?
+                  {t('Are you a professional?')}
                 </h2>
                 <p className="mt-2 max-w-md text-sm text-white/80">
-                  Join MoriHome for free and get discovered by people near you.
+                  {t('Join MoriHome for free and get discovered by people near you.')}
                 </p>
                 <Link to="/register" className="home-cta mt-5">
-                  Create Your Free Account <ArrowRight className="size-4" aria-hidden />
+                  {t('Create Your Free Account')} <ArrowRight className="size-4" aria-hidden />
                 </Link>
               </div>
               <ul className="grid grid-cols-3 gap-5 text-center text-[11px] font-semibold">
                 <li>
                   <BadgeCheck className="mx-auto mb-2 size-8 text-brand-300" aria-hidden />
-                  Reviewed
+                  {t('Reviewed')}
                   <br />
-                  profile
+                  {t('profile')}
                 </li>
                 <li>
                   <Users className="mx-auto mb-2 size-8 text-brand-300" aria-hidden />
-                  Reach more
+                  {t('Reach more')}
                   <br />
-                  clients
+                  {t('clients')}
                 </li>
                 <li>
                   <Zap className="mx-auto mb-2 size-8 text-brand-300" aria-hidden />
-                  Grow your
+                  {t('Grow your')}
                   <br />
-                  business
+                  {t('business')}
                 </li>
               </ul>
             </div>
@@ -313,9 +324,9 @@ export function SearchPage() {
               <div className="mb-3 flex items-end justify-between gap-4">
                 <div>
                   <h2 id="areas-title" className="text-xl font-extrabold">
-                    Browse by Area
+                    {t('Browse by Area')}
                   </h2>
-                  <p className="text-xs text-ink-500">Find professionals in your area</p>
+                  <p className="text-xs text-ink-500">{t('Find professionals in your area')}</p>
                 </div>
               </div>
               <ul className="grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-8">
@@ -348,22 +359,22 @@ export function SearchPage() {
           className="fixed inset-0 z-50 lg:hidden"
           role="dialog"
           aria-modal="true"
-          aria-label="Search filters"
+          aria-label={t('Search filters')}
         >
           <button
             type="button"
             className="absolute inset-0 bg-black/55"
             onClick={() => setAreFiltersOpen(false)}
-            aria-label="Close filters"
+            aria-label={t('Close filters')}
           />
           <div className="absolute inset-y-0 right-0 w-[min(92vw,360px)] overflow-y-auto bg-canvas p-4 shadow-2xl">
             <div className="mb-3 flex items-center justify-between">
-              <strong>Refine results</strong>
+              <strong>{t('Refine results')}</strong>
               <button
                 type="button"
                 onClick={() => setAreFiltersOpen(false)}
                 className="grid size-11 place-items-center rounded-full hover:bg-ink-100"
-                aria-label="Close filters"
+                aria-label={t('Close filters')}
               >
                 <X className="size-5" aria-hidden />
               </button>

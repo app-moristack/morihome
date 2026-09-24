@@ -10,10 +10,6 @@ enum SubscriptionCategory: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::Services => 'Services',
-            self::Rental => 'Property Rental',
-            self::Sales => 'Property Sale',
-        };
+        return __('subscription.category.'.$this->value);
     }
 }

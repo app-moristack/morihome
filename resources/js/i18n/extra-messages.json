@@ -1,0 +1,327 @@
+{
+  "Area": ["Superficie", "Sirfas"],
+  "This property is not available": ["Cette propriété n’est pas disponible", "Sa propriyete-la pa disponib"],
+  "Back to properties": ["Retour aux propriétés", "Retourn lor bann propriyete"],
+  "Property details": ["Détails de la propriété", "Detay propriyete"],
+  "Listed by": ["Annonce publiée par", "Lanons pibliye par"],
+  "View profile and other listings": ["Voir son profil et ses autres annonces", "Get so profil ek so lezot lanons"],
+  "Property listings": ["Annonces immobilières", "Bann lanons propriyete"],
+  "No properties currently listed.": ["Aucune propriété publiée pour le moment.", "Pena propriyete pibliye pou lemoman."],
+  "Photos of {name}": ["Photos de {name}", "Foto {name}"],
+  "Previous photo": ["Photo précédente", "Foto avan"],
+  "Next photo": ["Photo suivante", "Prosenn foto"],
+  "Photo {current} of {total}": ["Photo {current} sur {total}", "Foto {current} lor {total}"],
+  "Show photo {number}": ["Afficher la photo {number}", "Montre foto {number}"],
+  "Join us": ["Rejoignez-nous", "Zwenn nou"],
+  "Home services in Mauritius": ["Services à Maurice", "Servis lakaz dan Moris"],
+  "What do you": ["De quoi avez-vous", "Ki"],
+  "need help with?": ["besoin ?", "led ou bizin ?"],
+  "Carousel": ["Carrousel", "Karousel"],
+  "Choose a page": ["Choisir une page", "Swazir enn paz"],
+  "Go to page {page}": ["Aller à la page {page}", "Al lor paz {page}"],
+  "Page {page} of {total}": ["Page {page} sur {total}", "Paz {page} lor {total}"],
+  "Get quicker access to MoriHome": ["MoriHome à portée de main", "Aksed MoriHome pli vit"],
+  "Add MoriHome to your Home Screen — no download required.": [
+    "Ajoutez MoriHome à votre écran d’accueil — aucun téléchargement nécessaire.",
+    "Azout MoriHome lor ou lekran lakey — pa bizin telechargman."
+  ],
+  "Open instantly": ["Un accès immédiat", "Ouver deswit"],
+  "Like a native app": ["Comme une application", "Kouma enn aplikasion"],
+  "Browse listings": ["Parcourez les annonces", "Get bann lanons"],
+  "Properties & local services": ["Immobilier et services locaux", "Propriyete ek servis lokal"],
+  "Always at hand": ["Toujours à portée de main", "Touletan pre ar ou"],
+  "Find your next home anytime": ["Vos recherches, à tout moment", "Trouv ou prosenn lakaz"],
+  "Add to Home Screen": ["Ajouter à l’écran d’accueil", "Azout lor lekran lakey"],
+  "Dismiss app banner": ["Fermer la bannière de l’application", "Ferm banyer aplikasion"],
+  "12–128 characters, with uppercase and lowercase letters and a number.": [
+    "De 12 à 128 caractères, dont une majuscule, une minuscule et un chiffre.",
+    "12 a 128 karakter, avek let maziskil, miniskil ek enn sif."
+  ],
+  "12–128 characters, including uppercase, lowercase and a number.": [
+    "De 12 à 128 caractères, dont une majuscule, une minuscule et un chiffre.",
+    "12 a 128 karakter, avek let maziskil, miniskil ek enn sif."
+  ],
+  "more": ["autres", "ankor"],
+  "then": ["puis", "apre"],
+  "selected": ["sélectionnés", "swazir"],
+  "to": ["à", "a"],
+  "found": ["trouvés", "trouve"],
+  "profile": ["profil", "profil"],
+  "clients": ["clients", "kliyan"],
+  "providers": ["professionnels", "profesionel"],
+  "professional": ["professionnel", "profesionel"],
+  "(required)": ["(obligatoire)", "(obligatwar)"],
+  "(optional)": ["(facultatif)", "(opsionel)"],
+  "rejection": ["le refus", "refi-la"],
+  "suspension": ["la suspension", "sispansion-la"],
+  "recently": ["récemment", "resaman"],
+  "Awaiting approval": ["En attente d’approbation", "Pe atann laprouvasion"],
+  "Reactivated": ["Réactivé", "Reaktive"],
+  "Profile Updated": ["Profil modifié", "Profil finn modifye"],
+  "Profile Submitted": ["Profil soumis", "Profil finn soumet"],
+  "Unauthenticated.": ["Veuillez vous connecter.", "Silvouple konekte."],
+  "This action is unauthorized.": ["Cette action n’est pas autorisée.", "Sa aksion-la pa otorize."],
+  "Too Many Attempts.": ["Trop de tentatives. Réessayez plus tard.", "Tro boukou tantativ. Esey plitar."],
+  "Invalid value.": ["Valeur invalide.", "Valer pa valab."],
+  "This field is required.": ["Ce champ est obligatoire.", "Sa karo-la obligatwar."],
+  "Enter a valid number.": ["Saisissez un nombre valide.", "Met enn nimero valab."],
+  "Enter at least {count} characters.": [
+    "Saisissez au moins {count} caractères.",
+    "Met omwin {count} karakter."
+  ],
+  "Use at most {count} characters.": [
+    "Utilisez au maximum {count} caractères.",
+    "Servi pa plis ki {count} karakter."
+  ],
+  "Select at least {count} items.": [
+    "Sélectionnez au moins {count} éléments.",
+    "Swazir omwin {count} eleman."
+  ],
+  "Select at most {count} items.": [
+    "Sélectionnez au maximum {count} éléments.",
+    "Swazir pa plis ki {count} eleman."
+  ],
+  "The minimum is {count}.": ["Le minimum est {count}.", "Minimem se {count}."],
+  "The maximum is {count}.": ["Le maximum est {count}.", "Maximem se {count}."],
+  "{distance} m away": ["à {distance} m", "a {distance} m"],
+  "{distance} km away": ["à {distance} km", "a {distance} km"],
+  "Welcome back, {name}.": ["Ravi de vous revoir, {name}.", "Bienveni ankor, {name}."],
+  "View {name}'s profile": ["Voir le profil de {name}", "Get profil {name}"],
+  "{name} — {service} in {locality}": [
+    "{name} — {service} à {locality}",
+    "{name} — {service} dan {locality}"
+  ],
+  "{name} logo": ["Logo de {name}", "Logo {name}"],
+  "Notifications: {count} pending reviews": [
+    "Notifications : {count} vérifications en attente",
+    "Notifikasion : {count} verifikasion an atant"
+  ],
+  "{count} provider profiles are waiting for review.": [
+    "{count} profils professionnels attendent une vérification.",
+    "{count} profil profesionel pe atann verifikasion."
+  ],
+  "{count} active service": ["{count} service actif", "{count} servis aktif"],
+  "{count} active services": ["{count} services actifs", "{count} servis aktif"],
+  "{count} active listing": ["{count} annonce active", "{count} lanons aktif"],
+  "{count} active listings": ["{count} annonces actives", "{count} lanons aktif"],
+  "{count} photos per service": ["{count} photos par service", "{count} foto par servis"],
+  "{count} photos per property": ["{count} photos par bien", "{count} foto par propriyete"],
+  "{count}-month listing duration": ["Annonce valable {count} mois", "Lanons valab {count} mwa"],
+  "Featured services": ["Services à la une", "Servis an vedet"],
+  "Featured properties": ["Propriétés à la une", "Propriyete an vedet"],
+  "{count} category selected": ["{count} catégorie sélectionnée", "{count} kategori swazir"],
+  "{count} categories selected": ["{count} catégories sélectionnées", "{count} kategori swazir"],
+  "{count} service selected": ["{count} service sélectionné", "{count} servis swazir"],
+  "{count} services selected": ["{count} services sélectionnés", "{count} servis swazir"],
+  "Rs {price} / {months} months": ["{price} Rs pour {months} mois", "Rs {price} / {months} mwa"],
+  "{used} used · {remaining} of {limit} remaining · {photos} photos/listing": [
+    "Annonces utilisées : {used} · Places restantes : {remaining} sur {limit} · Photos par annonce : {photos}",
+    "{used} servi · {remaining} lor {limit} disponib · {photos} foto/lanons"
+  ],
+  "({count} remaining)": ["({count} disponibles)", "({count} disponib)"],
+  "View all rentals": ["Voir tous les biens à louer", "Get tou lokasion"],
+  "View all properties for sale": ["Voir tous les biens à vendre", "Get tou propriyete pou vann"],
+  "No featured properties for rent yet.": [
+    "Aucun bien à louer à la une pour le moment.",
+    "Pena propriyete pou lwe an vedet ankor."
+  ],
+  "No featured properties for sale yet.": [
+    "Aucun bien à vendre à la une pour le moment.",
+    "Pena propriyete pou vann an vedet ankor."
+  ],
+  "{count} professional found": ["{count} professionnel trouvé", "{count} profesionel trouve"],
+  "{count} professionals found": ["{count} professionnels trouvés", "{count} profesionel trouve"],
+  "{count} listing found": ["{count} annonce trouvée", "{count} lanons trouve"],
+  "{count} listings found": ["{count} annonces trouvées", "{count} lanons trouve"],
+  "Page {page} of {total}": ["Page {page} sur {total}", "Paz {page} lor {total}"],
+  "{count} bedroom": ["{count} chambre", "{count} lasam"],
+  "{count} bedrooms": ["{count} chambres", "{count} lasam"],
+  "{count} bathroom": ["{count} salle de bains", "{count} sal-de-bin"],
+  "{count} bathrooms": ["{count} salles de bains", "{count} sal-de-bin"],
+  "{count} views": ["{count} vues", "{count} vizit"],
+  "{count} individuals, {businesses} businesses": [
+    "{count} indépendants, {businesses} entreprises",
+    "{count} endepandan, {businesses} lantrepriz"
+  ],
+  "+{count} joined": ["+{count} inscriptions", "+{count} inskripsion"],
+  "Tracking since {date}": ["Suivi depuis le {date}", "Swivi depi {date}"],
+  "Plumber": ["Plombier", "Plonbye"],
+  "Mason": ["Maçon", "Mason"],
+  "Electrician": ["Électricien", "Elektrisien"],
+  "Painter": ["Peintre", "Pint"],
+  "Carpenter": ["Menuisier", "Menizie"],
+  "Tiler": ["Carreleur", "Pozer karo"],
+  "Gardener": ["Jardinier", "Zardinye"],
+  "Landscaper": ["Paysagiste", "Peyzazis"],
+  "Welder": ["Soudeur", "Souder"],
+  "Aluminium & Glazing": ["Menuiserie aluminium et vitrerie", "Aliminiom ek vit"],
+  "Roofing & Waterproofing": ["Toiture et étanchéité", "Twatir ek etanseite"],
+  "Air Conditioning": ["Climatisation", "Klimatizasion"],
+  "Pool Services": ["Entretien de piscines", "Lantretien pisin"],
+  "Cleaning": ["Nettoyage", "Netwayaz"],
+  "Pest Control": ["Traitement antiparasitaire", "Kontrol bann nwizib"],
+  "General Handyman": ["Bricolage et petits travaux", "Bann ti travay ek reparasion"],
+  "Architect & Designer": ["Architecte et designer", "Arsitek ek dizayner"],
+  "Contractor": ["Entrepreneur en bâtiment", "Kontrakter"],
+  "Building Materials Supplier": [
+    "Fournisseur de matériaux de construction",
+    "Fourniser materyo konstriksion"
+  ],
+  "Equipment & Tool Rental": ["Location d’équipements et d’outils", "Lokasion lekipman ek zouti"],
+  "Services Plus": ["Services Plus", "Servis Plus"],
+  "Services Pro": ["Services Pro", "Servis Pro"],
+  "Rental Plus": ["Location Plus", "Lokasion Plus"],
+  "Rental Pro": ["Location Pro", "Lokasion Pro"],
+  "Sales Plus": ["Vente Plus", "Lavant Plus"],
+  "Sales Pro": ["Vente Pro", "Lavant Pro"],
+  "For individual tradespeople getting started.": [
+    "Pour les artisans indépendants qui débutent.",
+    "Pou bann artizan endepandan ki pe koumanse."
+  ],
+  "More services and photos with business verification eligibility.": [
+    "Présentez davantage de services et de photos, avec la possibilité de faire vérifier votre entreprise.",
+    "Plis servis ek foto, avek posibilite verifikasion lantrepriz."
+  ],
+  "Maximum service visibility and capacity.": [
+    "Plus de visibilité et davantage de services à présenter.",
+    "Vizibilite ek kapasite maximem pou ou bann servis."
+  ],
+  "For individuals listing one rental property.": [
+    "Pour les particuliers proposant un bien à louer.",
+    "Pou bann endepandan ki met enn propriyete pou lwe."
+  ],
+  "More rental listings with featured placement.": [
+    "Plus d’annonces de location avec mise en avant.",
+    "Plis lanons lokasion avek plas an vedet."
+  ],
+  "Maximum rental visibility and capacity.": [
+    "Plus de visibilité et davantage d’annonces de location.",
+    "Vizibilite ek kapasite maximem pou ou bann lokasion."
+  ],
+  "For individuals listing one property for sale.": [
+    "Pour les particuliers proposant un bien à vendre.",
+    "Pou bann endepandan ki met enn propriyete pou vann."
+  ],
+  "More sale listings with featured placement.": [
+    "Plus d’annonces de vente avec mise en avant.",
+    "Plis lanons lavant avek plas an vedet."
+  ],
+  "Maximum property sale visibility and capacity.": [
+    "Plus de visibilité et davantage d’annonces de vente.",
+    "Vizibilite ek kapasite maximem pou ou bann lavant propriyete."
+  ],
+  "Remove photo {number}": ["Supprimer la photo {number}", "Retir foto {number}"],
+  "Move photo {number} earlier": ["Avancer la photo {number}", "Deplas foto {number} avan"],
+  "Move photo {number} later": ["Reculer la photo {number}", "Deplas foto {number} apre"],
+  "Work sample {number}": ["Réalisation {number}", "Lexanp travay {number}"],
+  "Could not upload {name}.": ["Impossible d’envoyer {name}.", "Pa finn kapav avoy {name}."],
+  "Logo updated.": ["Logo mis à jour.", "Logo finn met azour."],
+  "Cover updated.": ["Photo de couverture mise à jour.", "Kouvertir finn met azour."],
+  "Share {name}'s profile": ["Partager le profil de {name}", "Partaz profil {name}"],
+  "Message {name} on WhatsApp": ["Écrire à {name} sur WhatsApp", "Avoy {name} enn mesaz lor WhatsApp"],
+  "Contact {name} on WhatsApp": ["Contacter {name} sur WhatsApp", "Kontakte {name} lor WhatsApp"],
+  "WhatsApp {service}": ["Contacter {service} sur WhatsApp", "Kontakte {service} lor WhatsApp"],
+  "{count} professionals near {locality}": [
+    "{count} professionnels près de {locality}",
+    "{count} profesionel pre ar {locality}"
+  ],
+  "Show {name} on map": ["Voir {name} sur la carte", "Get {name} lor kart"],
+  "Manage {name}": ["Gérer {name}", "Zer {name}"],
+  "Open work sample {number} by {name}": [
+    "Voir la réalisation {number} de {name}",
+    "Get travay {number} par {name}"
+  ],
+  "{name} on MoriHome": ["{name} sur MoriHome", "{name} lor MoriHome"],
+  "Contact on WhatsApp about {service}": [
+    "Contacter sur WhatsApp pour {service}",
+    "Kontakte lor WhatsApp pou {service}"
+  ],
+  "Step {current} of {total}": ["Étape {current} sur {total}", "Letap {current} lor {total}"],
+  "Call {name}": ["Appeler {name}", "Telefonn {name}"],
+  "Edit {name}": ["Modifier {name}", "Modifye {name}"],
+  "Provider {action}.": ["Professionnel : {action}.", "Profesionel : {action}."],
+  "{count} users": ["{count} utilisateurs", "{count} itilizater"],
+  "{from}–{to} of {total}": ["{from}–{to} sur {total}", "{from}–{to} lor {total}"],
+  "Switch to light mode": ["Passer au mode clair", "Met mod kler"],
+  "Switch to dark mode": ["Passer au mode sombre", "Met mod fonse"],
+  "Name Or Business Name": ["Nom ou raison sociale", "Nom ouswa nom lantrepriz"],
+  "Provider Type": ["Type de professionnel", "Tip profesionel"],
+  "Logo": ["Logo", "Logo"],
+  "Cover Image": ["Photo de couverture", "Zimaz kouvertir"],
+  "Service Categories": ["Catégories de services", "Kategori servis"],
+  "WhatsApp Phone": ["Numéro WhatsApp", "Telefonn WhatsApp"],
+  "Whatsapp Phone": ["Numéro WhatsApp", "Telefonn WhatsApp"],
+  "Portfolio Images": ["Photos de réalisations", "Foto bann realizasion"],
+  "Opening Hours": ["Horaires d’ouverture", "Ler louvertir"],
+  "Latitude": ["Latitude", "Latitid"],
+  "Longitude": ["Longitude", "Lonzitid"],
+  "e.g. Ti Marmit Plomberie": ["Ex. Ti Marmit Plomberie", "Par exanp Ti Marmit Plomberie"],
+  "e.g. Quatre Bornes": ["Ex. Quatre Bornes", "Par exanp Quatre Bornes"],
+  "e.g. wrench, zap, droplets": ["Ex. wrench, zap, droplets", "Par exanp wrench, zap, droplets"],
+  "Customer reviews and quote requests are on the roadmap. MoriHome is available in English and French.": [
+    "Les avis clients et les demandes de devis font partie des fonctionnalités prévues. MoriHome est disponible en français et en anglais.",
+    "Bann avi kliyan ek demann devi pe vini. MoriHome disponib an Angle ek Franse."
+  ],
+  "MoriHome — Find services and property in Mauritius": [
+    "Artisans, services et immobilier à Maurice | MoriHome",
+    "MoriHome — Trouv bann servis ek propriyete dan Moris"
+  ],
+  "Search professionals near you — MoriHome": [
+    "Artisans et professionnels à Maurice | MoriHome",
+    "Rod bann profesionnèl pre kot ou — MoriHome"
+  ],
+  "Property for rent and sale in Mauritius": [
+    "Immobilier à Maurice : location et vente",
+    "Propriyete pou lwe ek aste dan Moris"
+  ],
+  "About MoriHome": ["À propos de MoriHome", "Lor MoriHome"],
+  "Contact MoriHome": ["Contactez MoriHome", "Kontakte MoriHome"],
+  "Grow your business with MoriHome": [
+    "Développez votre activité avec MoriHome",
+    "Fer ou biznes grandi avek MoriHome"
+  ],
+  "Create your MoriHome account": ["Créez votre compte MoriHome", "Kree ou kont MoriHome"],
+  "Terms of use": ["Conditions d’utilisation", "Kondision itilizasion"],
+  "Privacy policy": ["Politique de confidentialité", "Politik konfidansialite"],
+  "Install MoriHome on your phone": ["MoriHome sur votre téléphone", "Instal MoriHome lor ou telefonn"],
+  "Search trusted home-service professionals and browse property for rent or sale across Mauritius. ": [
+    "Trouvez un artisan ou un bien à louer ou à acheter à Maurice. Contactez les professionnels et les annonceurs sur WhatsApp. ",
+    "Rod bann profesionnèl lakaz ki ou kapav fer konfians ek bann propriyete pou lwe ouswa aste dan Moris. "
+  ],
+  "Compare nearby professionals by distance, see their work and contact them on WhatsApp.": [
+    "Trouvez un plombier, un électricien, un maçon ou un autre professionnel près de chez vous à Maurice. Consultez ses réalisations et contactez-le sur WhatsApp.",
+    "Konpar bann profesionnèl pre kot ou dapre distans, get zot travay ek kontakte zot lor WhatsApp."
+  ],
+  "Search houses, apartments, land and commercial property for rent or sale across Mauritius.": [
+    "Découvrez les maisons, appartements, terrains et locaux commerciaux à louer ou à vendre à Maurice. Contactez directement les annonceurs.",
+    "Rod lakaz, apartman, terin ek lokal komersial pou lwe ouswa aste partou dan Moris."
+  ],
+  "MoriHome connects people in Mauritius with reviewed home-service professionals and properties for rent or sale.": [
+    "Découvrez MoriHome, la plateforme mauricienne qui réunit des profils professionnels vérifiés et des biens immobiliers à louer ou à vendre.",
+    "MoriHome met bann dimounn dan Moris an kontak avek bann profesionnèl lakaz verifie ek bann propriyete pou lwe ouswa aste."
+  ],
+  "Get in touch with the MoriHome team.": [
+    "Une question sur votre profil, une annonce ou votre inscription ? Contactez l’équipe MoriHome à Maurice.",
+    "Pran kontak avek lekip MoriHome."
+  ],
+  "Compare MoriHome plans for individual professionals, agencies and companies in Mauritius.": [
+    "Présentez vos services ou vos biens immobiliers à Maurice. Comparez les offres MoriHome pour particuliers, indépendants, agences et entreprises.",
+    "Konpar bann plan MoriHome pou profesionnèl endepandan, lazans ek antrepriz dan Moris."
+  ],
+  "Register as an individual or agency and choose subscriptions for services, property rentals or property sales.": [
+    "Créez votre compte de particulier, d’indépendant ou d’entreprise et choisissez vos offres en services, location ou vente immobilière.",
+    "Anrezistre kouma endepandan ouswa lazans ek swazir bann labonnman pou servis, lokasion ouswa lavant imobilye."
+  ],
+  "The terms that govern the use of MoriHome.": [
+    "Les conditions qui encadrent l’utilisation de MoriHome.",
+    "Bann kondision pou servi MoriHome."
+  ],
+  "How MoriHome collects, uses and protects your data.": [
+    "Comment MoriHome collecte, utilise et protège vos données.",
+    "Kouma MoriHome kolekte, servi ek protez ou bann done."
+  ],
+  "Add MoriHome to your iPhone or Android home screen and use it like an app.": [
+    "Ajoutez MoriHome à l’écran d’accueil de votre iPhone ou téléphone Android pour retrouver facilement les services et les annonces immobilières à Maurice.",
+    "Azout MoriHome lor ekran lakey ou iPhone ouswa Android ek servi li kouma enn aplikasion."
+  ]
+}

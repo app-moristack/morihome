@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { CircleCheck, PauseCircle, Play, X } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router'
@@ -14,6 +16,7 @@ type ModerationPanelProps = {
 }
 
 export function ModerationPanel({ provider, isPending, onModerate }: ModerationPanelProps) {
+  useLocale()
   const [confirmingAction, setConfirmingAction] = useState<ModerationAction | null>(null)
   const [reason, setReason] = useState('')
   const { showToast } = useToast()
@@ -46,12 +49,12 @@ export function ModerationPanel({ provider, isPending, onModerate }: ModerationP
 
   return (
     <section className="card p-5">
-      <h2 className="text-lg font-bold text-ink-900">Decision</h2>
+      <h2 className="text-lg font-bold text-ink-900">{t('Decision')}</h2>
 
       {confirmingAction ? (
         <div className="mt-3 flex flex-col gap-3">
           <label htmlFor="reason" className="text-sm font-semibold text-ink-800">
-            Reason {confirmingAction === 'rejected' ? '(required)' : '(optional)'}
+            {t('Reason')} {confirmingAction === 'rejected' ? t('(required)') : t('(optional)')}
           </label>
           <textarea
             id="reason"
@@ -59,14 +62,14 @@ export function ModerationPanel({ provider, isPending, onModerate }: ModerationP
             onChange={(event) => setReason(event.target.value)}
             rows={4}
             className="w-full rounded-xl border border-ink-200 px-3.5 py-3 text-sm focus:border-ink-900 focus:ring-2 focus:ring-brand-300 focus:outline-none"
-            placeholder="Explain what needs to change…"
+            placeholder={t('Explain what needs to change…')}
           />
           <div className="flex gap-2">
             <Button variant="danger" isLoading={isPending} onClick={confirm}>
-              Confirm {confirmingAction === 'rejected' ? 'rejection' : 'suspension'}
+              {t('Confirm')} {confirmingAction === 'rejected' ? t('rejection') : t('suspension')}
             </Button>
             <Button variant="ghost" onClick={() => setConfirmingAction(null)}>
-              Cancel
+              {t('Cancel')}
             </Button>
           </div>
         </div>
@@ -80,7 +83,7 @@ export function ModerationPanel({ provider, isPending, onModerate }: ModerationP
                 onClick={() => start('approved')}
                 leadingIcon={<CircleCheck className="size-4" />}
               >
-                Approve &amp; publish
+                {t('Approve & publish')}
               </Button>
               <Button
                 isFullWidth
@@ -88,7 +91,7 @@ export function ModerationPanel({ provider, isPending, onModerate }: ModerationP
                 onClick={() => start('rejected')}
                 leadingIcon={<X className="size-4" />}
               >
-                Reject with reason
+                {t('Reject with reason')}
               </Button>
             </>
           ) : null}
@@ -100,7 +103,7 @@ export function ModerationPanel({ provider, isPending, onModerate }: ModerationP
               onClick={() => start('suspended')}
               leadingIcon={<PauseCircle className="size-4" />}
             >
-              Suspend listing
+              {t('Suspend listing')}
             </Button>
           ) : null}
 
@@ -111,20 +114,20 @@ export function ModerationPanel({ provider, isPending, onModerate }: ModerationP
               onClick={() => start('reactivated')}
               leadingIcon={<Play className="size-4" />}
             >
-              Reactivate listing
+              {t('Reactivate listing')}
             </Button>
           ) : null}
 
           {provider.approval_status === 'draft' || provider.approval_status === 'rejected' ? (
             <p className="text-sm leading-relaxed text-ink-500">
-              This profile is with the provider. It will return here once they submit it.
+              {t('This profile is with the provider. It will return here once they submit it.')}
             </p>
           ) : null}
 
           {provider.is_publicly_visible ? (
             <Link to={`/providers/${provider.slug}`} className="mt-1">
               <Button variant="ghost" isFullWidth>
-                View public profile
+                {t('View public profile')}
               </Button>
             </Link>
           ) : null}

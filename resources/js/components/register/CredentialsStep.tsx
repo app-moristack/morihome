@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowLeft, CircleAlert } from 'lucide-react'
 import { Link } from 'react-router'
@@ -14,6 +16,7 @@ type CredentialsStepProps = {
 }
 
 export function CredentialsStep({ onSubmit, onBack, isSubmitting, error }: CredentialsStepProps) {
+  useLocale()
   const {
     register,
     handleSubmit,
@@ -22,20 +25,20 @@ export function CredentialsStep({ onSubmit, onBack, isSubmitting, error }: Crede
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
-      <h2 className="text-lg font-bold text-ink-900">Secure your account</h2>
+      <h2 className="text-lg font-bold text-ink-900">{t('Secure your account')}</h2>
 
       <TextField
-        label="Password"
+        label={t('Password')}
         isRequired
         type="password"
         autoComplete="new-password"
-        hint="12–128 characters, with uppercase and lowercase letters and a number."
+        hint={t('12–128 characters, with uppercase and lowercase letters and a number.')}
         {...(errors.password?.message ? { error: errors.password.message } : {})}
         {...register('password')}
       />
 
       <TextField
-        label="Confirm password"
+        label={t('Confirm password')}
         isRequired
         type="password"
         autoComplete="new-password"
@@ -50,13 +53,13 @@ export function CredentialsStep({ onSubmit, onBack, isSubmitting, error }: Crede
           {...register('accepts_terms')}
         />
         <span>
-          I accept the{' '}
+          {t('I accept the')}{' '}
           <Link to="/terms" className="font-semibold text-ink-900 underline underline-offset-2">
-            terms of use
+            {t('terms of use')}
           </Link>{' '}
-          and the{' '}
+          {t('and the')}{' '}
           <Link to="/privacy" className="font-semibold text-ink-900 underline underline-offset-2">
-            privacy policy
+            {t('privacy policy')}
           </Link>
           .
         </span>
@@ -64,7 +67,7 @@ export function CredentialsStep({ onSubmit, onBack, isSubmitting, error }: Crede
 
       {errors.accepts_terms?.message ? (
         <p role="alert" className="-mt-2 text-sm font-medium text-danger">
-          {errors.accepts_terms.message}
+          {t(errors.accepts_terms.message)}
         </p>
       ) : null}
 
@@ -74,7 +77,7 @@ export function CredentialsStep({ onSubmit, onBack, isSubmitting, error }: Crede
           className="flex gap-2.5 rounded-xl border border-danger/30 bg-red-50 p-3.5 text-sm text-danger"
         >
           <CircleAlert className="mt-0.5 size-4 shrink-0" aria-hidden />
-          {error}
+          {t(error)}
         </div>
       ) : null}
 
@@ -87,10 +90,10 @@ export function CredentialsStep({ onSubmit, onBack, isSubmitting, error }: Crede
           disabled={isSubmitting}
           leadingIcon={<ArrowLeft className="size-5" />}
         >
-          Back
+          {t('Back')}
         </Button>
         <Button type="submit" size="lg" isFullWidth isLoading={isSubmitting}>
-          Create my profile
+          {t('Create my profile')}
         </Button>
       </div>
     </form>

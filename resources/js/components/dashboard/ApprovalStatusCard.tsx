@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { CircleAlert, CircleCheck, Clock, Eye, PauseCircle, Send } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { Link } from 'react-router'
@@ -58,6 +60,7 @@ export function ApprovalStatusCard({
   onSubmit,
   isSubmitting,
 }: ApprovalStatusCardProps) {
+  useLocale()
   const presentation = PRESENTATION[provider.approval_status]
 
   return (
@@ -68,12 +71,12 @@ export function ApprovalStatusCard({
         </div>
 
         <div className="min-w-0 flex-1">
-          <h2 className="text-lg font-bold text-ink-900">{presentation.headline}</h2>
-          <p className="mt-1 text-sm leading-relaxed text-ink-500">{presentation.body}</p>
+          <h2 className="text-lg font-bold text-ink-900">{t(presentation.headline)}</h2>
+          <p className="mt-1 text-sm leading-relaxed text-ink-500">{t(presentation.body)}</p>
 
           {provider.rejection_reason ? (
             <p className="mt-3 rounded-xl border border-danger/30 bg-red-50 p-3 text-sm text-danger">
-              <strong className="font-semibold">Reviewer note:</strong> {provider.rejection_reason}
+              <strong className="font-semibold">{t('Reviewer note:')}</strong> {provider.rejection_reason}
             </p>
           ) : null}
         </div>
@@ -81,7 +84,7 @@ export function ApprovalStatusCard({
 
       <div className="mt-5">
         <div className="flex items-center justify-between text-sm">
-          <span className="font-semibold text-ink-700">Profile completeness</span>
+          <span className="font-semibold text-ink-700">{t('Profile completeness')}</span>
           <span className="font-bold text-ink-900">{completeness.percentage}%</span>
         </div>
         <div
@@ -90,7 +93,7 @@ export function ApprovalStatusCard({
           aria-valuenow={completeness.percentage}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label="Profile completeness"
+          aria-label={t('Profile completeness')}
         >
           <div
             className="h-full rounded-full bg-brand-400 transition-[width] duration-500 ease-[var(--ease-out-soft)]"
@@ -100,11 +103,11 @@ export function ApprovalStatusCard({
 
         {completeness.missing_required.length > 0 ? (
           <p className="mt-2.5 text-sm text-danger">
-            Still required: {completeness.missing_required.map(formatFieldName).join(', ')}
+            {t('Still required:')} {completeness.missing_required.map(formatFieldName).join(', ')}
           </p>
         ) : completeness.missing_recommended.length > 0 ? (
           <p className="mt-2.5 text-sm text-ink-500">
-            Recommended: {completeness.missing_recommended.map(formatFieldName).join(', ')}
+            {t('Recommended:')} {completeness.missing_recommended.map(formatFieldName).join(', ')}
           </p>
         ) : null}
       </div>
@@ -117,14 +120,14 @@ export function ApprovalStatusCard({
             disabled={completeness.missing_required.length > 0}
             leadingIcon={<Send className="size-4" />}
           >
-            Submit for review
+            {t('Submit for review')}
           </Button>
         ) : null}
 
         {provider.is_publicly_visible ? (
           <Link to={`/providers/${provider.slug}`}>
             <Button variant="ghost" leadingIcon={<Eye className="size-4" />}>
-              View public profile
+              {t('View public profile')}
             </Button>
           </Link>
         ) : null}

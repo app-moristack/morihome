@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { cn } from '@/lib/cn'
 
 type SkeletonProps = {
@@ -5,10 +7,12 @@ type SkeletonProps = {
 }
 
 export function Skeleton({ className }: SkeletonProps) {
+  useLocale()
   return <div className={cn('skeleton', className)} aria-hidden />
 }
 
 export function ProviderCardSkeleton() {
+  useLocale()
   return (
     <div className="card flex gap-4 p-4">
       <Skeleton className="size-16 shrink-0 rounded-xl" />
@@ -26,9 +30,10 @@ export function ProviderCardSkeleton() {
 }
 
 export function ProviderListSkeleton({ count = 4 }: { count?: number }) {
+  useLocale()
   return (
     <div className="flex flex-col gap-3" aria-busy="true" aria-live="polite">
-      <span className="sr-only">Loading professionals near you</span>
+      <span className="sr-only">{t('Loading professionals near you')}</span>
       {Array.from({ length: count }, (_, index) => (
         <ProviderCardSkeleton key={index} />
       ))}
@@ -37,9 +42,10 @@ export function ProviderListSkeleton({ count = 4 }: { count?: number }) {
 }
 
 export function ProviderGridSkeleton({ count = 8 }: { count?: number }) {
+  useLocale()
   return (
     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4" aria-busy="true" aria-live="polite">
-      <span className="sr-only">Loading professionals near you</span>
+      <span className="sr-only">{t('Loading professionals near you')}</span>
       {Array.from({ length: count }, (_, index) => (
         <div key={index} className="card overflow-hidden">
           <Skeleton className="h-44 rounded-none" />

@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { Clock, Globe, Mail, Phone } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
 import { formatDayName, formatTimeRange } from '@/lib/format'
@@ -5,13 +7,14 @@ import { buildTelUrl } from '@/lib/whatsapp'
 import type { PublicProvider } from '@/types/api'
 
 export function ProviderContactPanel({ provider }: { provider: PublicProvider }) {
+  useLocale()
   const telHref = buildTelUrl(provider.phone)
   const hasOpenDay = provider.opening_hours.some((hour) => !hour.is_closed)
 
   return (
     <aside className="flex flex-col gap-6">
       <section className="card p-5">
-        <h2 className="text-lg font-bold text-ink-900">Contact</h2>
+        <h2 className="text-lg font-bold text-ink-900">{t('Contact')}</h2>
         <ul className="mt-3 flex flex-col gap-3 text-sm">
           {telHref ? (
             <li>
@@ -50,7 +53,7 @@ export function ProviderContactPanel({ provider }: { provider: PublicProvider })
 
       {provider.service_areas && provider.service_areas.length > 0 ? (
         <section className="card p-5">
-          <h2 className="text-lg font-bold text-ink-900">Areas served</h2>
+          <h2 className="text-lg font-bold text-ink-900">{t('Areas served')}</h2>
           <ul className="mt-3 flex flex-wrap gap-2">
             {provider.service_areas.map((area) => (
               <li key={area}>
@@ -65,14 +68,14 @@ export function ProviderContactPanel({ provider }: { provider: PublicProvider })
         <section className="card p-5">
           <h2 className="flex items-center gap-2 text-lg font-bold text-ink-900">
             <Clock className="size-4 text-ink-400" aria-hidden />
-            Opening hours
+            {t('Opening hours')}
           </h2>
           <dl className="mt-3 flex flex-col gap-1.5 text-sm">
             {provider.opening_hours.map((hour) => (
               <div key={hour.day_of_week} className="flex justify-between gap-4">
                 <dt className="text-ink-600">{formatDayName(hour.day_of_week)}</dt>
                 <dd className={hour.is_closed ? 'text-ink-400' : 'font-semibold text-ink-900'}>
-                  {hour.is_closed ? 'Closed' : formatTimeRange(hour.opens_at, hour.closes_at)}
+                  {hour.is_closed ? t('Closed') : formatTimeRange(hour.opens_at, hour.closes_at)}
                 </dd>
               </div>
             ))}

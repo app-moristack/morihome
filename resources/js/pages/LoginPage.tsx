@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   ArrowLeft,
@@ -17,6 +19,7 @@ import { useForm } from 'react-hook-form'
 import { Link, useNavigate, useSearchParams } from 'react-router'
 import { Button } from '@/components/ui/Button'
 import { TextField } from '@/components/ui/Field'
+import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher'
 import { Brand } from '@/components/layout/Brand'
 import loginImage from '../../images/professional-login-hero.webp'
 import '../../css/login.css'
@@ -25,6 +28,7 @@ import { describeAuthError, useAuth } from '@/hooks/useAuth'
 import { useToast } from '@/hooks/useToast'
 
 export default function LoginPage() {
+  useLocale()
   const [accountType, setAccountType] = useState<'individual' | 'business'>('individual')
   const [showPassword, setShowPassword] = useState(false)
   const [formError, setFormError] = useState<string>()
@@ -46,7 +50,7 @@ export default function LoginPage() {
 
     try {
       const user = await login(values)
-      showToast(`Welcome back, ${user.name}.`, 'success')
+      showToast(t('Welcome back, {name}.', { name: user.name }), 'success')
 
       const next = searchParams.get('next')
       const safeNext =
@@ -67,20 +71,20 @@ export default function LoginPage() {
 
   return (
     <div className="login-page">
-      <aside className="login-story" aria-label="Welcome to MoriHome">
+      <aside className="login-story" aria-label={t('Welcome to MoriHome')}>
         <img
           src={loginImage}
-          alt="Yellow hard hat and building plans beside a modern Mauritian home"
+          alt={t('Yellow hard hat and building plans beside a modern Mauritian home')}
           className="login-story-image"
         />
-        <Brand tagline="For professionals. A stronger Mauritius." />
+        <Brand tagline={t('For professionals. A stronger Mauritius.')} />
         <div className="login-story-copy">
           <h2>
-            Welcome back,
+            {t('Welcome back,')}
             <br />
-            <span>Pro.</span>
+            <span>{t('Pro.')}</span>
           </h2>
-          <p>Manage your professional account and take your business further.</p>
+          <p>{t('Manage your professional account and take your business further.')}</p>
           <ul className="login-benefits">
             {[
               {
@@ -104,35 +108,37 @@ export default function LoginPage() {
                   <Icon aria-hidden />
                 </span>
                 <div>
-                  <strong>{title}</strong>
-                  <small>{text}</small>
+                  <strong>{t(title)}</strong>
+                  <small>{t(text)}</small>
                 </div>
               </li>
             ))}
           </ul>
         </div>
         <p className="home-handwritten login-story-note">
-          Your skills.
+          {t('Your skills.')}
           <br />
-          More opportunities.
-          <br />A stronger Mauritius.
+          {t('More opportunities.')}
+          <br />
+          {t('A stronger Mauritius.')}
           <span aria-hidden />
         </p>
       </aside>
       <section className="login-panel" aria-labelledby="login-title">
         <div className="login-signup">
-          <span>Don’t have an account?</span>
+          <LanguageSwitcher />
+          <span>{t('Don’t have an account?')}</span>
           <Link to={`/register?type=${accountType === 'business' ? 'agency' : 'individual'}`}>
-            Create Account
+            {t('Create Account')}
           </Link>
         </div>
         <div className="login-content">
           <h1 id="login-title">
-            Welcome Back <span aria-hidden>👋</span>
+            {t('Welcome Back')} <span aria-hidden>👋</span>
           </h1>
-          <p className="login-subtitle">Sign in to your MoriHome account</p>
+          <p className="login-subtitle">{t('Sign in to your MoriHome account')}</p>
           <fieldset className="login-account-types">
-            <legend className="sr-only">Account type</legend>
+            <legend className="sr-only">{t('Account type')}</legend>
             {[
               {
                 value: 'individual' as const,
@@ -158,8 +164,8 @@ export default function LoginPage() {
                 />
                 <Icon aria-hidden />
                 <span>
-                  <strong>{title}</strong>
-                  <small>{description}</small>
+                  <strong>{t(title)}</strong>
+                  <small>{t(description)}</small>
                 </span>
               </label>
             ))}
@@ -167,20 +173,20 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit(onSubmit)} className="login-form" noValidate>
             <TextField
-              label="Mobile number or email"
+              label={t('Mobile number or email')}
               isRequired
               autoComplete="username"
-              placeholder="Email address or phone number"
+              placeholder={t('Email address or phone number')}
               {...(errors.identifier?.message ? { error: errors.identifier.message } : {})}
               {...register('identifier')}
             />
 
             <div className="login-password">
               <TextField
-                label="Password"
+                label={t('Password')}
                 isRequired
                 type={showPassword ? 'text' : 'password'}
-                placeholder="Password"
+                placeholder={t('Password')}
                 autoComplete="current-password"
                 {...(errors.password?.message ? { error: errors.password.message } : {})}
                 {...register('password')}
@@ -188,7 +194,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 className="login-password-toggle"
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                aria-label={showPassword ? t('Hide password') : t('Show password')}
                 aria-pressed={showPassword}
                 onClick={() => setShowPassword(!showPassword)}
               >
@@ -198,10 +204,10 @@ export default function LoginPage() {
 
             <label className="flex items-center gap-3 text-sm font-medium text-ink-700">
               <input type="checkbox" className="size-5 rounded accent-brand-500" {...register('remember')} />
-              Keep me signed in
+              {t('Keep me signed in')}
             </label>
             <Link to="/contact" className="login-help">
-              Need help signing in?
+              {t('Need help signing in?')}
             </Link>
 
             {formError ? (
@@ -210,24 +216,24 @@ export default function LoginPage() {
                 className="flex gap-2.5 rounded-xl border border-danger/30 bg-red-50 p-3.5 text-sm text-danger"
               >
                 <CircleAlert className="mt-0.5 size-4 shrink-0" aria-hidden />
-                {formError}
+                {t(formError)}
               </div>
             ) : null}
 
             <Button type="submit" size="lg" isFullWidth isLoading={isSubmitting} className="login-submit">
-              Sign In <ArrowRight className="size-5" aria-hidden />
+              {t('Sign In')} <ArrowRight className="size-5" aria-hidden />
             </Button>
           </form>
 
           <div className="login-security">
             <ShieldCheck aria-hidden />
             <div>
-              <strong>Secure & private</strong>
-              <p>Your information is safe with us.</p>
+              <strong>{t('Secure & private')}</strong>
+              <p>{t('Your information is safe with us.')}</p>
             </div>
           </div>
           <Link to="/" className="login-home">
-            <ArrowLeft size={20} aria-hidden /> Back to Home
+            <ArrowLeft size={20} aria-hidden /> {t('Back to Home')}
           </Link>
         </div>
       </section>

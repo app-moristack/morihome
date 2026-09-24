@@ -23,27 +23,27 @@ class PageMetaResolver
             'providers' => $this->provider($segments[1] ?? null),
             'search' => $this->search($request),
             'properties' => $this->staticPage(
-                'Property for rent and sale in Mauritius',
-                'Search houses, apartments, land and commercial property for rent or sale across Mauritius.',
+                __('Property for rent and sale in Mauritius'),
+                __('Search houses, apartments, land and commercial property for rent or sale across Mauritius.'),
             ),
             'for-professionals' => $this->staticPage(
-                'Grow your business with MoriHome',
-                'Compare MoriHome plans for individual professionals, agencies and companies in Mauritius.',
+                __('Grow your business with MoriHome'),
+                __('Compare MoriHome plans for individual professionals, agencies and companies in Mauritius.'),
             ),
             'register' => $this->staticPage(
-                'Create your MoriHome account',
-                'Register as an individual or agency and choose subscriptions for services, property rentals or property sales.',
+                __('Create your MoriHome account'),
+                __('Register as an individual or agency and choose subscriptions for services, property rentals or property sales.'),
             ),
             'about' => $this->staticPage(
-                'About MoriHome',
-                'MoriHome connects people in Mauritius with reviewed home-service professionals and properties for rent or sale.',
+                __('About MoriHome'),
+                __('MoriHome connects people in Mauritius with reviewed home-service professionals and properties for rent or sale.'),
             ),
-            'contact' => $this->staticPage('Contact MoriHome', 'Get in touch with the MoriHome team.'),
-            'terms' => $this->staticPage('Terms of use', 'The terms that govern the use of MoriHome.'),
-            'privacy' => $this->staticPage('Privacy policy', 'How MoriHome collects, uses and protects your data.'),
+            'contact' => $this->staticPage(__('Contact MoriHome'), __('Get in touch with the MoriHome team.')),
+            'terms' => $this->staticPage(__('Terms of use'), __('The terms that govern the use of MoriHome.')),
+            'privacy' => $this->staticPage(__('Privacy policy'), __('How MoriHome collects, uses and protects your data.')),
             'install' => $this->staticPage(
-                'Install MoriHome on your phone',
-                'Add MoriHome to your iPhone or Android home screen and use it like an app.',
+                __('Install MoriHome on your phone'),
+                __('Add MoriHome to your iPhone or Android home screen and use it like an app.'),
             ),
             default => $this->privatePage(),
         };
@@ -55,18 +55,19 @@ class PageMetaResolver
             ->where('is_active', true)
             ->where('is_popular', true)
             ->orderBy('sort_order')
-            ->pluck('name');
+            ->pluck('name')
+            ->map(fn (string $name): string => __($name));
 
         return new PageMeta(
-            title: 'MoriHome — Find services and property in Mauritius',
-            description: 'Search trusted home-service professionals and browse property for rent or sale across Mauritius. '
-                .self::TAGLINE,
+            title: __('MoriHome — Find services and property in Mauritius'),
+            description: __('Search trusted home-service professionals and browse property for rent or sale across Mauritius. ')
+                .__(self::TAGLINE),
             canonical: url('/'),
             structuredData: $this->websiteSchema(),
             noscript: $categories->isEmpty()
                 ? null
-                : '<h1>Find trusted services and property in Mauritius</h1>'
-                    .'<p>Browse property for rent or sale. Popular services: '.e($categories->implode(', ')).'.</p>',
+                : '<h1>'.e(__('Find trusted services and property in Mauritius')).'</h1>'
+                    .'<p>'.e(__('Browse property for rent or sale. Popular services: :services.', ['services' => $categories->implode(', ')])).'</p>',
         );
     }
 
@@ -77,12 +78,12 @@ class PageMetaResolver
 
         $label = collect([$category, $locality])->filter()->implode(' in ');
         $title = $label === ''
-            ? 'Search professionals near you — MoriHome'
+            ? __('Search professionals near you — MoriHome')
             : Str::title($label).' — MoriHome';
 
         return new PageMeta(
             title: $title,
-            description: 'Compare nearby professionals by distance, see their work and contact them on WhatsApp.',
+            description: __('Compare nearby professionals by distance, see their work and contact them on WhatsApp.'),
             canonical: url('/search'),
             indexable: false,
         );
@@ -99,28 +100,30 @@ class PageMetaResolver
 
         if ($provider === null) {
             return new PageMeta(
-                title: 'Profile not found — MoriHome',
-                description: 'This provider profile is not available.',
+                title: __('Profile not found — MoriHome'),
+                description: __('This provider profile is not available.'),
                 canonical: url('/'),
                 indexable: false,
             );
         }
 
-        $services = $provider->serviceCategories->pluck('name')->implode(', ');
+        $services = $provider->serviceCategories->pluck('name')
+            ->map(fn (string $name): string => __($name))
+            ->implode(', ');
         $description = Str::limit(
-            $provider->description ?: "{$provider->name} offers {$services} in {$provider->locality}, Mauritius.",
+            $provider->description ?: __(':name offers :services in :locality, Mauritius.', ['name' => $provider->name, 'services' => $services, 'locality' => $provider->locality]),
             160,
         );
 
         return new PageMeta(
-            title: "{$provider->name} — {$services} in {$provider->locality} | MoriHome",
+            title: __(':name — :services in :locality | MoriHome', ['name' => $provider->name, 'services' => $services, 'locality' => $provider->locality]),
             description: $description,
             canonical: url('/providers/'.$provider->slug),
             image: $provider->coverUrl() ?? $provider->logoUrl(),
             type: 'profile',
             structuredData: $this->providerSchema($provider, $services),
             noscript: '<h1>'.e($provider->name).'</h1><p>'.e($description).'</p>'
-                .'<p>Services: '.e($services).'</p><p>Area: '.e($provider->locality).', Mauritius</p>',
+                .'<p>'.e(__('Services: :services', ['services' => $services])).'</p><p>'.e(__('Area: :locality, Mauritius', ['locality' => $provider->locality])).'</p>',
         );
     }
 
@@ -138,7 +141,7 @@ class PageMetaResolver
     {
         return new PageMeta(
             title: 'MoriHome',
-            description: self::TAGLINE,
+            description: __(self::TAGLINE),
             canonical: url('/'),
             indexable: false,
         );
@@ -151,7 +154,7 @@ class PageMetaResolver
             '@type' => 'WebSite',
             'name' => 'MoriHome',
             'url' => url('/'),
-            'inLanguage' => 'en',
+            'inLanguage' => app()->getLocale(),
             'potentialAction' => [
                 '@type' => 'SearchAction',
                 'target' => url('/search').'?address={search_term_string}',

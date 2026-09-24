@@ -1,3 +1,5 @@
+import { t, getFormatLocale } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { useQuery } from '@tanstack/react-query'
 import { Search, Users } from 'lucide-react'
 import { useSearchParams } from 'react-router'
@@ -6,6 +8,7 @@ import { AdminUsersTable } from '@/components/admin/AdminUsersTable'
 import { Skeleton } from '@/components/ui/Skeleton'
 
 export default function AdminUsersPage() {
+  useLocale()
   const [params, setParams] = useSearchParams()
   const type = ['individual', 'agency'].includes(params.get('type') ?? '') ? params.get('type')! : ''
   const status = ['active', 'pending', 'suspended', 'inactive'].includes(params.get('status') ?? '')
@@ -32,23 +35,25 @@ export default function AdminUsersPage() {
         <div>
           <h1>
             {status === 'pending'
-              ? 'Pending Verification'
+              ? t('Pending Verification')
               : type === 'individual'
-                ? 'Individuals'
+                ? t('Individuals')
                 : type === 'agency'
-                  ? 'Businesses'
-                  : 'All Users'}
+                  ? t('Businesses')
+                  : t('All Users')}
           </h1>
-          <p>Find accounts and manage their provider profiles.</p>
+          <p>{t('Find accounts and manage their provider profiles.')}</p>
         </div>
       </div>
       <section className="admin-panel">
         <div className="admin-panel-heading">
           <h2>
             <Users size={19} />
-            User directory
+            {t('User directory')}
           </h2>
-          <span className="admin-muted">{data ? `${data.meta.total.toLocaleString()} users` : ''}</span>
+          <span className="admin-muted">
+            {data ? t('{count} users', { count: data.meta.total.toLocaleString(getFormatLocale()) }) : ''}
+          </span>
         </div>
         <div className="admin-filters">
           <form
@@ -60,40 +65,40 @@ export default function AdminUsersPage() {
           >
             <Search size={16} />
             <input
-              aria-label="Search users"
+              aria-label={t('Search users')}
               name="term"
               defaultValue={term}
               maxLength={100}
-              placeholder="Name, email, locality or service"
+              placeholder={t('Name, email, locality or service')}
             />
-            <button type="submit">Search</button>
+            <button type="submit">{t('Search')}</button>
           </form>
           <select
-            aria-label="Filter account type"
+            aria-label={t('Filter account type')}
             value={type}
             onChange={(event) => update('type', event.target.value)}
           >
-            <option value="">All types</option>
-            <option value="individual">Individuals</option>
-            <option value="agency">Businesses</option>
+            <option value="">{t('All types')}</option>
+            <option value="individual">{t('Individuals')}</option>
+            <option value="agency">{t('Businesses')}</option>
           </select>
           <select
-            aria-label="Filter user status"
+            aria-label={t('Filter user status')}
             value={status}
             onChange={(event) => update('status', event.target.value)}
           >
-            <option value="">All statuses</option>
-            <option value="active">Active</option>
-            <option value="pending">Pending verification</option>
-            <option value="suspended">Suspended</option>
-            <option value="inactive">Inactive</option>
+            <option value="">{t('All statuses')}</option>
+            <option value="active">{t('Active')}</option>
+            <option value="pending">{t('Pending verification')}</option>
+            <option value="suspended">{t('Suspended')}</option>
+            <option value="inactive">{t('Inactive')}</option>
           </select>
         </div>
         {isLoading ? (
           <Skeleton className="m-5 h-48" />
         ) : isError ? (
           <div className="admin-empty" role="alert">
-            Could not load users. <button onClick={() => void refetch()}>Try again</button>
+            {t('Could not load users.')} <button onClick={() => void refetch()}>{t('Try again')}</button>
           </div>
         ) : (
           <AdminUsersTable users={data?.data ?? []} />
@@ -102,18 +107,22 @@ export default function AdminUsersPage() {
           <div className="admin-pagination">
             <span>
               {data.meta.total === 0
-                ? 'No results'
-                : `${data.meta.from}–${data.meta.to} of ${data.meta.total}`}
+                ? t('No results')
+                : t('{from}–{to} of {total}', {
+                    from: data.meta.from ?? 0,
+                    to: data.meta.to ?? 0,
+                    total: data.meta.total,
+                  })}
             </span>
             <div>
               <button disabled={page <= 1} onClick={() => update('page', String(page - 1))}>
-                Previous
+                {t('Previous')}
               </button>
               <span>
-                Page {data.meta.current_page} of {data.meta.last_page}
+                {t('Page')} {data.meta.current_page} {t('of')} {data.meta.last_page}
               </span>
               <button disabled={page >= data.meta.last_page} onClick={() => update('page', String(page + 1))}>
-                Next
+                {t('Next')}
               </button>
             </div>
           </div>

@@ -330,6 +330,14 @@
   .home-model-section button:focus-visible {
     outline-color: #ffcc00;
   }
+  .home-featured-section-link {
+    background-color: #fff;
+    color: #102c3f;
+  }
+  .home-featured-section-link:hover {
+    background-color: #fff8d6;
+    color: #102c3f;
+  }
   .home-section-heading {
     @apply mb-6 flex flex-wrap items-center justify-between gap-x-5 gap-y-2;
   }
@@ -435,55 +443,81 @@
     font-size: 12px;
     min-height: 40px;
   }
-  .home-featured-carousel {
-    display: flex;
-    gap: 1rem;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    padding-bottom: 0.25rem;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
+  .home-provider-profile-link {
+    @apply inline-flex min-h-10 items-center justify-center gap-2 rounded-full border px-3 text-sm font-bold;
+    color: #ffcc00;
+    border-color: rgb(255 204 0 / 0.5);
   }
-  .home-featured-carousel::-webkit-scrollbar {
-    display: none;
+  .home-provider-profile-link:hover {
+    color: #ffe580;
+    background: rgb(255 204 0 / 0.1);
+    border-color: #ffcc00;
+  }
+  .home-featured-carousel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
   }
   .home-featured-carousel > * {
-    flex: 0 0 100%;
-    scroll-snap-align: start;
-  }
-  @media (max-width: 639px) {
-    .home-featured-carousel {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr);
-      overflow: visible;
-      scroll-snap-type: none;
-      padding-bottom: 0;
-    }
-    .home-featured-carousel > * {
-      min-width: 0;
-    }
+    min-width: 0;
   }
   @media (min-width: 640px) {
-    .home-featured-carousel > * {
-      flex-basis: calc((100% - 1rem) / 2);
+    .home-featured-carousel {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
   @media (min-width: 1024px) {
-    .home-featured-carousel > * {
-      flex-basis: calc((100% - 2rem) / 3);
+    .home-featured-carousel {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
   @media (min-width: 1280px) {
     .home-featured-carousel {
-      display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
-      overflow: visible;
-      padding-bottom: 0;
     }
-    .home-featured-carousel > * {
-      min-width: 0;
-      flex-basis: auto;
-    }
+  }
+  .home-carousel-controls {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .home-carousel-dots {
+    grid-column: 2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: min(50vw, 30rem);
+  }
+  .home-carousel-dot {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 44px;
+  }
+  .home-carousel-dot span {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--color-ink-300);
+  }
+  .home-carousel-dot[aria-current='page'] span {
+    width: 14px;
+    background: var(--color-brand-400);
+  }
+  .home-carousel-arrows {
+    display: flex;
+    justify-self: end;
+    gap: 0.5rem;
+  }
+  .home-carousel-arrow {
+    @apply grid size-11 place-items-center rounded-full border border-brand-200 bg-brand-100 text-ink-900 transition-colors hover:bg-brand-400 disabled:cursor-default disabled:border-ink-200 disabled:bg-transparent disabled:text-ink-400;
+  }
+  .home-carousel-arrow:focus-visible,
+  .home-carousel-dot:focus-visible {
+    outline: 2px solid var(--color-brand-400);
+    outline-offset: 3px;
   }
   .home-empty {
     @apply rounded-xl border border-ink-100 bg-ink-50 p-6;
@@ -496,29 +530,299 @@
   .home-cta:hover {
     background: #ffda3e;
   }
+  .home-app-section {
+    padding-block: 3.5rem;
+    background: var(--color-surface);
+  }
   .home-app-banner {
-    background: radial-gradient(ellipse at 70% 30%, #383b3a, #191c1c 65%);
-    color: #fff;
-    box-shadow: 0 2px 0 #1b1e1f;
+    position: relative;
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr) 225px;
+    align-items: center;
+    gap: 1.25rem;
+    min-height: 230px;
+    padding: 2rem 2.5rem 2rem 0;
+    border: 1px solid rgb(245 197 24 / 0.2);
+    border-radius: 1.5rem;
+    background: var(--color-surface);
+    color: var(--color-ink-900);
+    box-shadow: 0 16px 40px rgb(145 105 10 / 0.07);
+    overflow: hidden;
   }
-  .home-app-banner::before,
-  .home-app-banner::after {
-    content: '';
+  .home-app-copy h2 {
+    font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+    line-height: 1.15;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+  }
+  .home-app-subtitle {
+    margin-top: 0.65rem;
+    color: var(--color-ink-500);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .home-app-benefits {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.85rem;
+    margin-top: 1.5rem;
+  }
+  .home-app-benefits li {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .home-app-benefits strong {
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    font-weight: 650;
+  }
+  .home-app-benefits li > span > span {
+    display: block;
+    margin-top: 0.2rem;
+    font-size: 0.7rem;
+    line-height: 1.4;
+    color: var(--color-ink-500);
+  }
+  .home-app-benefit-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 2.65rem;
+    height: 2.65rem;
+    border-radius: 0.9rem;
+    color: #172024;
+    background: linear-gradient(145deg, #fff6d4, #ffefad);
+  }
+  .home-app-install {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    padding: 1.1rem 1.2rem;
+    border-radius: 999px;
+    background: linear-gradient(110deg, #ffdc46, #ffcc00);
+    color: #111a1e;
+    font-size: 0.9rem;
+    font-weight: 750;
+    line-height: 1.3;
+    box-shadow: 0 12px 28px rgb(255 204 0 / 0.19);
+  }
+  .home-app-install svg {
+    flex-shrink: 0;
+  }
+  .home-app-dismiss {
     position: absolute;
-    z-index: -1;
-    width: 260px;
-    height: 130px;
-    background: linear-gradient(35deg, #786108, #e7b900);
-    transform: rotate(-40deg);
-    opacity: 0.85;
+    top: 0.65rem;
+    right: 0.65rem;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    color: var(--color-ink-500);
+    background: var(--color-surface);
+    box-shadow: 0 3px 14px rgb(125 100 40 / 0.12);
+    cursor: pointer;
   }
-  .home-app-banner::before {
-    bottom: -110px;
-    left: -60px;
+  .home-app-dismiss:hover {
+    color: var(--color-ink-900);
+    background: var(--color-ink-50);
   }
-  .home-app-banner::after {
-    top: -55px;
-    right: -135px;
+  .home-app-install:focus-visible,
+  .home-app-dismiss:focus-visible {
+    outline: 3px solid var(--color-brand-500);
+    outline-offset: 4px;
+  }
+  .home-app-illustration {
+    position: relative;
+    align-self: stretch;
+    min-height: 160px;
+  }
+  .home-app-halo {
+    position: absolute;
+    width: 230px;
+    height: 230px;
+    border-radius: 50%;
+    top: 25px;
+    left: -45px;
+    background: linear-gradient(135deg, #fff9df, #fff0ad);
+  }
+  .home-app-phone {
+    position: absolute;
+    top: -17px;
+    left: 30px;
+    width: 147px;
+    height: 275px;
+    border-radius: 31px;
+    padding: 6px;
+    transform: rotate(13deg);
+    background: linear-gradient(100deg, #222, #bbb 5%, #444 9%, #111 14%, #333 95%, #999);
+    box-shadow:
+      -5px 4px 0 #aaa,
+      -8px 8px 0 #555,
+      0 18px 22px #0003;
+  }
+  .home-app-phone-screen {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    border: 2px solid #080a09;
+    border-radius: 25px;
+    background:
+      radial-gradient(ellipse at 75% 72%, #8d9c77, transparent 60%),
+      linear-gradient(150deg, #ffdf43, #e9d779 48%, #7d977d);
+  }
+  .home-app-phone-island {
+    position: absolute;
+    top: 8px;
+    left: 48px;
+    width: 49px;
+    height: 15px;
+    border-radius: 999px;
+    background: #111;
+  }
+  .home-app-phone-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 10px;
+    font-size: 8px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .home-app-phone-icon {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 25px auto 0;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 8px 20px #62542d25;
+  }
+  .home-app-phone-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .home-app-phone-label {
+    display: block;
+    margin-top: 6px;
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    text-shadow: 0 1px 5px #0005;
+  }
+  .home-app-phone-dock {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 30px 10px 0;
+    padding: 10px 5px;
+    border-radius: 16px;
+    background: #fff3;
+  }
+  .home-app-phone-dock i {
+    width: 24px;
+    height: 24px;
+    border-radius: 7px;
+    background: #fff6;
+  }
+  .home-app-rays {
+    position: absolute;
+    top: 13px;
+    left: 7px;
+  }
+  .home-app-rays i {
+    display: block;
+    width: 18px;
+    height: 4px;
+    margin-bottom: 9px;
+    border-radius: 4px;
+    background: #ffda3e;
+    transform: rotate(30deg);
+  }
+  .home-app-rays i:first-child {
+    width: 13px;
+    margin-left: 10px;
+    transform: rotate(65deg);
+  }
+  .home-app-rays i:last-child {
+    width: 13px;
+    transform: rotate(-15deg);
+  }
+  @media (max-width: 1023px) {
+    .home-app-banner {
+      grid-template-columns: 190px minmax(0, 1fr);
+      gap: 1.25rem;
+    }
+    .home-app-illustration {
+      grid-row: span 2;
+    }
+    .home-app-phone {
+      top: 12px;
+    }
+    .home-app-install {
+      grid-column: 2;
+      justify-self: start;
+    }
+  }
+  @media (max-width: 639px) {
+    .home-app-section {
+      padding-block: 2rem;
+    }
+    .home-app-banner {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 0 1.25rem 1.5rem;
+      gap: 1.5rem;
+    }
+    .home-app-illustration {
+      align-self: center;
+      height: 150px;
+      min-height: 150px;
+      width: 210px;
+      overflow: hidden;
+    }
+    .home-app-phone {
+      top: 22px;
+      left: 45px;
+      width: 127px;
+    }
+    .home-app-phone-icon {
+      width: 64px;
+      height: 64px;
+      margin-top: 18px;
+      border-radius: 16px;
+    }
+    .home-app-halo {
+      left: -10px;
+      top: 35px;
+    }
+    .home-app-rays {
+      top: 50px;
+      left: 15px;
+    }
+    .home-app-copy h2 {
+      font-size: 1.65rem;
+    }
+    .home-app-benefits {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .home-app-benefits strong {
+      font-size: 0.85rem;
+    }
+    .home-app-benefits li > span > span {
+      font-size: 0.8rem;
+    }
+    .home-app-install {
+      width: 100%;
+    }
   }
   .home-phone-art {
     position: relative;
@@ -822,7 +1126,9 @@ section.site-page-hero > .container-page {
 }
 @media (max-width: 850px) {
   section.site-page-hero {
-    --page-hero-height: 760px;
+    --page-hero-height: 0px;
+    height: auto;
+    max-height: none;
   }
   section.site-page-hero > .container-page {
     justify-content: flex-start;
@@ -917,9 +1223,6 @@ section.site-page-hero > .container-page {
 }
 
 @media (max-width: 639px) {
-  section.site-page-hero:is(.pro-hero, .about-hero, .contact-hero) {
-    --page-hero-height: 560px;
-  }
   .site-page-hero :is(.pro-hero-copy, .about-hero-copy, .contact-hero-copy) {
     width: 100%;
     padding: 24px 0 150px;
@@ -960,5 +1263,127 @@ section.site-page-hero > .container-page {
   }
   .home-pro-content > h2 {
     margin-top: 0;
+  }
+}
+
+/* Enhance native dropdowns while preserving their keyboard and form behavior. */
+@supports (appearance: base-select) {
+  select:not([multiple]):not([size]),
+  select:not([multiple]):not([size])::picker(select) {
+    appearance: base-select;
+  }
+
+  select:not([multiple]):not([size]) {
+    align-items: center;
+    gap: 0.75rem;
+    background-image: none !important;
+    padding-right: 0.875rem;
+  }
+
+  select:not([multiple]):not([size]):open {
+    border-color: #e8b600;
+    box-shadow: 0 0 0 3px rgb(255 204 0 / 18%);
+  }
+
+  select:not([multiple]):not([size])::picker-icon {
+    content: '';
+    width: 0.45rem;
+    height: 0.45rem;
+    flex-shrink: 0;
+    margin-left: auto;
+    margin-right: 0.2rem;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    color: var(--color-ink-500);
+    rotate: 45deg;
+    translate: 0 -2px;
+    transition: rotate 160ms ease;
+  }
+
+  select:not([multiple]):not([size]):open::picker-icon {
+    rotate: 225deg;
+    translate: 0 2px;
+  }
+
+  select:not([multiple]):not([size])::picker(select) {
+    min-width: anchor-size(width);
+    max-width: calc(100vw - 2rem);
+    max-height: min(22rem, 60dvh);
+    margin-block: 0.5rem;
+    padding: 0.375rem;
+    border: 1px solid var(--color-ink-100);
+    border-radius: 1rem;
+    background: var(--color-surface);
+    color: var(--color-ink-900);
+    box-shadow:
+      0 16px 40px rgb(0 0 0 / 16%),
+      0 3px 8px rgb(0 0 0 / 5%);
+    font-family: inherit;
+    font-size: 0.875rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-ink-200) transparent;
+    overscroll-behavior: contain;
+  }
+
+  select:not([multiple]):not([size]) option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 2.75rem;
+    padding: 0.625rem 0.875rem;
+    border: 0;
+    border-radius: 0.625rem;
+    background: transparent;
+    color: var(--color-ink-800);
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: normal;
+    cursor: pointer;
+  }
+
+  select:not([multiple]):not([size]) option + option {
+    margin-top: 0.125rem;
+  }
+
+  select:not([multiple]):not([size]) option:checked {
+    background: #fff4bd;
+    color: #171717;
+    font-weight: 700;
+  }
+
+  select:not([multiple]):not([size]) option:not(:disabled):is(:hover, :focus) {
+    background: #ffdf61;
+    color: #171717;
+    outline: none;
+  }
+
+  select:not([multiple]):not([size]) option::checkmark {
+    order: 1;
+    margin-left: auto;
+    color: #806000;
+    font-size: 1rem;
+  }
+
+  select:not([multiple]):not([size]) option:disabled {
+    color: var(--color-ink-400);
+    cursor: not-allowed;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    select:not([multiple]):not([size])::picker-icon {
+      transition: none;
+    }
+  }
+}
+
+@media (max-width: 379px) {
+  .site-header .brand-wordmark {
+    width: 102px;
+  }
+  .site-header .brand-mark {
+    width: 34px;
+  }
+  .site-header .brand-tagline {
+    font-size: 4.5px;
   }
 }

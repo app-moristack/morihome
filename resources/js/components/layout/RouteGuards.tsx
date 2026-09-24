@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { Navigate, Outlet, useLocation } from 'react-router'
 import { Spinner } from '@/components/ui/Spinner'
 import { useAuth } from '@/hooks/useAuth'
@@ -10,11 +12,12 @@ function useGuardState() {
 }
 
 export function RequireProvider() {
+  useLocale()
   const { isProvider } = useAuth()
   const { isLoading, isAuthenticated, redirectTo } = useGuardState()
 
   if (isLoading) {
-    return <Spinner label="Checking your account" />
+    return <Spinner label={t('Checking your account')} />
   }
 
   if (!isAuthenticated) {
@@ -25,11 +28,12 @@ export function RequireProvider() {
 }
 
 export function RequireAdmin() {
+  useLocale()
   const { isAdmin } = useAuth()
   const { isLoading, isAuthenticated, redirectTo } = useGuardState()
 
   if (isLoading) {
-    return <Spinner label="Checking your account" />
+    return <Spinner label={t('Checking your account')} />
   }
 
   if (!isAuthenticated) {

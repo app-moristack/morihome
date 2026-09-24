@@ -69,9 +69,21 @@ export const publicApi = {
     min_price?: number
     max_price?: number
     bedrooms?: number
+    bathrooms?: number
+    min_area?: number
+    is_furnished?: boolean
+    amenities?: string[]
     featured_only?: boolean
     page?: number
   }) => apiRequest<Paginated<PropertyListing>>(`/properties/search?${buildQueryString(params)}`),
+
+  property: (slug: string) =>
+    apiRequest<Envelope<PropertyListing>>(`/properties/${encodeURIComponent(slug)}`).then(
+      (response) => response.data,
+    ),
+
+  providerProperties: (slug: string, page = 1) =>
+    apiRequest<Paginated<PropertyListing>>(`/providers/${encodeURIComponent(slug)}/properties?page=${page}`),
 
   provider: (slug: string) =>
     apiRequest<Envelope<PublicProvider>>(`/providers/${slug}`).then((response) => response.data),

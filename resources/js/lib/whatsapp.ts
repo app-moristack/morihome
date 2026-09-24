@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { categoryLabel } from '@/i18n/labels'
 import { bootstrap } from './bootstrap'
 
 const WHATSAPP_ENDPOINT = 'https://wa.me/'
@@ -14,12 +16,16 @@ export function buildWhatsappMessage({
   appName,
   template,
 }: Omit<WhatsappLinkOptions, 'number'>): string {
-  const resolvedTemplate = template ?? bootstrap.whatsappTemplate
+  const sourceTemplate = template ?? bootstrap.whatsappTemplate
+  const resolvedTemplate =
+    sourceTemplate === 'Hello, I found your profile on :app. I am looking for help with :service.'
+      ? t(sourceTemplate)
+      : sourceTemplate
   const resolvedApp = appName ?? bootstrap.appName
 
   return resolvedTemplate
     .replaceAll(':app', resolvedApp)
-    .replaceAll(':service', serviceName?.toLowerCase() || 'a project at home')
+    .replaceAll(':service', serviceName ? categoryLabel(serviceName).toLowerCase() : t('a project at home'))
 }
 
 export function buildWhatsappUrl(options: WhatsappLinkOptions): string | null {

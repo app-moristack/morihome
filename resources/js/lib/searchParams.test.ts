@@ -23,7 +23,9 @@ describe('readSearchState', () => {
   })
 
   it('ignores provider types it does not recognise', () => {
-    expect(readSearchState(new URLSearchParams('type=agency&type=business')).providerTypes).toEqual(['agency'])
+    expect(readSearchState(new URLSearchParams('type=agency&type=business')).providerTypes).toEqual([
+      'agency',
+    ])
   })
 
   it('defaults to page one', () => {

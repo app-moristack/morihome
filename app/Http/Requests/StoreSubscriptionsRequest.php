@@ -44,7 +44,7 @@ class StoreSubscriptionsRequest extends FormRequest
                 )->unique()->count() !== $subscriptions->count()) {
                     $validator->errors()->add(
                         'subscription_ids',
-                        'Choose no more than one subscription from each category.',
+                        __('messages.one_subscription'),
                     );
                 }
 
@@ -59,8 +59,8 @@ class StoreSubscriptionsRequest extends FormRequest
                     $validator->errors()->add(
                         'subscription_ids',
                         $isIndividual
-                            ? 'Individuals can only choose free subscriptions.'
-                            : 'Agencies must choose from the paid subscriptions.',
+                            ? __('messages.individual_free')
+                            : __('messages.agency_paid'),
                     );
                 }
 
@@ -84,7 +84,7 @@ class StoreSubscriptionsRequest extends FormRequest
                 if ($requestedCategories->intersect($unavailableCategories)->isNotEmpty()) {
                     $validator->errors()->add(
                         'subscription_ids',
-                        'You already have an active or awaiting subscription in one of these categories.',
+                        __('messages.already_subscribed'),
                     );
                 }
             },

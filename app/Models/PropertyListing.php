@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\SubscriptionCategory;
 use Database\Factories\PropertyListingFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,6 +18,8 @@ class PropertyListing extends Model
 
     use SoftDeletes;
 
+    public const AMENITIES = ['parking', 'pool', 'garden', 'balcony', 'air_conditioning', 'security', 'lift', 'pet_friendly'];
+
     protected $fillable = [
         'purpose',
         'property_type',
@@ -27,6 +30,7 @@ class PropertyListing extends Model
         'bathrooms',
         'area_sqm',
         'is_furnished',
+        'amenities',
         'address',
         'locality',
         'latitude',
@@ -43,11 +47,21 @@ class PropertyListing extends Model
             'bathrooms' => 'integer',
             'area_sqm' => 'float',
             'is_furnished' => 'boolean',
+            'amenities' => 'array',
             'latitude' => 'float',
             'longitude' => 'float',
             'published_at' => 'datetime',
             'expires_at' => 'datetime',
         ];
+    }
+
+    public function scopePubliclyListed(Builder $query): Builder
+    {
+        return $query->where('status', 'published')
+            ->where(fn (Builder $query) => $query->whereNull('expires_at')->orWhere('expires_at', '>=', now()))
+            ->whereHas('membership', fn (Builder $query) => $query
+                ->where('starts_at', '<=', now())
+                ->where('ends_at', '>=', now()));
     }
 
     public function provider(): BelongsTo

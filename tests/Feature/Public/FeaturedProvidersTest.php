@@ -11,14 +11,14 @@ class FeaturedProvidersTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_returns_at_most_five_featured_profiles_with_verified_profiles_first(): void
+    public function test_returns_all_featured_profiles_with_verified_profiles_first(): void
     {
         Provider::factory()->approved()->featured()->count(5)->create();
         $verified = Provider::factory()->approved()->featured()->verified()->create();
 
         $this->getJson('/api/v1/providers/featured')
             ->assertOk()
-            ->assertJsonCount(5, 'data')
+            ->assertJsonCount(6, 'data')
             ->assertJsonPath('data.0.id', $verified->id)
             ->assertJsonPath('data.0.is_verified', true);
     }

@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { KeyRound } from 'lucide-react'
@@ -11,6 +13,7 @@ import { passwordChangeSchema, type PasswordChangeValues } from '@/lib/schemas'
 import { useToast } from '@/hooks/useToast'
 
 export default function ProviderSecurityPage() {
+  useLocale()
   const { showToast } = useToast()
   const {
     register,
@@ -40,9 +43,9 @@ export default function ProviderSecurityPage() {
   return (
     <div className="container-page max-w-lg py-8 sm:py-10">
       <PageHeader
-        eyebrow="Provider dashboard"
-        title="Security"
-        description="Change the password you sign in with."
+        eyebrow={t('Provider dashboard')}
+        title={t('Security')}
+        description={t('Change the password you sign in with.')}
       />
 
       <form
@@ -51,7 +54,7 @@ export default function ProviderSecurityPage() {
         noValidate
       >
         <TextField
-          label="Current password"
+          label={t('Current password')}
           isRequired
           type="password"
           autoComplete="current-password"
@@ -60,17 +63,17 @@ export default function ProviderSecurityPage() {
         />
 
         <TextField
-          label="New password"
+          label={t('New password')}
           isRequired
           type="password"
           autoComplete="new-password"
-          hint="At least 8 characters, with an uppercase letter and a number."
+          hint={t('At least 12 characters, with uppercase and lowercase letters and a number.')}
           {...(errors.password?.message ? { error: errors.password.message } : {})}
           {...register('password')}
         />
 
         <TextField
-          label="Confirm new password"
+          label={t('Confirm new password')}
           isRequired
           type="password"
           autoComplete="new-password"
@@ -85,7 +88,7 @@ export default function ProviderSecurityPage() {
           isLoading={changePassword.isPending}
           leadingIcon={<KeyRound className="size-5" />}
         >
-          Change password
+          {t('Change password')}
         </Button>
       </form>
     </div>

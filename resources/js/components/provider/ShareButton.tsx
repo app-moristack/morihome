@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { Check, Share2 } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
@@ -13,6 +15,7 @@ type ShareButtonProps = {
 const CONFIRMATION_MS = 2200
 
 export function ShareButton({ title, text, url, size = 'md' }: ShareButtonProps) {
+  useLocale()
   const [hasCopied, setHasCopied] = useState(false)
   const { showToast } = useToast()
 
@@ -45,9 +48,9 @@ export function ShareButton({ title, text, url, size = 'md' }: ShareButtonProps)
       size={size}
       onClick={handleShare}
       leadingIcon={hasCopied ? <Check className="size-4" /> : <Share2 className="size-4" />}
-      aria-label="Share this profile"
+      aria-label={t('Share this profile')}
     >
-      {hasCopied ? 'Copied' : 'Share'}
+      {hasCopied ? t('Copied') : t('Share')}
     </Button>
   )
 }

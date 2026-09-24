@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\PropertyListing;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -23,6 +24,8 @@ class StorePropertyListingRequest extends FormRequest
             'bedrooms' => ['nullable', 'integer', 'min:0', 'max:100'],
             'bathrooms' => ['nullable', 'integer', 'min:0', 'max:100'],
             'area_sqm' => ['nullable', 'numeric', 'min:1', 'max:99999999'],
+            'amenities' => ['sometimes', 'array', 'max:8'],
+            'amenities.*' => ['string', 'distinct', Rule::in(PropertyListing::AMENITIES)],
             'is_furnished' => ['nullable', 'boolean'],
             'address' => ['required', 'string', 'min:4', 'max:255'],
             'locality' => ['required', 'string', 'min:2', 'max:120'],

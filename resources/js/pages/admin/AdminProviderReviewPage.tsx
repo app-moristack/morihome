@@ -1,3 +1,6 @@
+import { enumLabel } from '@/i18n/labels'
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ArrowLeft } from 'lucide-react'
 import { Link, useParams } from 'react-router'
@@ -14,6 +17,7 @@ import { Spinner } from '@/components/ui/Spinner'
 import { useToast } from '@/hooks/useToast'
 
 export default function AdminProviderReviewPage() {
+  useLocale()
   const { id } = useParams<{ id: string }>()
   const providerId = Number(id)
   const queryClient = useQueryClient()
@@ -36,19 +40,20 @@ export default function AdminProviderReviewPage() {
       adminApi.moderate(providerId, action, reason),
     onSuccess: (_, variables) => {
       void queryClient.invalidateQueries({ queryKey: ['admin'] })
-      showToast(`Provider ${variables.action}.`, 'success')
+      showToast(t('Provider {action}.', { action: enumLabel(variables.action) }), 'success')
     },
-    onError: (error) => showToast(error instanceof ApiError ? error.message : 'The action failed.', 'error'),
+    onError: (error) =>
+      showToast(error instanceof ApiError ? error.message : t('The action failed.'), 'error'),
   })
 
   if (isLoading) {
-    return <Spinner label="Loading provider" />
+    return <Spinner label={t('Loading provider')} />
   }
 
   if (!provider) {
     return (
       <div className="container-page py-12">
-        <EmptyState title="Provider not found" description="It may have been deleted." />
+        <EmptyState title={t('Provider not found')} description={t('It may have been deleted.')} />
       </div>
     )
   }
@@ -60,14 +65,14 @@ export default function AdminProviderReviewPage() {
         className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-600 hover:text-ink-900"
       >
         <ArrowLeft className="size-4" aria-hidden />
-        Back to queue
+        {t('Back to queue')}
       </Link>
 
       <div className="mt-4">
         <PageHeader
-          eyebrow="Review"
+          eyebrow={t('Review')}
           title={provider.name}
-          description={`${provider.provider_type} · ${provider.locality}`}
+          description={`${enumLabel(provider.provider_type)} · ${provider.locality}`}
           action={
             <Badge tone={provider.is_publicly_visible ? 'success' : 'warning'}>
               {provider.approval_status_label}
@@ -82,7 +87,7 @@ export default function AdminProviderReviewPage() {
 
           {provider.portfolio_images.length > 0 ? (
             <section className="card p-5">
-              <h2 className="text-lg font-bold text-ink-900">Portfolio</h2>
+              <h2 className="text-lg font-bold text-ink-900">{t('Portfolio')}</h2>
               <ul className="mt-3 grid grid-cols-3 gap-2">
                 {provider.portfolio_images.map((image) => (
                   <li key={image.id}>

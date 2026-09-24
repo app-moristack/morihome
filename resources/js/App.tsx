@@ -1,3 +1,4 @@
+import { t } from '@/i18n'
 import { lazy, Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router'
 import { RootLayout } from '@/components/layout/RootLayout'
@@ -17,6 +18,7 @@ const StaticPage = lazy(() => import('@/pages/StaticPage'))
 const AboutPage = lazy(() => import('@/pages/AboutPage'))
 const ContactPage = lazy(() => import('@/pages/ContactPage'))
 const InstallPage = lazy(() => import('@/pages/InstallPage'))
+const PropertyDetailPage = lazy(() => import('@/pages/PropertyDetailPage'))
 const PropertySearchPage = lazy(() => import('@/pages/PropertySearchPage'))
 const ProviderDashboardPage = lazy(() => import('@/pages/provider/ProviderDashboardPage'))
 const ProviderProfileEditPage = lazy(() => import('@/pages/provider/ProviderProfileEditPage'))
@@ -39,16 +41,24 @@ export function App() {
         <Route
           path="properties"
           element={
-            <Suspense fallback={<Spinner label="Loading properties" />}>
+            <Suspense fallback={<Spinner label={t('Loading properties')} />}>
               <PropertySearchPage />
             </Suspense>
           }
         />
 
         <Route
+          path="properties/:slug"
+          element={
+            <Suspense fallback={<Spinner label={t('Loading properties')} />}>
+              <PropertyDetailPage />
+            </Suspense>
+          }
+        />
+        <Route
           path="providers/:slug"
           element={
-            <Suspense fallback={<Spinner label="Loading profile" />}>
+            <Suspense fallback={<Spinner label={t('Loading profile')} />}>
               <ProviderProfilePage />
             </Suspense>
           }
@@ -57,7 +67,7 @@ export function App() {
         <Route
           path="for-professionals"
           element={
-            <Suspense fallback={<Spinner label="Loading professional plans" />}>
+            <Suspense fallback={<Spinner label={t('Loading professional plans')} />}>
               <ForProfessionalsPage />
             </Suspense>
           }
@@ -65,7 +75,7 @@ export function App() {
         <Route
           path="register"
           element={
-            <Suspense fallback={<Spinner label="Loading registration" />}>
+            <Suspense fallback={<Spinner label={t('Loading registration')} />}>
               <RegisterPage />
             </Suspense>
           }
@@ -132,7 +142,7 @@ export function App() {
           <Route
             index
             element={
-              <Suspense fallback={<Spinner label="Loading your dashboard" />}>
+              <Suspense fallback={<Spinner label={t('Loading your dashboard')} />}>
                 <ProviderDashboardPage />
               </Suspense>
             }
@@ -164,7 +174,7 @@ export function App() {
           <Route
             path="properties"
             element={
-              <Suspense fallback={<Spinner label="Loading properties" />}>
+              <Suspense fallback={<Spinner label={t('Loading properties')} />}>
                 <ProviderPropertiesPage />
               </Suspense>
             }
@@ -176,7 +186,7 @@ export function App() {
             <Route
               path="users"
               element={
-                <Suspense fallback={<Spinner label="Loading users" />}>
+                <Suspense fallback={<Spinner label={t('Loading users')} />}>
                   <AdminUsersPage />
                 </Suspense>
               }
@@ -184,7 +194,7 @@ export function App() {
             <Route
               index
               element={
-                <Suspense fallback={<Spinner label="Loading admin" />}>
+                <Suspense fallback={<Spinner label={t('Loading admin')} />}>
                   <AdminDashboardPage />
                 </Suspense>
               }
@@ -216,7 +226,7 @@ export function App() {
             <Route
               path="subscriptions"
               element={
-                <Suspense fallback={<Spinner label="Loading subscriptions" />}>
+                <Suspense fallback={<Spinner label={t('Loading subscriptions')} />}>
                   <AdminSubscriptionsPage />
                 </Suspense>
               }

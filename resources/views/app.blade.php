@@ -21,7 +21,7 @@
     <meta property="og:description" content="{{ $meta->description }}">
     <meta property="og:url" content="{{ $meta->canonical }}">
     <meta property="og:image" content="{{ $meta->imageUrl() }}">
-    <meta property="og:locale" content="en_MU">
+    <meta property="og:locale" content="{{ app()->getLocale() }}_MU">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $meta->title }}">
     <meta name="twitter:description" content="{{ $meta->description }}">
@@ -68,7 +68,7 @@
         <noscript>
             <div style="max-width:48rem;margin:0 auto;padding:2rem 1rem;font-family:system-ui,sans-serif">
                 {!! $meta->noscript !!}
-                <p><a href="/">MoriHome</a> needs JavaScript for search and messaging.</p>
+                <p><a href="/">MoriHome</a> {{ __('needs JavaScript for search and messaging.') }}</p>
             </div>
         </noscript>
     @endif

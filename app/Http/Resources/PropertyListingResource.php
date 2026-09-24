@@ -20,6 +20,7 @@ class PropertyListingResource extends JsonResource
             'bedrooms' => $this->bedrooms,
             'bathrooms' => $this->bathrooms,
             'area_sqm' => $this->area_sqm,
+            'amenities' => $this->amenities ?? [],
             'is_furnished' => $this->is_furnished,
             'address' => $this->address,
             'locality' => $this->locality,
@@ -34,6 +35,8 @@ class PropertyListingResource extends JsonResource
             ),
             'provider' => $this->whenLoaded('provider', fn (): array => [
                 'name' => $this->provider->name,
+                'logo_url' => $this->provider->logoUrl(),
+                'profile_available' => $this->provider->isPubliclyVisible(),
                 'slug' => $this->provider->slug,
                 'phone' => $this->provider->phone,
                 'whatsapp_phone' => $this->provider->whatsapp_phone,

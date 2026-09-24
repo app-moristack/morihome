@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import * as L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { MapPin, Maximize } from 'lucide-react'
@@ -11,6 +13,7 @@ type ProviderMapProps = {
 }
 
 export default function ProviderMap({ providers }: ProviderMapProps) {
+  useLocale()
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<L.Map | null>(null)
   const tilesRef = useRef<L.TileLayer | null>(null)
@@ -99,7 +102,10 @@ export default function ProviderMap({ providers }: ProviderMapProps) {
           iconAnchor: [18, 18],
         }),
         title: group.providers.map((provider) => provider.name).join(', '),
-        alt: `${group.providers.length} professionals near ${group.providers[0]?.locality ?? 'this area'}`,
+        alt: t('{count} professionals near {locality}', {
+          count: group.providers.length,
+          locality: group.providers[0]?.locality ?? t('this area'),
+        }),
       })
         .addTo(layer)
         .bindPopup(popup, { maxWidth: 300, maxHeight: 240 })
@@ -123,13 +129,14 @@ export default function ProviderMap({ providers }: ProviderMapProps) {
   }
 
   return (
-    <section className="card overflow-hidden" aria-label="Map search results">
+    <section className="card overflow-hidden" aria-label={t('Map search results')}>
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-ink-100 px-4 py-3">
         <p className="text-xs text-ink-600">
-          Showing {providers.length} professionals on this page. Pins show approximate locations.
+          {t('Showing')} {providers.length}{' '}
+          {t('professionals on this page. Pins show approximate locations.')}
         </p>
         <Button variant="ghost" size="sm" onClick={fitResults} leadingIcon={<Maximize className="size-4" />}>
-          Fit results
+          {t('Fit results')}
         </Button>
       </div>
       {tileError ? (
@@ -137,7 +144,7 @@ export default function ProviderMap({ providers }: ProviderMapProps) {
           role="status"
           className="flex flex-wrap items-center gap-2 bg-brand-50 px-4 py-2 text-sm text-ink-900"
         >
-          Some map tiles could not load. You can still browse the professionals below.
+          {t('Some map tiles could not load. You can still browse the professionals below.')}
           <button
             type="button"
             className="min-h-9 font-semibold underline"
@@ -146,7 +153,7 @@ export default function ProviderMap({ providers }: ProviderMapProps) {
               tilesRef.current?.redraw()
             }}
           >
-            Retry map
+            {t('Retry map')}
           </button>
         </div>
       ) : null}
@@ -154,7 +161,7 @@ export default function ProviderMap({ providers }: ProviderMapProps) {
         <div
           ref={containerRef}
           role="region"
-          aria-label="Professional locations map"
+          aria-label={t('Professional locations map')}
           className="relative z-0 h-[420px] bg-ink-100 sm:h-[520px]"
         />
         <ul className="max-h-80 divide-y divide-ink-100 overflow-y-auto border-t border-ink-100 xl:max-h-[520px] xl:border-t-0 xl:border-l">
@@ -171,13 +178,13 @@ export default function ProviderMap({ providers }: ProviderMapProps) {
                 <button
                   type="button"
                   onClick={() => showProvider(provider)}
-                  aria-label={`Show ${provider.name} on map`}
+                  aria-label={t('Show {name} on map', { name: provider.name })}
                   className="mt-2 inline-flex min-h-9 items-center gap-1.5 text-xs font-semibold hover:underline"
                 >
-                  <MapPin className="size-4" aria-hidden /> Show on map
+                  <MapPin className="size-4" aria-hidden /> {t('Show on map')}
                 </button>
               ) : (
-                <p className="mt-2 text-xs text-ink-500">Map location unavailable</p>
+                <p className="mt-2 text-xs text-ink-500">{t('Map location unavailable')}</p>
               )}
             </li>
           ))}

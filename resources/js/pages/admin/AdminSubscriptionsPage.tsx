@@ -1,3 +1,6 @@
+import { planLabel, enumLabel } from '@/i18n/labels'
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { CalendarCheck, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
@@ -17,6 +20,7 @@ function toDateInput(date: Date): string {
 }
 
 function ActivationForm({ membership }: { membership: SubscriptionMembership }) {
+  useLocale()
   const queryClient = useQueryClient()
   const { showToast } = useToast()
   const initialStart = membership.starts_at?.slice(0, 10) ?? toDateInput(new Date())
@@ -36,7 +40,7 @@ function ActivationForm({ membership }: { membership: SubscriptionMembership }) 
   return (
     <div className="flex flex-wrap items-end gap-2">
       <label className="grid gap-1 text-[10px] font-bold text-ink-500 uppercase">
-        Start date
+        {t('Start date')}
         <input
           className="rounded-md border border-ink-200 bg-white px-2 py-1.5 text-xs text-ink-900"
           type="date"
@@ -45,7 +49,7 @@ function ActivationForm({ membership }: { membership: SubscriptionMembership }) 
         />
       </label>
       <label className="grid gap-1 text-[10px] font-bold text-ink-500 uppercase">
-        End date
+        {t('End date')}
         <input
           className="rounded-md border border-ink-200 bg-white px-2 py-1.5 text-xs text-ink-900"
           type="date"
@@ -60,13 +64,14 @@ function ActivationForm({ membership }: { membership: SubscriptionMembership }) 
         disabled={!startsAt || !endsAt || activation.isPending}
         leadingIcon={<CalendarCheck className="size-4" />}
       >
-        {membership.state === 'awaiting_approval' ? 'Activate' : 'Update dates'}
+        {membership.state === 'awaiting_approval' ? t('Activate') : t('Update dates')}
       </Button>
     </div>
   )
 }
 
 export default function AdminSubscriptionsPage() {
+  useLocale()
   const [searchParams, setSearchParams] = useSearchParams()
   const state = searchParams.get('state') ?? 'awaiting_approval'
   const page = Number(searchParams.get('page') ?? 1)
@@ -79,12 +84,12 @@ export default function AdminSubscriptionsPage() {
     <div className="flex flex-col gap-5">
       <header className="admin-heading">
         <div>
-          <h1>Subscriptions</h1>
-          <p>Verify payments, activate requests and manage subscription dates.</p>
+          <h1>{t('Subscriptions')}</h1>
+          <p>{t('Verify payments, activate requests and manage subscription dates.')}</p>
         </div>
       </header>
 
-      <nav className="flex flex-wrap gap-2" aria-label="Subscription status">
+      <nav className="flex flex-wrap gap-2" aria-label={t('Subscription status')}>
         {STATES.map((option) => (
           <button
             key={option}
@@ -92,7 +97,7 @@ export default function AdminSubscriptionsPage() {
             onClick={() => setSearchParams({ state: option })}
             className={`rounded-full px-4 py-2 text-xs font-bold ${state === option ? 'bg-ink-900 text-white' : 'border border-ink-200 bg-white text-ink-600'}`}
           >
-            {option.replace('_', ' ')}
+            {enumLabel(option)}
           </button>
         ))}
       </nav>
@@ -100,17 +105,17 @@ export default function AdminSubscriptionsPage() {
       {isLoading ? (
         <Skeleton className="h-80 rounded-xl" />
       ) : isError ? (
-        <p className="rounded-xl bg-red-50 p-4 text-danger">Could not load subscriptions.</p>
+        <p className="rounded-xl bg-red-50 p-4 text-danger">{t('Could not load subscriptions.')}</p>
       ) : (
         <div className="overflow-x-auto rounded-xl border border-ink-100 bg-white">
           <table className="w-full min-w-[900px] text-left text-xs">
             <thead className="border-b border-ink-100 bg-ink-50 text-ink-500 uppercase">
               <tr>
-                <th className="p-4">Customer</th>
-                <th className="p-4">Plan</th>
-                <th className="p-4">Amount</th>
-                <th className="p-4">Status</th>
-                <th className="p-4">Activation</th>
+                <th className="p-4">{t('Customer')}</th>
+                <th className="p-4">{t('Plan')}</th>
+                <th className="p-4">{t('Amount')}</th>
+                <th className="p-4">{t('Status')}</th>
+                <th className="p-4">{t('Activation')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-ink-100">
@@ -119,18 +124,18 @@ export default function AdminSubscriptionsPage() {
                   <td className="p-4">
                     <strong className="block text-sm text-ink-900">{membership.user.name}</strong>
                     <span className="text-ink-500">{membership.user.phone}</span>
-                    <small className="block text-ink-400">{membership.user.provider_type}</small>
+                    <small className="block text-ink-400">{enumLabel(membership.user.provider_type)}</small>
                   </td>
                   <td className="p-4">
-                    <strong className="block text-ink-900">{membership.subscription.name}</strong>
+                    <strong className="block text-ink-900">{planLabel(membership.subscription.name)}</strong>
                     <span className="text-ink-500">
-                      Requested {new Date(membership.requested_at).toLocaleDateString()}
+                      {t('Requested')} {new Date(membership.requested_at).toLocaleDateString()}
                     </span>
                   </td>
                   <td className="p-4 font-bold text-ink-900">
                     {membership.subscription.price_rupees
                       ? `Rs ${membership.subscription.price_rupees}`
-                      : 'Free'}
+                      : t('Free')}
                   </td>
                   <td className="p-4">
                     <Badge
@@ -142,7 +147,7 @@ export default function AdminSubscriptionsPage() {
                             : 'warning'
                       }
                     >
-                      {membership.state.replace('_', ' ')}
+                      {enumLabel(membership.state)}
                     </Badge>
                   </td>
                   <td className="p-4">
@@ -153,7 +158,7 @@ export default function AdminSubscriptionsPage() {
               {data?.data.length === 0 ? (
                 <tr>
                   <td className="p-8 text-center text-ink-500" colSpan={5}>
-                    No subscriptions in this state.
+                    {t('No subscriptions in this state.')}
                   </td>
                 </tr>
               ) : null}
@@ -171,10 +176,10 @@ export default function AdminSubscriptionsPage() {
             onClick={() => setSearchParams({ state, page: String(page - 1) })}
             leadingIcon={<ChevronLeft className="size-4" />}
           >
-            Previous
+            {t('Previous')}
           </Button>
           <span className="text-xs text-ink-500">
-            Page {page} of {data.meta.last_page}
+            {t('Page')} {page} {t('of')} {data.meta.last_page}
           </span>
           <Button
             variant="secondary"
@@ -183,7 +188,7 @@ export default function AdminSubscriptionsPage() {
             onClick={() => setSearchParams({ state, page: String(page + 1) })}
             leadingIcon={<ChevronRight className="size-4" />}
           >
-            Next
+            {t('Next')}
           </Button>
         </div>
       ) : null}

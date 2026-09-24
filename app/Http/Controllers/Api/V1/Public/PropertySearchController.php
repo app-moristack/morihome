@@ -25,18 +25,17 @@ class PropertySearchController extends Controller
                 ...($request->filled('min_price') ? ['gte:min_price'] : []),
             ],
             'bedrooms' => ['sometimes', 'integer', 'min:0', 'max:100'],
+            'bathrooms' => ['sometimes', 'integer', 'min:0', 'max:100'],
+            'min_area' => ['sometimes', 'numeric', 'min:0', 'max:99999999'],
+            'is_furnished' => ['sometimes', 'boolean'],
+            'amenities' => ['sometimes', 'array', 'max:8'],
+            'amenities.*' => ['string', 'distinct', Rule::in(PropertyListing::AMENITIES)],
             'featured_only' => ['sometimes', 'boolean'],
             'page' => ['sometimes', 'integer', 'min:1'],
         ]);
 
         $listings = PropertyListing::query()
-            ->where('status', 'published')
-            ->where(function ($query): void {
-                $query->whereNull('expires_at')->orWhere('expires_at', '>=', now());
-            })
-            ->whereHas('membership', fn ($query) => $query
-                ->where('starts_at', '<=', now())
-                ->where('ends_at', '>=', now()))
+            ->publiclyListed()
             ->when($validated['featured_only'] ?? false, fn ($query) => $query
                 ->whereHas('membership.subscription', fn ($query) => $query->where('featured_items', true)))
             ->when($validated['purpose'] ?? null, fn ($query, string $purpose) => $query->where('purpose', $purpose))
@@ -49,8 +48,17 @@ class PropertySearchController extends Controller
             ->when(isset($validated['min_price']), fn ($query) => $query->where('price_rupees', '>=', $validated['min_price']))
             ->when(isset($validated['max_price']), fn ($query) => $query->where('price_rupees', '<=', $validated['max_price']))
             ->when(isset($validated['bedrooms']), fn ($query) => $query->where('bedrooms', '>=', $validated['bedrooms']))
+            ->when(isset($validated['bathrooms']), fn ($query) => $query->where('bathrooms', '>=', $validated['bathrooms']))
+            ->when(isset($validated['min_area']), fn ($query) => $query->where('area_sqm', '>=', $validated['min_area']))
+            ->when(isset($validated['is_furnished']), fn ($query) => $query->where('is_furnished', $validated['is_furnished']))
+            ->when($validated['amenities'] ?? [], function ($query, array $amenities): void {
+                foreach ($amenities as $amenity) {
+                    $query->whereJsonContains('amenities', $amenity);
+                }
+            })
             ->with(['images', 'provider', 'membership.subscription'])
             ->latest('published_at')
+            ->orderByDesc('id')
             ->paginate(24)
             ->withQueryString();
 

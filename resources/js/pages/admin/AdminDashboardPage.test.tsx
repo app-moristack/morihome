@@ -111,13 +111,11 @@ describe('Admin dashboard', () => {
 
   it('applies user type and status filters from navigation and allows pagination', async () => {
     vi.spyOn(adminApi, 'dashboard').mockResolvedValue(dashboard)
-    const users = vi
-      .spyOn(adminApi, 'users')
-      .mockResolvedValue({
-        data: [user],
-        links: { first: null, last: null, next: null, prev: null },
-        meta: { total: 26, current_page: 1, per_page: 25, from: 1, to: 25, last_page: 2 },
-      })
+    const users = vi.spyOn(adminApi, 'users').mockResolvedValue({
+      data: [user],
+      links: { first: null, last: null, next: null, prev: null },
+      meta: { total: 26, current_page: 1, per_page: 25, from: 1, to: 25, last_page: 2 },
+    })
     renderAdmin('/admin/users?type=agency&status=pending')
     expect(await screen.findByRole('link', { name: 'Manage Volt Mauritius' })).toBeInTheDocument()
     expect(users).toHaveBeenCalledWith({ type: 'agency', status: 'pending', page: 1, term: '' })

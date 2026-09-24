@@ -1,3 +1,6 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
+import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher'
 import { useQuery } from '@tanstack/react-query'
 import {
   Bell,
@@ -22,6 +25,7 @@ import mark from '../../../images/morihome-house-services-logo.webp'
 import '../../../css/admin.css'
 
 export function AdminLayout() {
+  useLocale()
   const { user, logout } = useAuth()
   const { pathname, search } = useLocation()
   const navigate = useNavigate()
@@ -51,22 +55,26 @@ export function AdminLayout() {
         <button
           type="button"
           className="admin-sidebar-backdrop"
-          aria-label="Close navigation"
+          aria-label={t('Close navigation')}
           onClick={() => setSidebarOpen(false)}
         />
       ) : null}
       <aside className={`admin-sidebar ${sidebarOpen ? 'is-open' : ''}`}>
-        <Link to="/admin" className="admin-brand" aria-label="MoriHome admin dashboard">
+        <Link to="/admin" className="admin-brand" aria-label={t('MoriHome admin dashboard')}>
           <span>
             <img src={mark} alt="" />
             Mori<b>Home</b>
           </span>
-          <small>Local professionals. A stronger tomorrow.</small>
+          <small>{t('Local professionals. A stronger tomorrow.')}</small>
         </Link>
-        <button className="admin-close-sidebar" aria-label="Close menu" onClick={() => setSidebarOpen(false)}>
+        <button
+          className="admin-close-sidebar"
+          aria-label={t('Close menu')}
+          onClick={() => setSidebarOpen(false)}
+        >
           <X size={20} />
         </button>
-        <nav aria-label="Admin navigation">
+        <nav aria-label={t('Admin navigation')}>
           <Link
             to="/admin"
             className={pathname === '/admin' ? 'is-active' : ''}
@@ -74,12 +82,12 @@ export function AdminLayout() {
             onClick={() => setSidebarOpen(false)}
           >
             <House size={18} />
-            Dashboard
+            {t('Dashboard')}
           </Link>
-          <p className="admin-nav-label">Manage</p>
+          <p className="admin-nav-label">{t('Manage')}</p>
           <div className="admin-nav-group">
             <Users size={18} />
-            Users
+            {t('Users')}
             <ChevronDown size={15} />
           </div>
           <div className="admin-subnav">
@@ -91,7 +99,7 @@ export function AdminLayout() {
                 aria-current={current === item.to ? 'page' : undefined}
                 onClick={() => setSidebarOpen(false)}
               >
-                {item.label}
+                {t(item.label)}
                 {item.label === 'Pending Verification' && pending > 0 ? <span>{pending}</span> : null}
               </Link>
             ))}
@@ -103,7 +111,7 @@ export function AdminLayout() {
             onClick={() => setSidebarOpen(false)}
           >
             <Grid2X2 size={18} />
-            Service Categories
+            {t('Service Categories')}
           </Link>
           <Link
             to="/admin/subscriptions"
@@ -112,11 +120,11 @@ export function AdminLayout() {
             onClick={() => setSidebarOpen(false)}
           >
             <CreditCard size={18} />
-            Subscriptions
+            {t('Subscriptions')}
           </Link>
         </nav>
         <Link to="/" className="admin-view-site">
-          View Website
+          {t('View Website')}
           <ExternalLink size={15} />
         </Link>
       </aside>
@@ -125,7 +133,7 @@ export function AdminLayout() {
           <button
             type="button"
             className="admin-menu-button"
-            aria-label="Toggle navigation"
+            aria-label={t('Toggle navigation')}
             aria-expanded={sidebarOpen}
             onClick={() => setSidebarOpen(!sidebarOpen)}
           >
@@ -142,26 +150,31 @@ export function AdminLayout() {
           >
             <Search size={17} aria-hidden />
             <input
-              aria-label="Search administration"
-              placeholder="Search users, services, categories…"
+              aria-label={t('Search administration')}
+              placeholder={t('Search users, services, categories…')}
               maxLength={100}
               value={term}
               onChange={(event) => setTerm(event.target.value)}
             />
-            <select aria-label="Search in" value={scope} onChange={(event) => setScope(event.target.value)}>
-              <option value="users">Users</option>
-              <option value="categories">Categories</option>
+            <select
+              aria-label={t('Search in')}
+              value={scope}
+              onChange={(event) => setScope(event.target.value)}
+            >
+              <option value="users">{t('Users')}</option>
+              <option value="categories">{t('Categories')}</option>
             </select>
             <button type="submit" className="sr-only">
-              Search
+              {t('Search')}
             </button>
           </form>
           <div className="admin-topbar-actions">
+            <LanguageSwitcher />
             <div className="admin-popover-anchor">
               <button
                 type="button"
                 className="admin-notifications-button"
-                aria-label={`Notifications: ${pending} pending reviews`}
+                aria-label={t('Notifications: {count} pending reviews', { count: pending })}
                 aria-expanded={notificationsOpen}
                 onClick={() => {
                   setNotificationsOpen(!notificationsOpen)
@@ -173,14 +186,14 @@ export function AdminLayout() {
               </button>
               {notificationsOpen ? (
                 <div className="admin-popover">
-                  <strong>Pending verification</strong>
+                  <strong>{t('Pending verification')}</strong>
                   <p>
                     {pending
-                      ? `${pending} provider profiles are waiting for review.`
-                      : 'You’re all caught up.'}
+                      ? t('{count} provider profiles are waiting for review.', { count: pending })
+                      : t('You’re all caught up.')}
                   </p>
                   <Link to="/admin/users?status=pending" onClick={() => setNotificationsOpen(false)}>
-                    Open review queue →
+                    {t('Open review queue →')}
                   </Link>
                 </div>
               ) : null}
@@ -195,10 +208,10 @@ export function AdminLayout() {
                   setNotificationsOpen(false)
                 }}
               >
-                <span className="admin-avatar">{initialsOf(user?.name ?? 'Admin')}</span>
+                <span className="admin-avatar">{initialsOf(user?.name ?? t('Admin'))}</span>
                 <span>
                   <strong>{user?.name}</strong>
-                  <small>Administrator</small>
+                  <small>{t('Administrator')}</small>
                 </span>
                 <ChevronDown size={15} />
               </button>
@@ -216,9 +229,9 @@ export function AdminLayout() {
                       }
                     }}
                   >
-                    <LogOut size={16} /> Sign out
+                    <LogOut size={16} /> {t('Sign out')}
                   </button>
-                  {logoutError ? <p role="alert">Could not sign out. Please try again.</p> : null}
+                  {logoutError ? <p role="alert">{t('Could not sign out. Please try again.')}</p> : null}
                 </div>
               ) : null}
             </div>

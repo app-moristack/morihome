@@ -1,0 +1,106 @@
+{
+  "license": "https://www.pexels.com/license/",
+  "usage": "Illustrative stock photography for fictional demo listings.",
+  "photos": {
+    "plumber": {
+      "source": "https://www.pexels.com/photo/32588548/",
+      "file": "plumber.webp"
+    },
+    "electrician": {
+      "source": "https://www.pexels.com/photo/21812143/",
+      "file": "electrician.webp"
+    },
+    "tiler": {
+      "source": "https://www.pexels.com/photo/29181495/",
+      "file": "tiler.webp"
+    },
+    "carpenter": {
+      "source": "https://www.pexels.com/photo/7480729/",
+      "file": "carpenter.webp"
+    },
+    "gardener": {
+      "source": "https://www.pexels.com/photo/5028005/",
+      "file": "gardener.webp"
+    },
+    "landscaper": {
+      "source": "https://www.pexels.com/photo/37172067/",
+      "file": "landscaper.webp"
+    },
+    "cleaning": {
+      "source": "https://www.pexels.com/photo/9462679/",
+      "file": "cleaning.webp"
+    },
+    "roofing": {
+      "source": "https://www.pexels.com/photo/39238314/",
+      "file": "roofing.webp"
+    },
+    "air_conditioning": {
+      "source": "https://www.pexels.com/photo/32497161/",
+      "file": "air_conditioning.webp"
+    },
+    "construction": {
+      "source": "https://www.pexels.com/photo/30081237/",
+      "file": "construction.webp"
+    },
+    "painter": {
+      "source": "https://www.pexels.com/photo/7218001/",
+      "file": "painter.webp"
+    },
+    "glazing": {
+      "source": "https://www.pexels.com/photo/5691548/",
+      "file": "glazing.webp"
+    },
+    "pest_control": {
+      "source": "https://www.pexels.com/photo/19789837/",
+      "file": "pest_control.webp"
+    },
+    "welder": {
+      "source": "https://www.pexels.com/photo/15059760/",
+      "file": "welder.webp"
+    },
+    "architect": {
+      "source": "https://www.pexels.com/photo/6894105/",
+      "file": "architect.webp"
+    },
+    "tools": {
+      "source": "https://www.pexels.com/photo/33812295/",
+      "file": "tools.webp"
+    },
+    "pool": {
+      "source": "https://www.pexels.com/photo/8085317/",
+      "file": "pool.webp"
+    },
+    "apartment": {
+      "source": "https://www.pexels.com/photo/7534563/",
+      "file": "apartment.webp"
+    },
+    "apartment_alt": {
+      "source": "https://www.pexels.com/photo/7147291/",
+      "file": "apartment_alt.webp"
+    },
+    "house": {
+      "source": "https://www.pexels.com/photo/4469137/",
+      "file": "house.webp"
+    },
+    "house_alt": {
+      "source": "https://www.pexels.com/photo/33976202/",
+      "file": "house_alt.webp"
+    },
+    "villa": {
+      "source": "https://www.pexels.com/photo/31387341/",
+      "file": "villa.webp"
+    },
+    "commercial": {
+      "source": "https://www.pexels.com/photo/5483059/",
+      "file": "commercial.webp"
+    },
+    "commercial_alt": {
+      "source": "https://www.pexels.com/photo/5483236/",
+      "file": "commercial_alt.webp"
+    },
+    "land": {
+      "source": "https://www.pexels.com/photo/18595961/",
+      "file": "land.webp"
+    }
+  }
+}

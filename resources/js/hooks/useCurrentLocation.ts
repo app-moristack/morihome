@@ -1,3 +1,4 @@
+import { t } from '@/i18n'
 import { useCallback, useState } from 'react'
 import { publicApi } from '@/api/endpoints'
 import { useToast } from './useToast'
@@ -17,7 +18,7 @@ export function useCurrentLocation(onResolved: (location: ResolvedLocation) => v
 
   const request = useCallback(() => {
     if (!('geolocation' in navigator)) {
-      showToast('Your browser cannot share your location.', 'error')
+      showToast(t('Your browser cannot share your location.'), 'error')
 
       return
     }
@@ -30,20 +31,20 @@ export function useCurrentLocation(onResolved: (location: ResolvedLocation) => v
           const place = await publicApi.reverseGeocode(coords.latitude, coords.longitude)
 
           onResolved({
-            label: place?.locality ?? place?.label ?? 'My current location',
+            label: place?.locality ?? place?.label ?? t('My current location'),
             latitude: coords.latitude,
             longitude: coords.longitude,
           })
-          showToast('Using your current location.', 'success')
+          showToast(t('Using your current location.'), 'success')
         } catch {
-          showToast('We found your position but could not name the area.', 'error')
+          showToast(t('We found your position but could not name the area.'), 'error')
         } finally {
           setIsLocating(false)
         }
       },
       () => {
         setIsLocating(false)
-        showToast('We could not read your location. Type your area instead.', 'error')
+        showToast(t('We could not read your location. Type your area instead.'), 'error')
       },
       { enableHighAccuracy: true, timeout: GEOLOCATION_TIMEOUT_MS, maximumAge: MAX_POSITION_AGE_MS },
     )

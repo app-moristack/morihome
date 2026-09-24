@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { MapPin } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import type { GeocodeSuggestion } from '@/types/api'
@@ -19,15 +21,16 @@ export function AddressSuggestionList({
   onHover,
   onSelect,
 }: AddressSuggestionListProps) {
+  useLocale()
   return (
     <ul
       id={listboxId}
       role="listbox"
-      aria-label="Address suggestions"
+      aria-label={t('Address suggestions')}
       className="card absolute top-full right-0 left-0 z-30 mt-1.5 max-h-72 overflow-y-auto p-1 shadow-lifted"
     >
       {isFetching && suggestions.length === 0 ? (
-        <li className="px-3 py-3 text-sm text-ink-500">Searching…</li>
+        <li className="px-3 py-3 text-sm text-ink-500">{t('Searching…')}</li>
       ) : null}
 
       {suggestions.map((suggestion, index) => (

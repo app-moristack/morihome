@@ -53,7 +53,13 @@ export default defineConfig({
       },
       workbox: {
         globDirectory: 'public',
-        globPatterns: ['build/assets/**/*.{js,css,woff2}', 'icons/*.png', 'offline.html', 'favicon.ico'],
+        globPatterns: [
+          'build/assets/**/*.{js,css,woff2}',
+          'icons/*.png',
+          'offline.html',
+          'offline-language.js',
+          'favicon.ico',
+        ],
         navigateFallback: null,
         cleanupOutdatedCaches: true,
         runtimeCaching: [

@@ -1,3 +1,6 @@
+import { categoryLabel } from '@/i18n/labels'
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { useCategories } from '@/hooks/useSearchQueries'
 import { cn } from '@/lib/cn'
@@ -9,6 +12,7 @@ type ServiceCategoryPickerProps = {
 }
 
 export function ServiceCategoryPicker({ selectedIds, onChange, max = 10 }: ServiceCategoryPickerProps) {
+  useLocale()
   const { data: categories = [], isLoading } = useCategories()
 
   if (isLoading) {
@@ -35,7 +39,7 @@ export function ServiceCategoryPicker({ selectedIds, onChange, max = 10 }: Servi
 
   return (
     <fieldset>
-      <legend className="sr-only">Service categories</legend>
+      <legend className="sr-only">{t('Service categories')}</legend>
       <div className="flex flex-wrap gap-2">
         {categories.map((category) => {
           const isSelected = selectedIds.includes(category.id)
@@ -53,13 +57,13 @@ export function ServiceCategoryPicker({ selectedIds, onChange, max = 10 }: Servi
                   : 'border-ink-200 text-ink-700 hover:bg-ink-50',
               )}
             >
-              {category.name}
+              {categoryLabel(category.name)}
             </button>
           )
         })}
       </div>
       <p className="mt-2 text-sm text-ink-500">
-        {selectedIds.length} of {max} selected. The first stays your main trade.
+        {selectedIds.length} {t('of')} {max} {t('selected. The first stays your main trade.')}
       </p>
     </fieldset>
   )

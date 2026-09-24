@@ -1,4 +1,4 @@
-﻿import { screen } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { waitFor } from '@testing-library/dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -47,6 +47,7 @@ function LocationOutput() {
 }
 
 beforeEach(() => {
+  vi.spyOn(Math, 'random').mockReturnValue(0.5)
   vi.spyOn(publicApi, 'categories').mockResolvedValue(categories)
   vi.spyOn(publicApi, 'featuredProviders').mockResolvedValue([provider])
   vi.spyOn(publicApi, 'suggestAddresses').mockResolvedValue([])
@@ -157,7 +158,7 @@ describe('HomePage', () => {
     expect(
       screen.getByText(/Reach customers looking for trusted services, rentals and properties for sale/),
     ).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Add to your phone' })).toHaveAttribute('href', '/install')
+    expect(screen.getByRole('button', { name: 'Add to Home Screen' })).toBeEnabled()
   })
 
   it('keeps the selected service, address and radius when searching', async () => {
@@ -240,6 +241,10 @@ describe('HomePage', () => {
       'href',
       '/providers/local-plumber',
     )
+    expect(screen.getByRole('link', { name: 'View profile' })).toHaveAttribute(
+      'href',
+      '/providers/local-plumber',
+    )
     await userEvent.click(screen.getByRole('button', { name: /Contact on WhatsApp/ }))
     expect(open).toHaveBeenCalledWith(
       expect.stringContaining('https://wa.me/23057654321'),
@@ -283,7 +288,7 @@ describe('HomePage', () => {
     )
   })
 
-  it('renders no more than five featured professionals in a horizontal rail', async () => {
+  it('makes every featured professional reachable through the carousel', async () => {
     vi.mocked(publicApi.featuredProviders).mockResolvedValue(
       Array.from({ length: 6 }, (_, index) => ({
         ...provider,
@@ -297,8 +302,15 @@ describe('HomePage', () => {
 
     await screen.findByRole('link', { name: 'Professional 1' })
     const rail = container.querySelector('[aria-label="Featured professionals"]')
-    expect(rail).toHaveClass('home-featured-carousel')
-    expect(rail?.querySelectorAll('.home-provider-card')).toHaveLength(5)
+    expect(rail?.querySelectorAll('.home-provider-card')).toHaveLength(1)
+    const carousel = within(screen.getByRole('group', { name: 'Featured professionals' }))
+    expect(carousel.getByRole('button', { name: 'Previous' })).toBeDisabled()
+    await userEvent.click(carousel.getByRole('button', { name: 'Go to page 6' }))
+    expect(carousel.getByRole('link', { name: 'Professional 6' })).toBeInTheDocument()
+    expect(carousel.queryByRole('link', { name: 'Professional 1' })).not.toBeInTheDocument()
+    expect(carousel.getByRole('button', { name: 'Next' })).toBeDisabled()
+    await userEvent.click(carousel.getByRole('button', { name: 'Previous' }))
+    expect(carousel.getByRole('link', { name: 'Professional 5' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'View all professionals' })).toBeInTheDocument()
   })
 

@@ -1,3 +1,6 @@
+import { categoryLabel } from '@/i18n/labels'
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
@@ -16,6 +19,7 @@ type ServicesStepProps = {
 const MAX_SELECTED = 10
 
 export function ServicesStep({ defaultValues, onSubmit, onBack }: ServicesStepProps) {
+  useLocale()
   const [selected, setSelected] = useState<number[]>(defaultValues.service_categories ?? [])
   const [description, setDescription] = useState(defaultValues.description ?? '')
   const [error, setError] = useState<string>()
@@ -51,9 +55,9 @@ export function ServicesStep({ defaultValues, onSubmit, onBack }: ServicesStepPr
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
-      <h2 className="text-lg font-bold text-ink-900">What do you do?</h2>
+      <h2 className="text-lg font-bold text-ink-900">{t('What do you do?')}</h2>
       <p className="-mt-2 text-sm text-ink-500">
-        Pick every service you offer. The first one you pick becomes your main trade.
+        {t('Pick every service you offer. The first one you pick becomes your main trade.')}
       </p>
 
       {isLoading ? (
@@ -64,7 +68,7 @@ export function ServicesStep({ defaultValues, onSubmit, onBack }: ServicesStepPr
         </div>
       ) : (
         <fieldset>
-          <legend className="sr-only">Service categories</legend>
+          <legend className="sr-only">{t('Service categories')}</legend>
           <div className="flex flex-wrap gap-2">
             {categories.map((category) => {
               const isSelected = selected.includes(category.id)
@@ -82,7 +86,7 @@ export function ServicesStep({ defaultValues, onSubmit, onBack }: ServicesStepPr
                       : 'border-ink-200 text-ink-700 hover:bg-ink-50',
                   )}
                 >
-                  {category.name}
+                  {categoryLabel(category.name)}
                 </button>
               )
             })}
@@ -92,20 +96,20 @@ export function ServicesStep({ defaultValues, onSubmit, onBack }: ServicesStepPr
 
       {error ? (
         <p role="alert" className="text-sm font-medium text-danger">
-          {error}
+          {t(error)}
         </p>
       ) : (
         <p className="text-sm text-ink-500">
-          {selected.length} of {MAX_SELECTED} selected
+          {selected.length} {t('of')} {MAX_SELECTED} {t('selected')}
         </p>
       )}
 
       <TextAreaField
-        label="Describe your work"
+        label={t('Describe your work')}
         value={description}
         onChange={(event) => setDescription(event.target.value)}
-        placeholder="Years of experience, the kind of jobs you take on, what makes your work stand out…"
-        hint="Optional, but profiles with a description get contacted more often."
+        placeholder={t('Years of experience, the kind of jobs you take on, what makes your work stand out…')}
+        hint={t('Optional, but profiles with a description get contacted more often.')}
         maxLength={2000}
       />
 
@@ -117,10 +121,10 @@ export function ServicesStep({ defaultValues, onSubmit, onBack }: ServicesStepPr
           onClick={onBack}
           leadingIcon={<ArrowLeft className="size-5" />}
         >
-          Back
+          {t('Back')}
         </Button>
         <Button type="submit" size="lg" isFullWidth leadingIcon={<ArrowRight className="size-5" />}>
-          Continue
+          {t('Continue')}
         </Button>
       </div>
     </form>

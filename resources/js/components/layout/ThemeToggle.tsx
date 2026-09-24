@@ -1,3 +1,4 @@
+import { t } from '@/i18n'
 import { Moon, Sun } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
@@ -30,7 +31,7 @@ export function ThemeToggle() {
     <button
       type="button"
       className="theme-toggle"
-      aria-label={`Switch to ${dark ? 'light' : 'dark'} mode`}
+      aria-label={t(dark ? 'Switch to light mode' : 'Switch to dark mode')}
       onClick={() => {
         const next = !dark
         setDark(next)

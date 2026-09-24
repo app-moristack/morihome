@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { TriangleAlert } from 'lucide-react'
 import { BrandImageUploader } from '@/components/dashboard/BrandImageUploader'
 import { ProfileForm } from '@/components/dashboard/ProfileForm'
@@ -10,10 +12,11 @@ const SENSITIVE_NOTICE =
   'Changing your name, phone, location or services sends an approved profile back for a quick re-check before it is public again.'
 
 export default function ProviderProfileEditPage() {
+  useLocale()
   const { data, isLoading, isError } = useOwnProfile()
 
   if (isLoading) {
-    return <Spinner label="Loading your profile" />
+    return <Spinner label={t('Loading your profile')} />
   }
 
   if (isError || !data) {
@@ -22,8 +25,8 @@ export default function ProviderProfileEditPage() {
         <EmptyState
           tone="danger"
           icon={<TriangleAlert className="size-6" aria-hidden />}
-          title="We could not load your profile"
-          description="Please refresh the page or sign in again."
+          title={t('We could not load your profile')}
+          description={t('Please refresh the page or sign in again.')}
         />
       </div>
     )
@@ -33,11 +36,11 @@ export default function ProviderProfileEditPage() {
 
   return (
     <div className="container-page max-w-3xl py-8 sm:py-10">
-      <PageHeader eyebrow="Provider dashboard" title="Edit your profile" />
+      <PageHeader eyebrow={t('Provider dashboard')} title={t('Edit your profile')} />
 
       <div className="mt-5 flex gap-3 rounded-xl border border-brand-300 bg-brand-50 p-4">
         <TriangleAlert className="mt-0.5 size-5 shrink-0 text-brand-700" aria-hidden />
-        <p className="text-sm leading-relaxed text-ink-700">{SENSITIVE_NOTICE}</p>
+        <p className="text-sm leading-relaxed text-ink-700">{t(SENSITIVE_NOTICE)}</p>
       </div>
 
       <div className="mt-6">

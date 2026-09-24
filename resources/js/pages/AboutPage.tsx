@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import {
   ArrowRight,
   Cloud,
@@ -31,6 +33,7 @@ const VALUES = [
 ]
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
+  useLocale()
   return (
     <p className="about-eyebrow">
       <span aria-hidden />
@@ -40,29 +43,31 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 }
 
 export default function AboutPage() {
+  useLocale()
   return (
     <div className="about-page">
       <section className="site-page-hero about-hero" aria-labelledby="about-title">
         <img
           src={aboutHero}
-          alt="A contemporary Mauritian home beneath a mountain at sunset"
+          alt={t('A contemporary Mauritian home beneath a mountain at sunset')}
           className="about-hero-image"
           fetchPriority="high"
         />
         <div className="about-hero-wash" aria-hidden />
         <div className="container-page relative">
           <div className="about-hero-copy">
-            <Eyebrow>About us</Eyebrow>
+            <Eyebrow>{t('About us')}</Eyebrow>
             <h1 id="about-title">
-              Building
+              {t('Building')}
               <br />
-              <span>stronger homes</span>
+              <span>{t('stronger homes')}</span>
               <br />
-              together.
+              {t('together.')}
             </h1>
             <p className="about-intro">
-              MoriHome connects you with trusted local professionals and properties for rent or sale across
-              Mauritius.
+              {t(
+                'MoriHome connects you with trusted local professionals and properties for rent or sale across Mauritius.',
+              )}
             </p>
             <div className="about-hero-promises">
               {[
@@ -72,14 +77,15 @@ export default function AboutPage() {
               ].map(({ icon: Icon, label }) => (
                 <div key={label}>
                   <Icon className="home-illustrated-icon" aria-hidden />
-                  <span>{label}</span>
+                  <span>{t(label)}</span>
                 </div>
               ))}
             </div>
           </div>
           <p className="home-handwritten site-page-hero-note">
-            For a<br />
-            Better Mauritius
+            {t('For a')}
+            <br />
+            {t('Better Mauritius')}
             <span aria-hidden />
           </p>
         </div>
@@ -87,25 +93,27 @@ export default function AboutPage() {
 
       <section className="container-page about-story" aria-labelledby="story-title">
         <div>
-          <Eyebrow>Our story</Eyebrow>
+          <Eyebrow>{t('Our story')}</Eyebrow>
           <h2 id="story-title">
-            A platform built for
+            {t('A platform built for')}
             <br />
-            <span>Mauritius, by Mauritians.</span>
+            <span>{t('Mauritius, by Mauritians.')}</span>
           </h2>
           <p>
-            MoriHome was born from a simple idea: to make it easier for homeowners and businesses in Mauritius
-            to find reliable, skilled professionals for their projects.
+            {t(
+              'MoriHome was born from a simple idea: to make it easier for homeowners and businesses in Mauritius to find reliable, skilled professionals for their projects.',
+            )}
           </p>
           <p>
-            Whether you need the right person for a repair, a home to rent or a property to buy, MoriHome
-            brings trusted local professionals and property listings together in one place.
+            {t(
+              'Whether you need the right person for a repair, a home to rent or a property to buy, MoriHome brings trusted local professionals and property listings together in one place.',
+            )}
           </p>
         </div>
         <div className="about-story-visual">
           <img
             src={storyImage}
-            alt="A Mauritian home under construction beneath a mountain at sunset"
+            alt={t('A Mauritian home under construction beneath a mountain at sunset')}
             width={1536}
             height={1024}
             loading="lazy"
@@ -113,10 +121,11 @@ export default function AboutPage() {
           <blockquote>
             <Quote aria-hidden />
             <p>
-              Better homes.
+              {t('Better homes.')}
               <br />
-              Brighter lives.
-              <br />A stronger Mauritius.
+              {t('Brighter lives.')}
+              <br />
+              {t('A stronger Mauritius.')}
             </p>
             <span aria-hidden />
           </blockquote>
@@ -126,17 +135,17 @@ export default function AboutPage() {
       <section className="about-values" aria-labelledby="values-title">
         <div className="container-page">
           <h2 id="values-title" className="sr-only">
-            Our values
+            {t('Our values')}
           </h2>
-          <Eyebrow>Our values</Eyebrow>
+          <Eyebrow>{t('Our values')}</Eyebrow>
           <div className="about-values-grid">
             {VALUES.map(({ icon: Icon, title, description }) => (
               <article key={title}>
                 <div className="about-value-icon">
                   <Icon className="home-illustrated-icon" aria-hidden />
                 </div>
-                <h3>{title}</h3>
-                <p>{description}</p>
+                <h3>{t(title)}</h3>
+                <p>{t(description)}</p>
               </article>
             ))}
           </div>
@@ -147,18 +156,17 @@ export default function AboutPage() {
         <img src={coast} className="about-moristack-landscape" alt="" loading="lazy" />
         <div className="container-page about-moristack-grid">
           <div>
-            <Eyebrow>Part of MoriStack</Eyebrow>
+            <Eyebrow>{t('Part of MoriStack')}</Eyebrow>
             <h2 id="moristack-title">
-              We are part of <span>MoriStack.</span>
+              {t('We are part of')} <span>MoriStack.</span>
             </h2>
             <p>
-              MoriHome is a product of MoriStack, a Mauritius-based tech company passionate about creating
-              digital solutions that make a real difference in people’s lives. Through innovative platforms
-              like MoriHome, we aim to empower local communities, support businesses, and build a smarter,
-              more connected Mauritius.
+              {t(
+                'MoriHome is a product of MoriStack, a Mauritius-based tech company passionate about creating digital solutions that make a real difference in people’s lives. Through innovative platforms like MoriHome, we aim to empower local communities, support businesses, and build a smarter, more connected Mauritius.',
+              )}
             </p>
             <a href="https://moristack.mu" className="about-button">
-              Learn more about MoriStack <ArrowRight size={18} aria-hidden />
+              {t('Learn more about MoriStack')} <ArrowRight size={18} aria-hidden />
             </a>
           </div>
           <img
@@ -179,13 +187,14 @@ export default function AboutPage() {
               ].map(({ icon: Icon, label }) => (
                 <li key={label}>
                   <Icon size={25} aria-hidden />
-                  {label}
+                  {t(label)}
                 </li>
               ))}
             </ul>
             <p className="home-handwritten">
-              Ideas today.
-              <br />A brighter Mauritius tomorrow.
+              {t('Ideas today.')}
+              <br />
+              {t('A brighter Mauritius tomorrow.')}
               <span aria-hidden />
             </p>
           </div>

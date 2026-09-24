@@ -1,8 +1,10 @@
+import { categoryLabel, enumLabel } from '@/i18n/labels'
+import { t, getFormatLocale } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import {
   ArrowRight,
   Bath,
   BedDouble,
-  Building2,
   CircleCheck,
   House,
   KeyRound,
@@ -12,13 +14,18 @@ import {
   MoreHorizontal,
   Search,
   ShieldCheck,
-  Smartphone,
+  Wrench,
 } from 'lucide-react'
+import { motion } from 'motion/react'
+import { useHomeMotion } from '@/hooks/useHomeMotion'
 import { createElement, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { HomeHeroScene } from '@/components/search/HomeHeroScene'
 import { SearchHero } from '@/components/search/SearchHero'
 import { WhatsappButton } from '@/components/provider/WhatsappButton'
+import { HomeAppBanner } from '@/components/pwa/HomeAppBanner'
+import { PropertyImageCarousel } from '@/components/ui/PropertyImageCarousel'
+import { FeaturedCarousel } from '@/components/ui/FeaturedCarousel'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { useCategories, useFeaturedProperties, useFeaturedProviders } from '@/hooks/useSearchQueries'
 import { resolveCategoryIcon } from '@/lib/categoryIcons'
@@ -26,6 +33,11 @@ import { emptySearchState, writeSearchState, type SearchFormState } from '@/lib/
 import { initialsOf } from '@/lib/format'
 import type { PropertyListing, ProviderSummary } from '@/types/api'
 import professionalBanner from '../../images/Grow your business with MoriHome-services-properties.png'
+
+import rentalPropertyImage from '../../images/luxury-apartment-rental.webp'
+import salePropertyImage from '../../images/mauritius-luxury-home-about-hero.png'
+
+const MotionLink = motion.create(Link)
 
 const TRUST = [
   { icon: MapPin, title: 'Built for Mauritius', body: 'Your town, village or district' },
@@ -62,31 +74,60 @@ const BENEFITS = [
 ]
 
 function SectionLink({ to, children }: { to: string; children: React.ReactNode }) {
+  useLocale()
+  const { interactive } = useHomeMotion()
   return (
-    <Link to={to} className="home-section-link">
+    <MotionLink
+      {...interactive}
+      to={to}
+      className="home-featured-section-link inline-flex min-h-12 shrink-0 items-center gap-4 rounded-full border border-brand-200 px-6 py-3 text-sm font-semibold shadow-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400"
+    >
       {children}
-      <ArrowRight className="size-4 shrink-0" aria-hidden />
-    </Link>
+      <ArrowRight className="size-5 shrink-0" aria-hidden />
+    </MotionLink>
   )
 }
 
-function FeaturedCard({ provider }: { provider: ProviderSummary }) {
+function FeaturedTitle({ title }: { title: string }) {
+  const accent = t('Featured')
+  const start = title.toLocaleLowerCase().indexOf(accent.toLocaleLowerCase())
+  if (start < 0) return title
+  return (
+    <>
+      {title.slice(0, start)}
+      <span className="text-brand-400 italic">{title.slice(start, start + accent.length)}</span>
+      {title.slice(start + accent.length)}
+    </>
+  )
+}
+
+function FeaturedCard({ provider, index }: { provider: ProviderSummary; index: number }) {
+  useLocale()
+  const { reveal, interactive } = useHomeMotion()
   const category = provider.service_categories[0]
   const categoryIcon = createElement(resolveCategoryIcon(category?.icon ?? null), {
     className: 'size-9 shrink-0',
     'aria-hidden': true,
   })
   return (
-    <article className="home-provider-card flex min-w-0 flex-col overflow-hidden rounded-xl border border-ink-100 bg-surface shadow-card">
-      <Link
+    <motion.article
+      {...reveal(index)}
+      className="home-provider-card flex min-w-0 flex-col overflow-hidden rounded-xl border border-ink-100 bg-surface shadow-card"
+    >
+      <MotionLink
+        {...interactive}
         to={`/providers/${provider.slug}`}
-        aria-label={`View ${provider.name}'s profile`}
+        aria-label={t("View {name}'s profile", { name: provider.name })}
         className={`home-provider-cover ${provider.cover_url ? '' : 'home-provider-cover-identity'}`}
       >
         {provider.cover_url ? (
           <img
             src={provider.cover_url}
-            alt={`${provider.name} — ${category?.name ?? 'home services'} in ${provider.locality}`}
+            alt={t('{name} — {service} in {locality}', {
+              name: provider.name,
+              service: category?.name ? categoryLabel(category.name) : t('home services'),
+              locality: provider.locality,
+            })}
             loading="lazy"
             decoding="async"
             width={400}
@@ -96,16 +137,18 @@ function FeaturedCard({ provider }: { provider: ProviderSummary }) {
         ) : (
           <>
             {categoryIcon}
-            <span className="text-sm font-semibold">{category?.name ?? provider.provider_type_label}</span>
+            <span className="text-sm font-semibold">
+              {category?.name ? categoryLabel(category.name) : enumLabel(provider.provider_type)}
+            </span>
           </>
         )}
-      </Link>
+      </MotionLink>
       <div className="flex flex-1 flex-col gap-2.5 p-3">
         <div className="flex items-center gap-2.5">
           {provider.logo_url ? (
             <img
               src={provider.logo_url}
-              alt={`${provider.name} logo`}
+              alt={t('{name} logo', { name: provider.name })}
               loading="lazy"
               width={44}
               height={44}
@@ -118,11 +161,13 @@ function FeaturedCard({ provider }: { provider: ProviderSummary }) {
           )}
           <div className="min-w-0">
             <h3 className="font-bold">
-              <Link to={`/providers/${provider.slug}`} className="hover:underline">
+              <MotionLink {...interactive} to={`/providers/${provider.slug}`} className="hover:underline">
                 {provider.name}
-              </Link>
+              </MotionLink>
             </h3>
-            <p className="text-xs text-ink-500">{category?.name ?? provider.provider_type_label}</p>
+            <p className="text-xs text-ink-500">
+              {category?.name ? categoryLabel(category.name) : enumLabel(provider.provider_type)}
+            </p>
           </div>
         </div>
         <p className="flex items-center gap-1.5 text-xs text-ink-500">
@@ -132,13 +177,20 @@ function FeaturedCard({ provider }: { provider: ProviderSummary }) {
         {provider.is_verified && (
           <span className="inline-flex w-fit items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-800 dark:bg-green-950 dark:text-green-300">
             <CircleCheck className="size-3" aria-hidden />
-            Verified
+            {t('Verified')}
           </span>
         )}
         {provider.excerpt && (
           <p className="line-clamp-2 text-xs leading-relaxed text-ink-500">{provider.excerpt}</p>
         )}
-        <div className="mt-auto pt-1">
+        <div className="mt-auto grid gap-2 pt-1">
+          <MotionLink
+            {...interactive}
+            to={`/providers/${provider.slug}`}
+            className="home-provider-profile-link"
+          >
+            {t('View profile')} <ArrowRight className="size-4" aria-hidden />
+          </MotionLink>
           {provider.whatsapp_number ? (
             <WhatsappButton
               slug={provider.slug}
@@ -147,48 +199,36 @@ function FeaturedCard({ provider }: { provider: ProviderSummary }) {
               source="home"
               variant="primary"
               isFullWidth
-              label="Contact via WhatsApp"
+              label={t('Contact via WhatsApp')}
             />
-          ) : (
-            <Link to={`/providers/${provider.slug}`} className="home-cta w-full">
-              View profile <ArrowRight className="size-4" aria-hidden />
-            </Link>
-          )}
+          ) : null}
         </div>
       </div>
-    </article>
+    </motion.article>
   )
 }
 
-function FeaturedPropertyCard({ listing }: { listing: PropertyListing }) {
+function FeaturedPropertyCard({ listing, index }: { listing: PropertyListing; index: number }) {
+  useLocale()
+  const { reveal, interactive } = useHomeMotion()
   return (
-    <article className="flex min-w-0 flex-col overflow-hidden rounded-xl border border-ink-100 bg-surface shadow-card">
-      <div className="relative h-40 bg-[#e3edf1]">
-        {listing.images[0] ? (
-          <img
-            src={listing.images[0].url}
-            alt={listing.title}
-            loading="lazy"
-            decoding="async"
-            width={400}
-            height={240}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <div className="grid h-full place-items-center">
-            <Building2 className="size-12 text-[#527182]" aria-hidden />
-          </div>
-        )}
+    <motion.article
+      {...reveal(index)}
+      className="flex min-w-0 flex-col overflow-hidden rounded-xl border border-ink-100 bg-surface shadow-card"
+    >
+      <PropertyImageCarousel key={listing.id} images={listing.images} title={listing.title} className="h-40">
         <span className="absolute top-3 left-3 rounded-full bg-brand-400 px-2.5 py-1 text-xs font-bold text-ink-950">
-          {listing.purpose === 'rental' ? 'For rent' : 'For sale'}
+          {listing.purpose === 'rental' ? t('For rent') : t('For sale')}
         </span>
-      </div>
+      </PropertyImageCarousel>
       <div className="flex flex-1 flex-col gap-3 p-4 text-[#102c3f]">
         <div>
           <h3 className="line-clamp-2 font-bold">{listing.title}</h3>
           <p className="mt-1 text-lg font-extrabold">
-            Rs {listing.price_rupees.toLocaleString('en-MU')}
-            {listing.purpose === 'rental' ? <small className="text-xs font-medium"> / month</small> : null}
+            Rs {listing.price_rupees.toLocaleString(getFormatLocale())}
+            {listing.purpose === 'rental' ? (
+              <small className="text-xs font-medium"> {t('/ month')}</small>
+            ) : null}
           </p>
         </div>
         <p className="flex items-center gap-1.5 text-xs text-ink-500">
@@ -198,34 +238,33 @@ function FeaturedPropertyCard({ listing }: { listing: PropertyListing }) {
         <div className="flex gap-4 text-xs text-ink-500">
           {listing.bedrooms !== null ? (
             <span className="flex items-center gap-1">
-              <BedDouble className="size-4" aria-hidden /> {listing.bedrooms} beds
+              <BedDouble className="size-4" aria-hidden /> {listing.bedrooms} {t('beds')}
             </span>
           ) : null}
           {listing.bathrooms !== null ? (
             <span className="flex items-center gap-1">
-              <Bath className="size-4" aria-hidden /> {listing.bathrooms} baths
+              <Bath className="size-4" aria-hidden /> {listing.bathrooms} {t('baths')}
             </span>
           ) : null}
         </div>
-        <Link
-          to={`/properties?purpose=${listing.purpose}&location=${encodeURIComponent(listing.locality)}`}
+        <MotionLink
+          {...interactive}
+          to={`/properties/${listing.slug}`}
           className="mt-auto inline-flex min-h-10 items-center justify-center gap-2 rounded-full bg-brand-400 px-4 text-sm font-bold text-ink-950 hover:bg-brand-300"
         >
-          View property <ArrowRight className="size-4" aria-hidden />
-        </Link>
+          {t('View property')} <ArrowRight className="size-4" aria-hidden />
+        </MotionLink>
       </div>
-    </article>
+    </motion.article>
   )
 }
 
 export function HomePage() {
+  useLocale()
+  const { reveal, enter, interactive, reducedMotion } = useHomeMotion()
   const navigate = useNavigate()
   const [featuredPropertyPurpose, setFeaturedPropertyPurpose] = useState<'rental' | 'sales'>('rental')
-  const {
-    data: categories = [],
-    isLoading: categoriesLoading,
-    isError: categoriesError,
-  } = useCategories(true)
+  const { data: categories = [], isLoading: categoriesLoading, isError: categoriesError } = useCategories()
   const {
     data: providers = [],
     isLoading: providersLoading,
@@ -239,6 +278,15 @@ export function HomePage() {
     refetch: refetchFeaturedProperties,
   } = useFeaturedProperties(featuredPropertyPurpose)
   const featuredProperties = featuredPropertyResults?.data ?? []
+  const cleaningCategory = categories.find((category) => category.slug === 'cleaning')
+  const homeCategories = [
+    ...categories
+      .filter(
+        (category) => category.is_popular && !['roofing-waterproofing', 'cleaning'].includes(category.slug),
+      )
+      .slice(0, 7),
+    ...(cleaningCategory ? [cleaningCategory] : []),
+  ]
   const categoryLink = (id: number) =>
     `/search?${writeSearchState({ ...emptySearchState(), categoryId: id }).toString()}`
   const runSearch = (state: SearchFormState) => navigate(`/search?${writeSearchState(state).toString()}`)
@@ -259,125 +307,198 @@ export function HomePage() {
     <div className="home-page home-model-page bg-surface">
       <HomeHeroScene />
       <SearchHero
+        animateEntrance
         state={emptySearchState()}
         onSearch={runSearch}
         onPropertySearch={runPropertySearch}
         categories={categories}
-        title="Services and properties,"
-        highlightedTitle="all in one local place."
-        description={
-          'Find trusted local professionals, homes for rent and properties for sale — anywhere in Mauritius.'
-        }
+        title={t('Services and properties,')}
+        highlightedTitle={t('all in one local place.')}
+        description={t(
+          'Find trusted local professionals, homes for rent and properties for sale — anywhere in Mauritius.',
+        )}
         aside={
-          <p
+          <motion.p
+            {...enter(4)}
             className="home-handwritten hidden px-5 pt-4 text-[2.75rem] lg:block"
-            aria-label="Made for Mauritius"
+            aria-label={t('Made for Mauritius')}
           >
-            Made for
+            {t('Made for')}
             <br />
-            Mauritius
+            {t('Mauritius')}
             <span aria-hidden />
-          </p>
+          </motion.p>
         }
       />
 
-      <section className="home-soft-bg" aria-label="The MoriHome promise">
+      <section className="home-soft-bg" aria-label={t('The MoriHome promise')}>
         <div className="container-page grid grid-cols-2 gap-x-4 gap-y-6 py-7 lg:grid-cols-4">
-          {TRUST.map(({ icon: Icon, title, body }) => (
-            <div key={title} className="home-trust-item flex items-center gap-3 lg:justify-center">
+          {TRUST.map(({ icon: Icon, title, body }, index) => (
+            <motion.div
+              {...reveal(index)}
+              key={title}
+              className="home-trust-item flex items-center gap-3 lg:justify-center"
+            >
               <Icon className="home-illustrated-icon size-9 shrink-0 sm:size-11" aria-hidden />
               <div>
-                <h2 className="text-xs font-bold sm:text-sm">{title}</h2>
-                <p className="mt-1 text-[11px] text-ink-600 sm:text-xs">{body}</p>
+                <h2 className="text-xs font-bold sm:text-sm">{t(title)}</h2>
+                <p className="mt-1 text-[11px] text-ink-600 sm:text-xs">{t(body)}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
 
       <section className="home-soft-bg" aria-labelledby="property-title">
-        <div className="container-page home-section">
-          <div className="home-section-heading">
-            <div>
-              <h2 id="property-title">Find your next property</h2>
-              <p>Browse homes and spaces for rent or sale across Mauritius.</p>
+        <div className="container-page py-10 sm:py-14">
+          <motion.div
+            {...reveal()}
+            className="mb-7 flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center"
+          >
+            <div className="max-w-3xl">
+              <p className="mb-4 inline-flex items-center gap-2.5 rounded-full bg-brand-100 px-5 py-2 text-xs font-semibold tracking-[0.16em] text-ink-950 uppercase">
+                <House className="size-4" aria-hidden />
+                {t('Homes & properties')}
+              </p>
+              <h2
+                id="property-title"
+                className="text-4xl leading-[1.08] font-extrabold tracking-[-0.045em] sm:text-5xl"
+              >
+                {t('Find your next')} <span className="text-brand-400 italic">{t('property')}</span>
+              </h2>
+              <p className="mt-3 max-w-2xl text-base leading-relaxed text-ink-600 sm:text-lg">
+                {t('Browse houses, apartments and commercial spaces for rent or sale across Mauritius.')}
+              </p>
             </div>
-            <SectionLink to="/properties">View all properties</SectionLink>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Link
-              to="/properties?purpose=rental"
-              className="card flex items-center gap-4 p-5 transition-all hover:border-brand-300 hover:shadow-lifted"
+            <MotionLink
+              {...interactive}
+              to="/properties"
+              className="inline-flex min-h-12 shrink-0 items-center gap-4 rounded-full border border-brand-200 bg-surface px-6 py-3 text-sm font-semibold shadow-sm transition-colors hover:bg-brand-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400"
             >
-              <span className="grid size-14 place-items-center rounded-xl bg-brand-100">
-                <KeyRound className="size-7" aria-hidden />
-              </span>
-              <span>
-                <strong className="block text-lg">Property for rent</strong>
-                <small className="text-ink-500">Find houses, apartments and commercial spaces to rent.</small>
-              </span>
-              <ArrowRight className="ml-auto size-5" aria-hidden />
-            </Link>
-            <Link
-              to="/properties?purpose=sales"
-              className="card flex items-center gap-4 p-5 transition-all hover:border-brand-300 hover:shadow-lifted"
-            >
-              <span className="grid size-14 place-items-center rounded-xl bg-brand-100">
-                <House className="size-7" aria-hidden />
-              </span>
-              <span>
-                <strong className="block text-lg">Property for sale</strong>
-                <small className="text-ink-500">
-                  Discover homes, land and commercial properties for sale.
-                </small>
-              </span>
-              <ArrowRight className="ml-auto size-5" aria-hidden />
-            </Link>
+              {t('View all properties')} <ArrowRight className="size-5" aria-hidden />
+            </MotionLink>
+          </motion.div>
+          <div className="grid gap-5 md:grid-cols-2">
+            {[
+              {
+                purpose: 'rental',
+                title: 'Property for rent',
+                description: 'Find houses, apartments and commercial spaces to rent.',
+                image: rentalPropertyImage,
+                icon: KeyRound,
+              },
+              {
+                purpose: 'sales',
+                title: 'Property for sale',
+                description: 'Discover homes, land and commercial properties for sale.',
+                image: salePropertyImage,
+                icon: House,
+              },
+            ].map(({ purpose, title, description, image, icon: Icon }, index) => (
+              <motion.div key={purpose} {...reveal(index)}>
+                <MotionLink
+                  {...interactive}
+                  to={`/properties?purpose=${purpose}`}
+                  className="group relative isolate flex min-h-64 items-end overflow-hidden rounded-2xl border border-white/70 bg-ink-950 p-5 shadow-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400 sm:min-h-72 sm:p-6"
+                >
+                  <img
+                    src={image}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    className="absolute inset-0 -z-20 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 group-focus-visible:scale-105 motion-reduce:transform-none motion-reduce:transition-none"
+                  />
+                  <span
+                    className="absolute inset-0 -z-10 bg-linear-to-t from-black/95 via-black/45 to-black/5"
+                    aria-hidden
+                  />
+                  <span className="flex w-full items-end gap-3 sm:gap-4">
+                    <span className="mb-1 grid size-12 shrink-0 place-items-center rounded-xl border border-brand-100/50 bg-black/50 text-brand-300 sm:size-16">
+                      <Icon className="size-7 sm:size-9" strokeWidth={1.7} aria-hidden />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <strong className="block text-xl leading-tight font-bold text-white sm:text-2xl">
+                        {t(title)}
+                      </strong>
+                      <span className="mt-2 block text-sm leading-relaxed text-white/85">
+                        {t(description)}
+                      </span>
+                    </span>
+                    <span className="mb-1 grid size-11 shrink-0 place-items-center rounded-full bg-brand-400 text-ink-950 shadow-sm sm:size-12">
+                      <ArrowRight
+                        className="size-6 transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transform-none"
+                        aria-hidden
+                      />
+                    </span>
+                  </span>
+                </MotionLink>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       <section className="home-services-section" aria-labelledby="services-title">
-        <div className="container-page home-section">
-          <div className="home-section-heading">
-            <div>
-              <h2 id="services-title">What do you need help with?</h2>
-              <p>Find the right professional for your project.</p>
+        <div className="container-page py-10 sm:py-14">
+          <motion.div
+            {...reveal()}
+            className="mb-7 flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center"
+          >
+            <div className="max-w-3xl">
+              <p className="mb-4 inline-flex items-center gap-2.5 rounded-full bg-brand-100 px-5 py-2 text-xs font-semibold tracking-[0.16em] text-ink-950 uppercase">
+                <Wrench className="size-4" aria-hidden />
+                {t('Home services in Mauritius')}
+              </p>
+              <h2
+                id="services-title"
+                className="text-4xl leading-[1.08] font-extrabold tracking-[-0.045em] sm:text-5xl"
+              >
+                {t('What do you')} <span className="text-brand-400 italic">{t('need help with?')}</span>
+              </h2>
+              <p className="mt-3 max-w-2xl text-base leading-relaxed text-ink-600 sm:text-lg">
+                {t('Find the right professional for your project.')}
+              </p>
             </div>
-            <SectionLink to="/search">View all services</SectionLink>
-          </div>
+            <MotionLink
+              {...interactive}
+              to="/search"
+              className="inline-flex min-h-12 shrink-0 items-center gap-4 rounded-full border border-brand-200 bg-surface px-6 py-3 text-sm font-semibold shadow-sm transition-colors hover:bg-brand-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-400"
+            >
+              {t('View all services')} <ArrowRight className="size-5" aria-hidden />
+            </MotionLink>
+          </motion.div>
           {categoriesLoading ? (
-            <div className="home-category-grid" aria-label="Loading services">
+            <div className="home-category-grid" aria-label={t('Loading services')}>
               {Array.from({ length: 9 }, (_, i) => (
                 <Skeleton key={i} className="h-28 rounded-xl" />
               ))}
             </div>
           ) : categoriesError || !categories.length ? (
             <p className="home-empty">
-              Services are unavailable right now.{' '}
-              <Link to="/search" className="underline">
-                Search all professionals
-              </Link>
+              {t('Services are unavailable right now.')}{' '}
+              <MotionLink {...interactive} to="/search" className="underline">
+                {t('Search all professionals')}
+              </MotionLink>
             </p>
           ) : (
             <ul className="home-category-grid">
-              {categories.slice(0, 8).map((category) => {
+              {homeCategories.map((category, index) => {
                 const Icon = resolveCategoryIcon(category.icon)
                 return (
-                  <li key={category.id}>
-                    <Link to={categoryLink(category.id)} className="home-category">
+                  <motion.li {...reveal(index)} key={category.id}>
+                    <MotionLink {...interactive} to={categoryLink(category.id)} className="home-category">
                       <Icon className="home-illustrated-icon size-10" aria-hidden />
-                      <span>{category.name}</span>
-                    </Link>
-                  </li>
+                      <span>{categoryLabel(category.name)}</span>
+                    </MotionLink>
+                  </motion.li>
                 )
               })}
-              <li>
-                <Link to="/search" className="home-category">
+              <motion.li {...reveal(5)}>
+                <MotionLink {...interactive} to="/search" className="home-category">
                   <MoreHorizontal className="size-10" aria-hidden />
-                  <span>More</span>
-                </Link>
-              </li>
+                  <span>{t('More')}</span>
+                </MotionLink>
+              </motion.li>
             </ul>
           )}
         </div>
@@ -385,47 +506,61 @@ export function HomePage() {
 
       <section className="home-model-section" aria-labelledby="featured-title">
         <div className="container-page home-section">
-          <div className="home-section-heading">
-            <div>
-              <h2 id="featured-title">Featured Professionals</h2>
-              <p>Your next home project starts with a local professional. Explore who can help.</p>
+          <motion.div
+            {...reveal()}
+            className="mb-7 flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center"
+          >
+            <div className="max-w-3xl">
+              <p className="mb-4 inline-flex items-center gap-2.5 rounded-full bg-brand-100 px-5 py-2 text-xs font-semibold tracking-[0.16em] text-ink-950 uppercase">
+                <Wrench className="size-4" aria-hidden />
+                {t('Home services in Mauritius')}
+              </p>
+              <h2
+                id="featured-title"
+                className="text-4xl leading-[1.08] font-extrabold tracking-[-0.045em] sm:text-5xl"
+              >
+                <FeaturedTitle title={t('Featured Professionals')} />
+              </h2>
+              <p className="mt-3 max-w-2xl text-base leading-relaxed text-[#d8e3eb] sm:text-lg">
+                {t('Your next home project starts with a local professional. Explore who can help.')}
+              </p>
             </div>
-            <SectionLink to="/search">View all professionals</SectionLink>
-          </div>
+            <SectionLink to="/search">{t('View all professionals')}</SectionLink>
+          </motion.div>
           {providersLoading ? (
-            <div className="home-featured-carousel" aria-label="Loading featured professionals">
+            <div className="home-featured-carousel" aria-label={t('Loading featured professionals')}>
               {Array.from({ length: 5 }, (_, i) => (
                 <Skeleton key={i} className="h-72 rounded-xl" />
               ))}
             </div>
           ) : providersError ? (
             <div className="home-empty">
-              <p>We couldn’t load the featured professionals.</p>
+              <p>{t('We couldn’t load the featured professionals.')}</p>
               <button
                 type="button"
                 onClick={() => void refetch()}
                 className="mt-3 min-h-11 font-semibold underline"
               >
-                Try again
+                {t('Try again')}
               </button>
             </div>
           ) : providers.length ? (
-            <div className="home-featured-carousel" aria-label="Featured professionals">
-              {providers.slice(0, 5).map((provider) => (
-                <FeaturedCard key={provider.id} provider={provider} />
+            <FeaturedCarousel label={t('Featured professionals')}>
+              {providers.map((provider, index) => (
+                <FeaturedCard key={provider.id} provider={provider} index={index} />
               ))}
-            </div>
+            </FeaturedCarousel>
           ) : (
             <div className="home-empty flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <h3 className="font-bold">Your next home project starts here.</h3>
+                <h3 className="font-bold">{t('Your next home project starts here.')}</h3>
                 <p className="mt-1 text-sm text-ink-500">
-                  Browse the directory to find professionals in your area.
+                  {t('Browse the directory to find professionals in your area.')}
                 </p>
               </div>
-              <Link to="/search" className="home-cta">
-                Find a professional <ArrowRight className="size-4" aria-hidden />
-              </Link>
+              <MotionLink {...interactive} to="/search" className="home-cta">
+                {t('Find a professional')} <ArrowRight className="size-4" aria-hidden />
+              </MotionLink>
             </div>
           )}
         </div>
@@ -433,15 +568,29 @@ export function HomePage() {
 
       <section className="home-properties-section" aria-labelledby="featured-properties-title">
         <div className="container-page home-section">
-          <div className="home-section-heading items-end">
-            <div>
-              <h2 id="featured-properties-title">Featured Properties</h2>
-              <p>Discover highlighted homes and spaces across Mauritius.</p>
+          <motion.div
+            {...reveal()}
+            className="mb-7 flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center"
+          >
+            <div className="max-w-3xl">
+              <p className="mb-4 inline-flex items-center gap-2.5 rounded-full bg-brand-100 px-5 py-2 text-xs font-semibold tracking-[0.16em] text-ink-950 uppercase">
+                <House className="size-4" aria-hidden />
+                {t('Homes & properties')}
+              </p>
+              <h2
+                id="featured-properties-title"
+                className="text-4xl leading-[1.08] font-extrabold tracking-[-0.045em] sm:text-5xl"
+              >
+                <FeaturedTitle title={t('Featured Properties')} />
+              </h2>
+              <p className="mt-3 max-w-2xl text-base leading-relaxed text-ink-600 sm:text-lg">
+                {t('Discover highlighted homes and spaces across Mauritius.')}
+              </p>
             </div>
-            <div className="flex flex-col items-start gap-3 sm:items-end">
+            <div className="flex shrink-0 flex-col items-start gap-3 lg:items-end">
               <div
                 role="tablist"
-                aria-label="Featured property type"
+                aria-label={t('Featured property type')}
                 className="flex rounded-full border border-ink-100 bg-surface p-1"
               >
                 {(['rental', 'sales'] as const).map((purpose) => (
@@ -451,51 +600,69 @@ export function HomePage() {
                     role="tab"
                     aria-selected={featuredPropertyPurpose === purpose}
                     onClick={() => setFeaturedPropertyPurpose(purpose)}
-                    className={`min-h-9 rounded-full px-4 text-sm font-bold transition-colors ${featuredPropertyPurpose === purpose ? 'bg-brand-400 text-ink-950' : 'text-ink-600 hover:bg-ink-50'}`}
+                    className={`relative isolate min-h-9 rounded-full px-4 text-sm font-bold transition-colors ${featuredPropertyPurpose === purpose ? 'text-ink-950' : 'text-ink-600 hover:bg-ink-50'}`}
                   >
-                    {purpose === 'rental' ? 'For rent' : 'For sale'}
+                    {featuredPropertyPurpose === purpose && (
+                      <motion.span
+                        layoutId={reducedMotion ? undefined : 'home-property-tab'}
+                        className="absolute inset-0 -z-10 rounded-full bg-brand-400"
+                        transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                        aria-hidden
+                      />
+                    )}
+                    {purpose === 'rental' ? t('For rent') : t('For sale')}
                   </button>
                 ))}
               </div>
               <SectionLink to={`/properties?purpose=${featuredPropertyPurpose}`}>
-                View all {featuredPropertyPurpose === 'rental' ? 'rentals' : 'properties for sale'}
+                {t(
+                  featuredPropertyPurpose === 'rental' ? 'View all rentals' : 'View all properties for sale',
+                )}
               </SectionLink>
             </div>
-          </div>
+          </motion.div>
           {featuredPropertiesLoading ? (
-            <div className="home-featured-carousel" aria-label="Loading featured properties">
+            <div className="home-featured-carousel" aria-label={t('Loading featured properties')}>
               {Array.from({ length: 5 }, (_, i) => (
                 <Skeleton key={i} className="h-80 rounded-xl" />
               ))}
             </div>
           ) : featuredPropertiesError ? (
             <div className="home-empty">
-              <p>We couldn’t load the featured properties.</p>
+              <p>{t('We couldn’t load the featured properties.')}</p>
               <button
                 type="button"
                 onClick={() => void refetchFeaturedProperties()}
                 className="mt-3 min-h-11 font-semibold underline"
               >
-                Try again
+                {t('Try again')}
               </button>
             </div>
           ) : featuredProperties.length ? (
-            <div className="home-featured-carousel" aria-label="Featured properties">
-              {featuredProperties.slice(0, 5).map((listing) => (
-                <FeaturedPropertyCard key={listing.id} listing={listing} />
+            <FeaturedCarousel key={featuredPropertyPurpose} label={t('Featured properties')}>
+              {featuredProperties.map((listing, index) => (
+                <FeaturedPropertyCard key={listing.id} listing={listing} index={index} />
               ))}
-            </div>
+            </FeaturedCarousel>
           ) : (
             <div className="home-empty flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h3 className="font-bold">
-                  No featured properties {featuredPropertyPurpose === 'rental' ? 'for rent' : 'for sale'} yet.
+                  {t(
+                    featuredPropertyPurpose === 'rental'
+                      ? 'No featured properties for rent yet.'
+                      : 'No featured properties for sale yet.',
+                  )}
                 </h3>
-                <p className="mt-1 text-sm text-ink-500">Browse all available property listings.</p>
+                <p className="mt-1 text-sm text-ink-500">{t('Browse all available property listings.')}</p>
               </div>
-              <Link to={`/properties?purpose=${featuredPropertyPurpose}`} className="home-cta">
-                Browse properties <ArrowRight className="size-4" aria-hidden />
-              </Link>
+              <MotionLink
+                {...interactive}
+                to={`/properties?purpose=${featuredPropertyPurpose}`}
+                className="home-cta"
+              >
+                {t('Browse properties')} <ArrowRight className="size-4" aria-hidden />
+              </MotionLink>
             </div>
           )}
         </div>
@@ -503,31 +670,31 @@ export function HomePage() {
 
       <section className="home-soft-bg" aria-labelledby="how-title">
         <div className="container-page home-section relative">
-          <div className="home-section-heading">
+          <motion.div {...reveal()} className="home-section-heading">
             <div>
-              <h2 id="how-title">How MoriHome works</h2>
-              <p>Find a professional or property in just a few simple steps.</p>
+              <h2 id="how-title">{t('How MoriHome works')}</h2>
+              <p>{t('Find a professional or property in just a few simple steps.')}</p>
             </div>
             <p className="home-handwritten hidden sm:block">
-              Simple.
+              {t('Simple.')}
               <br />
-              Fast. Local.
+              {t('Fast. Local.')}
               <span />
             </p>
-          </div>
+          </motion.div>
           <ol className="grid gap-7 pt-3 md:grid-cols-3 md:gap-12">
             {STEPS.map(({ icon: Icon, title, body }, i) => (
-              <li key={title} className="relative flex gap-5">
+              <motion.li {...reveal(i)} key={title} className="relative flex gap-5">
                 <span className="home-step-number">{i + 1}</span>
                 <div>
                   <Icon className="home-illustrated-icon mb-3 size-10" aria-hidden />
-                  <h3 className="text-lg font-bold">{title}</h3>
-                  <p className="mt-1 max-w-52 text-sm leading-relaxed text-ink-600">{body}</p>
+                  <h3 className="text-lg font-bold">{t(title)}</h3>
+                  <p className="mt-1 max-w-52 text-sm leading-relaxed text-ink-600">{t(body)}</p>
                 </div>
                 {i < 2 && (
                   <ArrowRight className="absolute top-9 -right-6 hidden size-5 md:block" aria-hidden />
                 )}
-              </li>
+              </motion.li>
             ))}
           </ol>
         </div>
@@ -537,26 +704,31 @@ export function HomePage() {
         <div className="container-page home-section grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-center">
           <div>
             <h2 id="why-title" className="text-2xl font-extrabold">
-              Why choose MoriHome?
+              {t('Why choose MoriHome?')}
             </h2>
             <div className="mt-5 grid gap-x-5 gap-y-6 sm:grid-cols-2 xl:grid-cols-4">
-              {BENEFITS.map(({ icon: Icon, title, body }) => (
-                <div key={title} className="home-why-benefit border-l border-white/20 pl-4">
+              {BENEFITS.map(({ icon: Icon, title, body }, index) => (
+                <motion.div
+                  {...reveal(index)}
+                  key={title}
+                  className="home-why-benefit border-l border-white/20 pl-4"
+                >
                   <Icon className="home-illustrated-icon mb-3 size-8" aria-hidden />
-                  <h3 className="text-sm font-bold">{title}</h3>
-                  <p className="mt-1 text-xs leading-relaxed">{body}</p>
-                </div>
+                  <h3 className="text-sm font-bold">{t(title)}</h3>
+                  <p className="mt-1 text-xs leading-relaxed">{t(body)}</p>
+                </motion.div>
               ))}
             </div>
           </div>
-          <aside className="home-why-trust-card rounded-xl p-5">
+          <motion.aside {...reveal(2)} className="home-why-trust-card rounded-xl p-5">
             <ShieldCheck className="home-illustrated-icon mb-3 size-8" aria-hidden />
-            <h3 className="font-bold">Professionals you can trust.</h3>
+            <h3 className="font-bold">{t('Professionals you can trust.')}</h3>
             <p className="mt-2 text-sm leading-relaxed">
-              Every professional profile is reviewed before publication. The Verified badge identifies
-              profiles approved by our team.
+              {t(
+                'Every professional profile is reviewed before publication. The Verified badge identifies profiles approved by our team.',
+              )}
             </p>
-          </aside>
+          </motion.aside>
         </div>
       </section>
 
@@ -571,18 +743,20 @@ export function HomePage() {
         />
         <div className="home-pro-shade pointer-events-none absolute inset-0 -z-10" />
         <div className="container-page py-12 sm:py-16 lg:py-18">
-          <div className="home-pro-content">
-            <p className="home-pro-label">For service and property professionals</p>
+          <motion.div {...reveal()} className="home-pro-content">
+            <p className="home-pro-label">{t('For service and property professionals')}</p>
             <h2
               id="join-title"
               className="mt-5 text-4xl leading-[1.02] font-extrabold tracking-[-0.045em] sm:text-5xl lg:text-6xl"
             >
-              Grow your business
+              {t('Grow your business')}
               <br />
-              with <span className="text-brand-400">MoriHome</span>
+              {t('with')} <span className="text-brand-400">MoriHome</span>
             </h2>
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-600 sm:text-lg">
-              Reach customers looking for trusted services, rentals and properties for sale across Mauritius.
+              {t(
+                'Reach customers looking for trusted services, rentals and properties for sale across Mauritius.',
+              )}
             </p>
             <ul className="mt-8 grid max-w-2xl gap-x-8 gap-y-5 text-sm font-semibold sm:grid-cols-2 sm:text-base">
               {[
@@ -593,38 +767,18 @@ export function HomePage() {
               ].map((benefit) => (
                 <li key={benefit} className="flex items-start gap-3">
                   <CircleCheck className="size-6 shrink-0 text-brand-500" aria-hidden />
-                  {benefit}
+                  {t(benefit)}
                 </li>
               ))}
             </ul>
-            <Link to="/register" className="home-cta mt-9">
-              Create Your Account <ArrowRight className="size-4" aria-hidden />
-            </Link>
-          </div>
+            <MotionLink {...interactive} to="/register" className="home-cta mt-9">
+              {t('Create Your Account')} <ArrowRight className="size-4" aria-hidden />
+            </MotionLink>
+          </motion.div>
         </div>
       </section>
 
-      <section className="home-app-banner relative isolate overflow-hidden" aria-labelledby="app-title">
-        <div className="container-page flex flex-col items-start justify-between gap-5 py-7 sm:flex-row sm:items-center">
-          <div className="flex items-center gap-4">
-            <Smartphone className="size-10 shrink-0 text-brand-300" aria-hidden />
-            <div>
-              <h2 id="app-title" className="text-xl font-bold">
-                Keep MoriHome close at hand
-              </h2>
-              <p className="mt-1 max-w-xl text-sm text-white/85">
-                Add MoriHome to your home screen for easy access on iOS and Android.
-              </p>
-            </div>
-          </div>
-          <Link
-            to="/install"
-            className="inline-flex min-h-11 shrink-0 items-center gap-2 text-sm font-semibold text-brand-300 hover:underline"
-          >
-            Add to your phone <ArrowRight className="size-4" aria-hidden />
-          </Link>
-        </div>
-      </section>
+      <HomeAppBanner />
     </div>
   )
 }

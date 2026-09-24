@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { MapPin, Navigation, Phone } from 'lucide-react'
 import { ShareButton } from './ShareButton'
 import { VerifiedBadge } from './VerifiedBadge'
@@ -13,6 +15,7 @@ type ProviderProfileHeaderProps = {
 }
 
 export function ProviderProfileHeader({ provider, serviceName }: ProviderProfileHeaderProps) {
+  useLocale()
   const distance = formatDistance(provider.distance_km)
   const telHref = buildTelUrl(provider.phone)
   const primaryService = provider.service_categories[0]
@@ -23,7 +26,7 @@ export function ProviderProfileHeader({ provider, serviceName }: ProviderProfile
         {provider.logo_url ? (
           <img
             src={provider.logo_url}
-            alt={`${provider.name} logo`}
+            alt={t('{name} logo', { name: provider.name })}
             width={80}
             height={80}
             className="size-20 shrink-0 rounded-2xl border-4 border-surface bg-surface object-cover shadow-sm"
@@ -58,7 +61,11 @@ export function ProviderProfileHeader({ provider, serviceName }: ProviderProfile
           </p>
         </div>
 
-        <ShareButton title={provider.name} text={`${provider.name} on MoriHome`} url={window.location.href} />
+        <ShareButton
+          title={provider.name}
+          text={t('{name} on MoriHome', { name: provider.name })}
+          url={window.location.href}
+        />
       </div>
 
       <div className="hidden gap-2 sm:flex">
@@ -69,12 +76,14 @@ export function ProviderProfileHeader({ provider, serviceName }: ProviderProfile
           {...(primaryService ? { serviceCategoryId: primaryService.id } : {})}
           source="profile"
           size="lg"
-          label={`Message on WhatsApp${provider.whatsapp_display ? ` · ${provider.whatsapp_display}` : ''}`}
+          label={
+            t('Message on WhatsApp') + (provider.whatsapp_display ? ` · ${provider.whatsapp_display}` : '')
+          }
         />
         {telHref ? (
           <a href={telHref}>
             <Button variant="secondary" size="lg" leadingIcon={<Phone className="size-4" />}>
-              Call
+              {t('Call')}
             </Button>
           </a>
         ) : null}

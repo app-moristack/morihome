@@ -1,15 +1,18 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { publicApi } from '@/api/endpoints'
 import { queryKeys } from '@/api/queryKeys'
+import { createFeaturedOrder } from '@/lib/featuredOrder'
 import type { SearchParams } from '@/types/api'
 
 const CATEGORY_STALE_MS = 30 * 60_000
 const SUGGESTION_MIN_LENGTH = 2
+const orderFeaturedProviders = createFeaturedOrder()
+const orderFeaturedProperties = createFeaturedOrder()
 
 export function useFeaturedProviders() {
   return useQuery({
     queryKey: queryKeys.featuredProviders(),
-    queryFn: publicApi.featuredProviders,
+    queryFn: async () => orderFeaturedProviders(await publicApi.featuredProviders()),
     staleTime: 60_000,
   })
 }
@@ -17,7 +20,15 @@ export function useFeaturedProviders() {
 export function useFeaturedProperties(purpose: 'rental' | 'sales') {
   return useQuery({
     queryKey: queryKeys.featuredProperties(purpose),
-    queryFn: () => publicApi.searchProperties({ purpose, featured_only: true }),
+    queryFn: async () => {
+      const firstPage = await publicApi.searchProperties({ purpose, featured_only: true })
+      const data = [...firstPage.data]
+      for (let page = 2; page <= firstPage.meta.last_page; page++) {
+        const nextPage = await publicApi.searchProperties({ purpose, featured_only: true, page })
+        data.push(...nextPage.data)
+      }
+      return { ...firstPage, data: orderFeaturedProperties(data) }
+    },
     staleTime: 60_000,
   })
 }

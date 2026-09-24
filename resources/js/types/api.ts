@@ -69,6 +69,7 @@ export type PropertyListing = {
   bathrooms: number | null
   area_sqm: number | null
   is_furnished: boolean | null
+  amenities?: string[]
   address: string
   locality: string
   latitude: number
@@ -78,6 +79,8 @@ export type PropertyListing = {
   images: PropertyListingImage[]
   photo_limit: number
   provider?: {
+    logo_url?: string | null
+    profile_available?: boolean
     name: string
     slug: string
     phone: string

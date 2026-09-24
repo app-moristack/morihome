@@ -1,3 +1,6 @@
+import { planLabel } from '@/i18n/labels'
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { ArrowLeft, ArrowRight, BadgeCheck, Check, House, KeyRound, Search, Star, Wrench } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
@@ -24,29 +27,38 @@ const CATEGORY_ICONS = {
 const CATEGORY_ORDER: SubscriptionCategoryValue[] = ['services', 'rental', 'sales']
 
 function planFeatures(subscription: Subscription): string[] {
-  const item = subscription.category === 'services' ? 'service' : 'listing'
-  const photoItem = subscription.category === 'services' ? 'service' : 'property'
+  const services = subscription.category === 'services'
+  const count = subscription.active_item_limit
   const features = [
-    `${subscription.active_item_limit} active ${item}${subscription.active_item_limit === 1 ? '' : 's'}`,
-    `${subscription.photos_per_item_limit} photos per ${photoItem}`,
+    t(
+      services
+        ? count === 1
+          ? '{count} active service'
+          : '{count} active services'
+        : count === 1
+          ? '{count} active listing'
+          : '{count} active listings',
+      { count },
+    ),
+    t(services ? '{count} photos per service' : '{count} photos per property', {
+      count: subscription.photos_per_item_limit,
+    }),
   ]
-
-  if (subscription.item_duration_months) {
-    features.push(`${subscription.item_duration_months}-month listing duration`)
-  } else {
-    features.push('No service expiry while active')
-  }
-
-  if (subscription.business_verification_eligible) features.push('Business verification eligible')
-  if (subscription.priority_in_search) features.push('Priority in search')
-  if (subscription.featured_items)
-    features.push(`Featured ${subscription.category === 'services' ? 'services' : 'properties'}`)
-  if (subscription.homepage_exposure) features.push('Homepage exposure')
+  features.push(
+    subscription.item_duration_months
+      ? t('{count}-month listing duration', { count: subscription.item_duration_months })
+      : t('No service expiry while active'),
+  )
+  if (subscription.business_verification_eligible) features.push(t('Business verification eligible'))
+  if (subscription.priority_in_search) features.push(t('Priority in search'))
+  if (subscription.featured_items) features.push(t(services ? 'Featured services' : 'Featured properties'))
+  if (subscription.homepage_exposure) features.push(t('Homepage exposure'))
 
   return features
 }
 
 export function SubscriptionStep({ providerType, defaultValues, onSubmit, onBack }: SubscriptionStepProps) {
+  useLocale()
   const [selected, setSelected] = useState<number[]>(defaultValues.subscription_ids ?? [])
   const [error, setError] = useState<string>()
   const { data: subscriptions = [], isLoading } = useSubscriptions()
@@ -81,11 +93,11 @@ export function SubscriptionStep({ providerType, defaultValues, onSubmit, onBack
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
       <div className="flex flex-col gap-1">
-        <h2 className="text-lg font-bold text-ink-900">Choose your subscriptions</h2>
+        <h2 className="text-lg font-bold text-ink-900">{t('Choose your subscriptions')}</h2>
         <p className="text-sm text-ink-500">
           {providerType === 'individual'
-            ? 'Free plans are reserved for individuals. Choose the categories you need.'
-            : 'Choose Plus or Pro in up to three categories—one plan per category.'}
+            ? t('Free plans are reserved for individuals. Choose the categories you need.')
+            : t('Choose Plus or Pro in up to three categories—one plan per category.')}
         </p>
       </div>
 
@@ -106,7 +118,7 @@ export function SubscriptionStep({ providerType, defaultValues, onSubmit, onBack
                 <legend className="flex items-center gap-2 text-base font-bold text-ink-900">
                   <Icon className="size-5 text-brand-600" aria-hidden />
                   {plans[0]?.category_label}
-                  <span className="text-xs font-medium text-ink-400">Optional</span>
+                  <span className="text-xs font-medium text-ink-400">{t('Optional')}</span>
                 </legend>
                 <div className={cn('grid gap-3', plans.length > 1 && 'sm:grid-cols-2')}>
                   {plans.map((subscription) => {
@@ -127,8 +139,10 @@ export function SubscriptionStep({ providerType, defaultValues, onSubmit, onBack
                       >
                         <span className="flex w-full items-start justify-between gap-3">
                           <span>
-                            <strong className="block text-base text-ink-900">{subscription.name}</strong>
-                            <small className="text-ink-500">{subscription.description}</small>
+                            <strong className="block text-base text-ink-900">
+                              {planLabel(subscription.name)}
+                            </strong>
+                            <small className="text-ink-500">{planLabel(subscription.description)}</small>
                           </span>
                           <span
                             className={cn(
@@ -140,26 +154,26 @@ export function SubscriptionStep({ providerType, defaultValues, onSubmit, onBack
                           </span>
                         </span>
                         <strong className="text-xl text-ink-900">
-                          {subscription.price_rupees === 0 ? 'Free' : `Rs ${subscription.price_rupees}`}
+                          {subscription.price_rupees === 0 ? t('Free') : `Rs ${subscription.price_rupees}`}
                           {subscription.duration_months ? (
                             <small className="ml-1 text-xs font-medium text-ink-500">
-                              / {subscription.duration_months} months
+                              / {subscription.duration_months} {t('months')}
                             </small>
                           ) : null}
                         </strong>
                         <ul className="grid gap-1 text-xs text-ink-600">
                           {planFeatures(subscription).map((feature) => (
                             <li key={feature} className="flex items-center gap-2">
-                              {feature === 'Priority in search' ? (
+                              {feature === t('Priority in search') ? (
                                 <Search className="size-3.5" aria-hidden />
-                              ) : feature.startsWith('Featured') ? (
+                              ) : feature.startsWith(t('Featured')) ? (
                                 <Star className="size-3.5" aria-hidden />
-                              ) : feature === 'Business verification eligible' ? (
+                              ) : feature === t('Business verification eligible') ? (
                                 <BadgeCheck className="size-3.5" aria-hidden />
                               ) : (
                                 <Check className="size-3.5 text-success" aria-hidden />
                               )}
-                              {feature}
+                              {t(feature)}
                             </li>
                           ))}
                         </ul>
@@ -175,11 +189,13 @@ export function SubscriptionStep({ providerType, defaultValues, onSubmit, onBack
 
       {error ? (
         <p role="alert" className="text-sm font-medium text-danger">
-          {error}
+          {t(error)}
         </p>
       ) : (
         <p className="text-sm text-ink-500">
-          {selected.length} categor{selected.length === 1 ? 'y' : 'ies'} selected
+          {t(selected.length === 1 ? t('{count} category selected') : t('{count} categories selected'), {
+            count: selected.length,
+          })}
         </p>
       )}
 
@@ -193,10 +209,10 @@ export function SubscriptionStep({ providerType, defaultValues, onSubmit, onBack
           onClick={onBack}
           leadingIcon={<ArrowLeft className="size-5" />}
         >
-          Back
+          {t('Back')}
         </Button>
         <Button type="submit" size="lg" isFullWidth leadingIcon={<ArrowRight className="size-5" />}>
-          Continue
+          {t('Continue')}
         </Button>
       </div>
     </form>

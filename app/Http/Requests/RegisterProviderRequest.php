@@ -67,7 +67,7 @@ class RegisterProviderRequest extends FormRequest
                 )->unique()->count() !== $subscriptions->count()) {
                     $validator->errors()->add(
                         'subscription_ids',
-                        'Choose no more than one subscription from each category.',
+                        __('messages.one_subscription'),
                     );
                 }
 
@@ -82,8 +82,8 @@ class RegisterProviderRequest extends FormRequest
                     $validator->errors()->add(
                         'subscription_ids',
                         $isIndividual
-                            ? 'Individuals can only choose free subscriptions.'
-                            : 'Agencies must choose from the paid subscriptions.',
+                            ? __('messages.individual_free')
+                            : __('messages.agency_paid'),
                     );
                 }
             },

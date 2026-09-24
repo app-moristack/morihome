@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { BadgeCheck, CircleCheck, CreditCard, MessageCircle, ShieldCheck, UserRound } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router'
@@ -27,6 +29,7 @@ const STEP_LABELS = ['Your details', 'Location', 'Services', 'Plans', 'Password'
 type Draft = Partial<AccountStepValues & LocationStepValues & ServicesStepValues & SubscriptionStepValues>
 
 export default function RegisterPage() {
+  useLocale()
   const [searchParams] = useSearchParams()
   const suggestedType = searchParams.get('type')
   const initialProviderType: ProviderTypeValue | undefined =
@@ -89,7 +92,7 @@ export default function RegisterPage() {
       const message =
         error instanceof ApiError
           ? (Object.values(error.errors)[0]?.[0] ?? error.message)
-          : 'We could not create your profile. Please try again.'
+          : t('We could not create your profile. Please try again.')
 
       setSubmissionError(message)
       showToast(message, 'error')
@@ -100,14 +103,14 @@ export default function RegisterPage() {
 
   const title = providerType
     ? isBusiness
-      ? 'Register Your Agency on MoriHome'
-      : 'Join MoriHome as an Individual'
-    : 'Create your MoriHome account'
+      ? t('Register Your Agency on MoriHome')
+      : t('Join MoriHome as an Individual')
+    : t('Create your MoriHome account')
   const subtitle = isBusiness
-    ? "Choose the subscriptions your agency needs and grow with Mauritius' trusted home platform."
+    ? t("Choose the subscriptions your agency needs and grow with Mauritius' trusted home platform.")
     : providerType === 'individual'
-      ? 'Choose one, two or all three free subscriptions and get discovered across Mauritius.'
-      : 'Start by choosing whether you are registering as an Individual or an Agency.'
+      ? t('Choose one, two or all three free subscriptions and get discovered across Mauritius.')
+      : t('Start by choosing whether you are registering as an Individual or an Agency.')
 
   const benefits = isBusiness
     ? [
@@ -130,36 +133,39 @@ export default function RegisterPage() {
   return (
     <div className={`professional-register-page ${isBusiness ? 'business-register' : ''}`}>
       <section className="register-hero" aria-labelledby="register-title">
-        <img src={isBusiness ? businessHero : individualHero} alt="Mauritian professional ready to work" />
+        <img
+          src={isBusiness ? businessHero : individualHero}
+          alt={t('Mauritian professional ready to work')}
+        />
         <div className="register-hero-wash" aria-hidden />
         <div className="container-page relative">
           <div className="register-hero-copy">
-            <p className="pro-eyebrow">One registration page</p>
-            <h1 id="register-title">{title}</h1>
-            <p>{subtitle}</p>
+            <p className="pro-eyebrow">{t('One registration page')}</p>
+            <h1 id="register-title">{t(title)}</h1>
+            <p>{t(subtitle)}</p>
             <div className="register-promises">
               {isBusiness ? (
                 <>
                   <span>
-                    <BadgeCheck aria-hidden /> Verification eligible
+                    <BadgeCheck aria-hidden /> {t('Verification eligible')}
                   </span>
                   <span>
-                    <ShieldCheck aria-hidden /> Flexible plans
+                    <ShieldCheck aria-hidden /> {t('Flexible plans')}
                   </span>
                   <span>
-                    <MessageCircle aria-hidden /> Direct enquiries
+                    <MessageCircle aria-hidden /> {t('Direct enquiries')}
                   </span>
                 </>
               ) : providerType === 'individual' ? (
                 <>
                   <span>
-                    <UserRound aria-hidden /> Free categories
+                    <UserRound aria-hidden /> {t('Free categories')}
                   </span>
                   <span>
-                    <CreditCard aria-hidden /> No credit card
+                    <CreditCard aria-hidden /> {t('No credit card')}
                   </span>
                   <span>
-                    <MessageCircle aria-hidden /> Direct enquiries
+                    <MessageCircle aria-hidden /> {t('Direct enquiries')}
                   </span>
                 </>
               ) : null}
@@ -173,13 +179,17 @@ export default function RegisterPage() {
           <div className="register-section-heading">
             <p className="pro-eyebrow">
               {isBusiness
-                ? 'Agency registration'
+                ? t('Agency registration')
                 : providerType === 'individual'
-                  ? 'Individual registration'
-                  : 'Create your account'}
+                  ? t('Individual registration')
+                  : t('Create your account')}
             </p>
-            <h2>{isBusiness ? 'Tell customers about your agency' : 'Build your MoriHome profile'}</h2>
-            <p>Complete the five short steps below. Your account and selected plans are created together.</p>
+            <h2>{isBusiness ? t('Tell customers about your agency') : t('Build your MoriHome profile')}</h2>
+            <p>
+              {t(
+                'Complete the five short steps below. Your account and selected plans are created together.',
+              )}
+            </p>
           </div>
           <StepIndicator labels={STEP_LABELS} activeIndex={step} />
           <div className="card register-form-card">
@@ -209,7 +219,7 @@ export default function RegisterPage() {
           </div>
           {step === 0 ? (
             <p className="register-login">
-              Already registered? <Link to="/login">Sign in</Link>
+              {t('Already registered?')} <Link to="/login">{t('Sign in')}</Link>
             </p>
           ) : null}
         </div>
@@ -218,23 +228,24 @@ export default function RegisterPage() {
           <span className="pro-plan-icon">
             <CircleCheck aria-hidden />
           </span>
-          <h2>{isBusiness ? 'Flexible agency subscriptions' : 'Free plans for individuals'}</h2>
+          <h2>{isBusiness ? t('Flexible agency subscriptions') : t('Free plans for individuals')}</h2>
           <p>
             {isBusiness
-              ? 'Choose Plus or Pro independently for Services, Rental and Sales.'
-              : 'Select one, two or all three free category plans.'}
+              ? t('Choose Plus or Pro independently for Services, Rental and Sales.')
+              : t('Select one, two or all three free category plans.')}
           </p>
           <ul>
             {benefits.map((benefit) => (
               <li key={benefit}>
-                <CircleCheck aria-hidden /> {benefit}
+                <CircleCheck aria-hidden /> {t(benefit)}
               </li>
             ))}
           </ul>
           <div className="register-review-note">
             <ShieldCheck aria-hidden />
             <p>
-              <strong>Profiles are reviewed</strong>Your profile becomes public after our team approves it.
+              <strong>{t('Profiles are reviewed')}</strong>
+              {t('Your profile becomes public after our team approves it.')}
             </p>
           </div>
         </aside>

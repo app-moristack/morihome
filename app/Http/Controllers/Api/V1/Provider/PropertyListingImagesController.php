@@ -30,14 +30,13 @@ class PropertyListingImagesController extends Controller
 
             if ($membership === null) {
                 throw ValidationException::withMessages([
-                    'image' => 'An active subscription is required to add photos to this listing.',
+                    'image' => __('messages.photo_subscription'),
                 ]);
             }
 
             if ($propertyListing->images()->count() >= $membership->subscription->photos_per_item_limit) {
                 throw ValidationException::withMessages([
-                    'image' => 'Your '.$membership->subscription->name.' plan allows only '
-                        .$membership->subscription->photos_per_item_limit.' photos per listing.',
+                    'image' => __('messages.photo_limit', ['plan' => $membership->subscription->name, 'limit' => $membership->subscription->photos_per_item_limit]),
                 ]);
             }
 

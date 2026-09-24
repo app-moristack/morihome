@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import {
   ArrowRight,
   BarChart3,
@@ -39,7 +41,11 @@ const BUSINESS_BENEFITS = [
 
 const WHY_JOIN = [
   { icon: Eye, title: 'More visibility', text: 'Reach more people actively looking for your services.' },
-  { icon: Handshake, title: 'Build trust', text: 'Show reviews and build your reputation locally.' },
+  {
+    icon: Handshake,
+    title: 'Build trust',
+    text: 'Showcase your expertise and build your reputation locally.',
+  },
   { icon: BarChart3, title: 'Grow your business', text: 'Get more enquiries and increase your income.' },
   { icon: Images, title: 'Showcase your work', text: 'Upload photos of your past projects or products.' },
   { icon: Users, title: 'Join the community', text: 'Together we build a stronger Mauritius.' },
@@ -60,6 +66,7 @@ const PAYMENT_PROMISES: { icon: LucideIcon; title: string; text: string }[] = [
 ]
 
 function PlanBenefits({ items, business = false }: { items: string[]; business?: boolean }) {
+  useLocale()
   return (
     <ul className="pro-benefit-list">
       {items.map((item) => (
@@ -67,7 +74,7 @@ function PlanBenefits({ items, business = false }: { items: string[]; business?:
           <span className={business ? 'business-check' : ''}>
             <Check aria-hidden />
           </span>
-          <span>{item}</span>
+          <span>{t(item)}</span>
         </li>
       ))}
     </ul>
@@ -75,28 +82,30 @@ function PlanBenefits({ items, business = false }: { items: string[]; business?:
 }
 
 export default function ForProfessionalsPage() {
+  useLocale()
   return (
     <div className="professionals-page">
       <section className="site-page-hero pro-hero" aria-labelledby="pro-title">
-        <img src={heroImage} alt="Mauritian home-service professional overlooking Le Morne" />
+        <img src={heroImage} alt={t('Mauritian home-service professional overlooking Le Morne')} />
         <div className="pro-hero-wash" aria-hidden />
         <div className="container-page relative">
           <div className="pro-hero-copy">
-            <p className="pro-eyebrow">For professionals</p>
+            <p className="pro-eyebrow">{t('For professionals')}</p>
             <h1 id="pro-title">
-              Join MoriHome &amp;
+              {t('Join MoriHome &')}
               <br />
-              <span>grow your business.</span>
+              <span>{t('grow your business.')}</span>
             </h1>
             <p>
-              Get discovered by people across Mauritius looking for your services. Create your profile,
-              showcase your work and receive enquiries directly via WhatsApp.
+              {t(
+                'Get discovered by people across Mauritius looking for your services. Create your profile, showcase your work and receive enquiries directly via WhatsApp.',
+              )}
             </p>
             <div className="pro-promises">
               {HERO_PROMISES.map(({ icon: Icon, label }) => (
                 <div key={label}>
                   <Icon aria-hidden />
-                  <span>{label}</span>
+                  <span>{t(label)}</span>
                 </div>
               ))}
             </div>
@@ -104,46 +113,46 @@ export default function ForProfessionalsPage() {
         </div>
       </section>
 
-      <section className="container-page pro-plans" aria-label="Choose your professional plan">
+      <section className="container-page pro-plans" aria-label={t('Choose your professional plan')}>
         <article className="pro-plan-card">
           <header>
             <span className="pro-plan-icon free">
               <Users aria-hidden />
             </span>
             <div>
-              <h2>Individuals &amp; Self-Employed</h2>
-              <strong className="free-price">FREE FOREVER</strong>
+              <h2>{t('Individuals & Self-Employed')}</h2>
+              <strong className="free-price">{t('FREE FOREVER')}</strong>
             </div>
           </header>
-          <p>Perfect for independent professionals and workers.</p>
+          <p>{t('Perfect for independent professionals and workers.')}</p>
           <PlanBenefits items={FREE_BENEFITS} />
           <Link to="/register?type=individual" className="pro-plan-button free-button">
-            Create Free Account <ArrowRight aria-hidden />
+            {t('Create Free Account')} <ArrowRight aria-hidden />
           </Link>
-          <small>100% free. Always.</small>
+          <small>{t('100% free. Always.')}</small>
         </article>
 
         <article className="pro-plan-card business-plan">
           <span className="free-badge">
-            6 PAID
+            {t('6 PAID')}
             <br />
-            PLANS
+            {t('PLANS')}
           </span>
           <header>
             <span className="pro-plan-icon">
               <BriefcaseBusiness aria-hidden />
             </span>
             <div>
-              <h2>Agencies &amp; Companies</h2>
-              <strong>From Rs 499 / 6 months</strong>
+              <h2>{t('Agencies & Companies')}</h2>
+              <strong>{t('From Rs 499 / 6 months')}</strong>
             </div>
           </header>
-          <p>Give your business greater visibility on MoriHome.</p>
+          <p>{t('Give your business greater visibility on MoriHome.')}</p>
           <PlanBenefits items={BUSINESS_BENEFITS} business />
           <Link to="/register?type=agency" className="pro-plan-button">
-            Choose Agency Plans <ArrowRight aria-hidden />
+            {t('Choose Agency Plans')} <ArrowRight aria-hidden />
           </Link>
-          <small>Choose Plus or Pro for Services, Rental and Sales.</small>
+          <small>{t('Choose Plus or Pro for Services, Rental and Sales.')}</small>
         </article>
       </section>
 
@@ -155,8 +164,8 @@ export default function ForProfessionalsPage() {
                 <Icon aria-hidden />
               </span>
               <p>
-                <strong>{title}</strong>
-                <small>{text}</small>
+                <strong>{t(title)}</strong>
+                <small>{t(text)}</small>
               </p>
             </div>
           ))}
@@ -164,15 +173,15 @@ export default function ForProfessionalsPage() {
       </section>
 
       <section className="container-page pro-why">
-        <p className="pro-eyebrow">Why join MoriHome?</p>
+        <p className="pro-eyebrow">{t('Why join MoriHome?')}</p>
         <div className="pro-why-grid">
           {WHY_JOIN.map(({ icon: Icon, title, text }) => (
             <article key={title}>
               <span>
                 <Icon aria-hidden />
               </span>
-              <h3>{title}</h3>
-              <p>{text}</p>
+              <h3>{t(title)}</h3>
+              <p>{t(text)}</p>
             </article>
           ))}
         </div>

@@ -1,4 +1,39 @@
 import { z } from 'zod'
+import { t } from '@/i18n'
+
+// Evaluated during validation so default Zod messages follow the current language.
+z.setErrorMap((issue) => {
+  if (issue.code === 'invalid_type') {
+    return {
+      message: t(
+        issue.received === 'undefined'
+          ? 'This field is required.'
+          : issue.expected === 'number'
+            ? 'Enter a valid number.'
+            : 'Invalid value.',
+      ),
+    }
+  }
+  if (issue.code === 'too_small') {
+    const source =
+      issue.type === 'string'
+        ? 'Enter at least {count} characters.'
+        : issue.type === 'array'
+          ? 'Select at least {count} items.'
+          : 'The minimum is {count}.'
+    return { message: t(source, { count: String(issue.minimum) }) }
+  }
+  if (issue.code === 'too_big') {
+    const source =
+      issue.type === 'string'
+        ? 'Use at most {count} characters.'
+        : issue.type === 'array'
+          ? 'Select at most {count} items.'
+          : 'The maximum is {count}.'
+    return { message: t(source, { count: String(issue.maximum) }) }
+  }
+  return { message: t('Invalid value.') }
+})
 
 const MAURITIAN_MOBILE = /^(\+?230)?0?5\d{7}$/
 const ANY_PHONE = /^\+?\d[\d\s-]{6,17}$/

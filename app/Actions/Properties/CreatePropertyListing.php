@@ -22,7 +22,7 @@ class CreatePropertyListing
 
             if ($membership === null) {
                 throw ValidationException::withMessages([
-                    'purpose' => 'You need an active '.$purpose->label().' subscription to create this listing.',
+                    'purpose' => __('messages.active_subscription', ['category' => $purpose->label()]),
                 ]);
             }
 
@@ -33,8 +33,7 @@ class CreatePropertyListing
 
             if ($usedSlots >= $membership->subscription->active_item_limit) {
                 throw ValidationException::withMessages([
-                    'purpose' => 'Your '.$membership->subscription->name.' plan allows only '
-                        .$membership->subscription->active_item_limit.' active listings.',
+                    'purpose' => __('messages.listing_limit', ['plan' => $membership->subscription->name, 'limit' => $membership->subscription->active_item_limit]),
                 ]);
             }
 

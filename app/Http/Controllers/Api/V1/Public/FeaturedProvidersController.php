@@ -21,7 +21,6 @@ class FeaturedProvidersController extends Controller
                 ->orderByDesc('is_verified')
                 ->orderByDesc('approved_at')
                 ->orderBy('id')
-                ->limit(5)
                 ->get()
         );
     }

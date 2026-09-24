@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { ArrowDown, ArrowUp, ImagePlus, Images, Trash2 } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { ApiError } from '@/api/client'
@@ -18,6 +20,7 @@ const MAX_IMAGES = 20
 const UPLOAD_MAX_DIMENSION = 1600
 
 export default function ProviderPortfolioPage() {
+  useLocale()
   const fileInput = useRef<HTMLInputElement>(null)
   const [isUploading, setIsUploading] = useState(false)
   const { data: images = [], isLoading } = usePortfolio()
@@ -41,7 +44,7 @@ export default function ProviderPortfolioPage() {
         showToast(
           error instanceof ApiError
             ? (error.firstErrorFor('image') ?? error.message)
-            : `${file.name} failed to upload.`,
+            : t('Could not upload {name}.', { name: file.name }),
           'error',
         )
         break
@@ -74,9 +77,11 @@ export default function ProviderPortfolioPage() {
   return (
     <div className="container-page max-w-3xl py-8 sm:py-10">
       <PageHeader
-        eyebrow="Provider dashboard"
-        title="Your portfolio"
-        description="Photos of finished work are the single biggest reason customers choose one professional over another."
+        eyebrow={t('Provider dashboard')}
+        title={t('Your portfolio')}
+        description={t(
+          'Photos of finished work are the single biggest reason customers choose one professional over another.',
+        )}
         action={
           <Button
             isLoading={isUploading}
@@ -84,7 +89,7 @@ export default function ProviderPortfolioPage() {
             onClick={() => fileInput.current?.click()}
             leadingIcon={<ImagePlus className="size-4" />}
           >
-            Add photos
+            {t('Add photos')}
           </Button>
         }
       />
@@ -96,11 +101,11 @@ export default function ProviderPortfolioPage() {
         accept="image/jpeg,image/png,image/webp"
         className="sr-only"
         onChange={(event) => handleFiles(event.target.files)}
-        aria-label="Upload portfolio photos"
+        aria-label={t('Upload portfolio photos')}
       />
 
       <p className="mt-3 text-sm text-ink-500">
-        {images.length} of {MAX_IMAGES} photos. Photos are resized on your device before upload.
+        {images.length} {t('of')} {MAX_IMAGES} {t('photos. Photos are resized on your device before upload.')}
       </p>
 
       <div className="mt-6">
@@ -113,14 +118,16 @@ export default function ProviderPortfolioPage() {
         ) : images.length === 0 ? (
           <EmptyState
             icon={<Images className="size-6" aria-hidden />}
-            title="No photos yet"
-            description="Add a few pictures of jobs you have completed. Three to six good photos is plenty."
+            title={t('No photos yet')}
+            description={t(
+              'Add a few pictures of jobs you have completed. Three to six good photos is plenty.',
+            )}
             action={
               <Button
                 onClick={() => fileInput.current?.click()}
                 leadingIcon={<ImagePlus className="size-4" />}
               >
-                Add your first photo
+                {t('Add your first photo')}
               </Button>
             }
           />
@@ -141,7 +148,7 @@ export default function ProviderPortfolioPage() {
                       onClick={() => move(index, -1)}
                       disabled={index === 0}
                       className="grid size-9 place-items-center rounded-lg text-ink-500 hover:bg-ink-100 disabled:opacity-30"
-                      aria-label={`Move photo ${index + 1} earlier`}
+                      aria-label={t('Move photo {number} earlier', { number: index + 1 })}
                     >
                       <ArrowUp className="size-4" aria-hidden />
                     </button>
@@ -150,7 +157,7 @@ export default function ProviderPortfolioPage() {
                       onClick={() => move(index, 1)}
                       disabled={index === images.length - 1}
                       className="grid size-9 place-items-center rounded-lg text-ink-500 hover:bg-ink-100 disabled:opacity-30"
-                      aria-label={`Move photo ${index + 1} later`}
+                      aria-label={t('Move photo {number} later', { number: index + 1 })}
                     >
                       <ArrowDown className="size-4" aria-hidden />
                     </button>
@@ -164,7 +171,7 @@ export default function ProviderPortfolioPage() {
                       })
                     }
                     className="grid size-9 place-items-center rounded-lg text-danger hover:bg-red-50"
-                    aria-label={`Delete photo ${index + 1}`}
+                    aria-label={t('Remove photo {number}', { number: index + 1 })}
                   >
                     <Trash2 className="size-4" aria-hidden />
                   </button>

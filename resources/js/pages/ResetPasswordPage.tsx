@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { useState, type FormEvent } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { apiRequest, ApiError } from '@/api/client'
@@ -5,6 +7,7 @@ import { Button } from '@/components/ui/Button'
 import { TextField } from '@/components/ui/Field'
 
 export default function ResetPasswordPage() {
+  useLocale()
   const [params] = useSearchParams()
   const [pending, setPending] = useState(false)
   const [error, setError] = useState('')
@@ -31,7 +34,7 @@ export default function ResetPasswordPage() {
       setError(
         failure instanceof ApiError
           ? (failure.firstErrorFor('password') ?? failure.firstErrorFor('email') ?? failure.message)
-          : 'Unable to reset your password. Please try again.',
+          : t('Unable to reset your password. Please try again.'),
       )
     } finally {
       setPending(false)
@@ -41,35 +44,35 @@ export default function ResetPasswordPage() {
   return (
     <section className="container-page py-12">
       <div className="mx-auto max-w-md rounded-2xl border border-ink-200 bg-surface p-8">
-        <h1 className="text-3xl font-bold">Reset your password</h1>
+        <h1 className="text-3xl font-bold">{t('Reset your password')}</h1>
         {complete ? (
           <p role="status" className="mt-5">
-            Your password was updated and other sessions were signed out.{' '}
+            {t('Your password was updated and other sessions were signed out.')}{' '}
             <Link to="/login" className="underline">
-              Sign in
+              {t('Sign in')}
             </Link>
           </p>
         ) : !params.get('token') || !params.get('email') ? (
           <p className="mt-5">
-            Open the complete link from your reset email.{' '}
+            {t('Open the complete link from your reset email.')}{' '}
             <Link to="/contact" className="underline">
-              Contact us for help.
+              {t('Contact us for help.')}
             </Link>
           </p>
         ) : (
           <form onSubmit={submit} className="mt-6 grid gap-5">
             <TextField
-              label="New password"
+              label={t('New password')}
               name="password"
               type="password"
               autoComplete="new-password"
               minLength={12}
               maxLength={128}
               isRequired
-              hint="12–128 characters, including uppercase, lowercase and a number."
+              hint={t('12–128 characters, including uppercase, lowercase and a number.')}
             />
             <TextField
-              label="Confirm new password"
+              label={t('Confirm new password')}
               name="password_confirmation"
               type="password"
               autoComplete="new-password"
@@ -79,11 +82,11 @@ export default function ResetPasswordPage() {
             />
             {error && (
               <p role="alert" className="text-danger">
-                {error}
+                {t(error)}
               </p>
             )}
             <Button type="submit" isLoading={pending}>
-              Update password
+              {t('Update password')}
             </Button>
           </form>
         )}

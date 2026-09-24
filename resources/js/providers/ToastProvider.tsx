@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { CircleAlert, CircleCheck, Info, X } from 'lucide-react'
 import { useCallback, useMemo, useState, type ReactNode } from 'react'
 import { ToastContext } from './toastContext'
@@ -26,6 +28,7 @@ const TONE_ICONS: Record<ToastTone, ReactNode> = {
 }
 
 export function ToastProvider({ children }: { children: ReactNode }) {
+  useLocale()
   const [toasts, setToasts] = useState<Toast[]>([])
 
   const dismissToast = useCallback((id: number) => {
@@ -64,12 +67,12 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             )}
           >
             {TONE_ICONS[toast.tone]}
-            <span className="flex-1">{toast.message}</span>
+            <span className="flex-1">{t(toast.message)}</span>
             <button
               type="button"
               onClick={() => dismissToast(toast.id)}
               className="-mr-1 grid size-8 shrink-0 place-items-center rounded-full hover:bg-ink-900/10"
-              aria-label="Dismiss notification"
+              aria-label={t('Dismiss notification')}
             >
               <X className="size-4" aria-hidden />
             </button>

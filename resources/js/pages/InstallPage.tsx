@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import {
   ArrowRight,
   BadgeCheck,
@@ -42,6 +44,7 @@ const ANDROID_STEPS = [
 ]
 
 function PhoneGuide({ android = false }: { android?: boolean }) {
+  useLocale()
   return (
     <div className={`install-phone ${android ? 'install-phone-android' : ''}`} aria-hidden="true">
       <div className="install-phone-notch" />
@@ -51,7 +54,7 @@ function PhoneGuide({ android = false }: { android?: boolean }) {
           <span>▮▮▮ ▰</span>
         </div>
         <div className="install-phone-url">
-          <ShieldCheck size={9} /> morihome.mu <MoreVertical size={10} />
+          <ShieldCheck size={9} /> {'morihome.mu'} <MoreVertical size={10} />
         </div>
         <div className="install-phone-brand">
           <img src="/icons/icon-96.png" alt="" />
@@ -61,22 +64,22 @@ function PhoneGuide({ android = false }: { android?: boolean }) {
           <div className="install-browser-menu">
             {['New tab', 'New Incognito tab', 'History', 'Downloads', 'Bookmarks', 'Recent tabs'].map(
               (item) => (
-                <span key={item}>{item}</span>
+                <span key={item}>{t(item)}</span>
               ),
             )}
             <strong>
               <Download size={12} />
-              Install app
+              {t('Install app')}
             </strong>
             <span>
               <SquarePlus size={12} />
-              Add to Home screen
+              {t('Add to Home screen')}
             </span>
             <span>
-              Desktop site <i className="install-checkbox" />
+              {t('Desktop site')} <i className="install-checkbox" />
             </span>
-            <span>Settings</span>
-            <span>Help & feedback</span>
+            <span>{t('Settings')}</span>
+            <span>{t('Help & feedback')}</span>
           </div>
         ) : (
           <div className="install-share-sheet">
@@ -85,29 +88,29 @@ function PhoneGuide({ android = false }: { android?: boolean }) {
               <img src="/icons/icon-96.png" alt="" />
               <span>
                 <strong>MoriHome</strong>
-                <small>morihome.mu</small>
+                <small>{'morihome.mu'}</small>
               </span>
               <span>×</span>
             </div>
             {['Copy', 'Add to Reading List', 'Add Bookmark', 'Add to Favourites', 'Find on Page'].map(
               (item) => (
                 <span className="install-share-row" key={item}>
-                  {item}
+                  {t(item)}
                   <SquarePlus size={10} />
                 </span>
               ),
             )}
             <strong className="install-share-highlight">
-              Add to Home Screen <SquarePlus size={13} />
+              {t('Add to Home Screen')} <SquarePlus size={13} />
             </strong>
             <span className="install-share-row">
-              Print <SquarePlus size={10} />
+              {t('Print')} <SquarePlus size={10} />
             </span>
             <div className="install-webapp-toggle">
-              <strong>Open as Web App</strong>
+              <strong>{t('Open as Web App')}</strong>
               <span />
             </div>
-            <div className="install-phone-add">Add</div>
+            <div className="install-phone-add">{t('Add')}</div>
           </div>
         )}
         <div className="install-phone-home" />
@@ -117,6 +120,7 @@ function PhoneGuide({ android = false }: { android?: boolean }) {
 }
 
 export default function InstallPage() {
+  useLocale()
   const { canPromptNatively, isStandalone, install, platform } = useInstallPrompt()
   const [isInstalling, setIsInstalling] = useState(false)
   const [message, setMessage] = useState('')
@@ -129,12 +133,12 @@ export default function InstallPage() {
       const accepted = await install()
       setMessage(
         accepted
-          ? 'MoriHome is being added to your home screen.'
-          : 'You can install later, or follow the steps below.',
+          ? t('MoriHome is being added to your home screen.')
+          : t('You can install later, or follow the steps below.'),
       )
     } catch {
       setInstallError(true)
-      setMessage('Installation could not start. Please follow the steps below or try again.')
+      setMessage(t('Installation could not start. Please follow the steps below or try again.'))
     } finally {
       setIsInstalling(false)
     }
@@ -146,15 +150,16 @@ export default function InstallPage() {
         <img src={roomImage} className="install-hero-room" alt="" />
         <div className="container-page install-hero-inner">
           <div className="install-hero-copy">
-            <p className="install-eyebrow">Progressive web app</p>
+            <p className="install-eyebrow">{t('Progressive web app')}</p>
             <h1 id="install-title">
-              Install MoriHome
+              {t('Install MoriHome')}
               <br />
-              <span>on your phone</span>
+              <span>{t('on your phone')}</span>
             </h1>
             <p>
-              Get quick access to MoriHome, just like a native app. Full screen, no browser bar, and one tap
-              away when you need it.
+              {t(
+                'Get quick access to MoriHome, just like a native app. Full screen, no browser bar, and one tap away when you need it.',
+              )}
             </p>
             <ul className="install-benefits">
               <li>
@@ -162,8 +167,8 @@ export default function InstallPage() {
                   <Zap />
                 </span>
                 <div>
-                  <strong>Faster access</strong>
-                  <small>Open in one tap</small>
+                  <strong>{t('Faster access')}</strong>
+                  <small>{t('Open in one tap')}</small>
                 </div>
               </li>
               <li>
@@ -171,8 +176,8 @@ export default function InstallPage() {
                   <Smartphone />
                 </span>
                 <div>
-                  <strong>App-like experience</strong>
-                  <small>Full screen, no browser bar</small>
+                  <strong>{t('App-like experience')}</strong>
+                  <small>{t('Full screen, no browser bar')}</small>
                 </div>
               </li>
             </ul>
@@ -180,14 +185,14 @@ export default function InstallPage() {
           <img
             src={phoneImage}
             className="install-hero-phone"
-            alt="MoriHome app on a phone, with a view of Le Morne"
+            alt={t('MoriHome app on a phone, with a view of Le Morne')}
           />
           <p className="home-handwritten install-hero-note">
-            Your work.
+            {t('Your work.')}
             <br />
-            Anytime.
+            {t('Anytime.')}
             <br />
-            Anywhere.
+            {t('Anywhere.')}
             <span aria-hidden />
           </p>
         </div>
@@ -198,24 +203,24 @@ export default function InstallPage() {
           <div className="install-native-status" role="status">
             <BadgeCheck />
             <div>
-              <strong>You’re already installed!</strong>
-              <p>You’re using MoriHome as an app. Everything is ready.</p>
+              <strong>{t('You’re already installed!')}</strong>
+              <p>{t('You’re using MoriHome as an app. Everything is ready.')}</p>
             </div>
           </div>
         ) : canPromptNatively ? (
           <div className="install-native-status">
             <div>
-              <strong>Your browser is ready to install MoriHome.</strong>
-              <p>Add it to your home screen in one tap.</p>
+              <strong>{t('Your browser is ready to install MoriHome.')}</strong>
+              <p>{t('Add it to your home screen in one tap.')}</p>
             </div>
             <Button onClick={handleInstall} isLoading={isInstalling} leadingIcon={<Download size={18} />}>
-              Install MoriHome
+              {t('Install MoriHome')}
             </Button>
           </div>
         ) : null}
         {message && !isStandalone ? (
           <p className="install-feedback" role={installError ? 'alert' : 'status'}>
-            {message}
+            {t(message)}
           </p>
         ) : null}
         <div className="install-guides">
@@ -223,8 +228,8 @@ export default function InstallPage() {
             <header>
               <Smartphone className="install-platform-icon" aria-hidden />
               <div>
-                <h2 id="ios-install-title">iPhone &amp; iPad</h2>
-                <p>Install MoriHome using Safari</p>
+                <h2 id="ios-install-title">{t('iPhone & iPad')}</h2>
+                <p>{t('Install MoriHome using Safari')}</p>
               </div>
               <span className="install-platform-badge">iOS (Safari)</span>
             </header>
@@ -235,10 +240,10 @@ export default function InstallPage() {
                     <span className="install-step-number">{index + 1}</span>
                     <div>
                       <strong>
-                        {title}
+                        {t(title)}
                         {Icon ? <Icon size={15} aria-hidden /> : null}
                       </strong>
-                      <p>{detail}</p>
+                      <p>{t(detail)}</p>
                     </div>
                   </li>
                 ))}
@@ -251,7 +256,7 @@ export default function InstallPage() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Apple’s installation guide <ArrowRight size={12} />
+              {t('Apple’s installation guide')} <ArrowRight size={12} />
             </a>
           </section>
           <section className="install-guide" aria-labelledby="android-install-title">
@@ -259,7 +264,7 @@ export default function InstallPage() {
               <Bot className="install-platform-icon android" aria-hidden />
               <div>
                 <h2 id="android-install-title">Android</h2>
-                <p>Install MoriHome using Chrome</p>
+                <p>{t('Install MoriHome using Chrome')}</p>
               </div>
               <span className="install-platform-badge android">Android (Chrome)</span>
             </header>
@@ -270,10 +275,10 @@ export default function InstallPage() {
                     <span className="install-step-number">{index + 1}</span>
                     <div>
                       <strong>
-                        {title}
+                        {t(title)}
                         {Icon ? <Icon size={15} aria-hidden /> : null}
                       </strong>
-                      <p>{detail}</p>
+                      <p>{t(detail)}</p>
                     </div>
                   </li>
                 ))}
@@ -286,7 +291,7 @@ export default function InstallPage() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Chrome’s installation guide <ArrowRight size={12} />
+              {t('Chrome’s installation guide')} <ArrowRight size={12} />
             </a>
           </section>
         </div>
@@ -297,19 +302,21 @@ export default function InstallPage() {
             </span>
             <div>
               <p>
-                Detected platform:{' '}
+                {t('Detected platform:')}{' '}
                 <strong>
-                  {platform === 'ios' ? 'iPhone / iPad' : platform === 'android' ? 'Android' : 'desktop'}
+                  {platform === 'ios' ? 'iPhone / iPad' : platform === 'android' ? 'Android' : t('desktop')}
                 </strong>
               </p>
-              <small>Profile links you share will open correctly in a browser or the installed app.</small>
+              <small>
+                {t('Profile links you share will open correctly in a browser or the installed app.')}
+              </small>
             </div>
           </div>
           <Link to="/contact" className="install-help">
             <CircleHelp aria-hidden />
             <span>
-              <strong>Need help?</strong>
-              <small>Check our FAQ or contact us.</small>
+              <strong>{t('Need help?')}</strong>
+              <small>{t('Check our FAQ or contact us.')}</small>
             </span>
             <ArrowRight size={18} aria-hidden />
           </Link>

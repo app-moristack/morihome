@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import type { PortfolioImage } from '@/types/api'
@@ -8,6 +10,7 @@ type ProviderGalleryProps = {
 }
 
 export function ProviderGallery({ images, providerName }: ProviderGalleryProps) {
+  useLocale()
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   useEffect(() => {
@@ -46,7 +49,7 @@ export function ProviderGallery({ images, providerName }: ProviderGalleryProps) 
 
   return (
     <section className="card p-5 sm:p-6">
-      <h2 className="text-lg font-bold text-ink-900">Previous work</h2>
+      <h2 className="text-lg font-bold text-ink-900">{t('Previous work')}</h2>
 
       <ul className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-3">
         {images.map((image, index) => (
@@ -55,7 +58,10 @@ export function ProviderGallery({ images, providerName }: ProviderGalleryProps) 
               type="button"
               onClick={() => setOpenIndex(index)}
               className="group block aspect-4/3 w-full overflow-hidden rounded-xl bg-ink-50 focus-visible:outline-ink-900"
-              aria-label={image.caption ?? `Open work sample ${index + 1} by ${providerName}`}
+              aria-label={
+                image.caption ??
+                t('Open work sample {number} by {name}', { number: index + 1, name: providerName })
+              }
             >
               <img
                 src={image.url}
@@ -75,7 +81,7 @@ export function ProviderGallery({ images, providerName }: ProviderGalleryProps) 
         <div
           role="dialog"
           aria-modal="true"
-          aria-label={activeImage.caption ?? 'Work sample'}
+          aria-label={activeImage.caption ?? t('Work sample')}
           className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-ink-950/92 p-4"
           onClick={() => setOpenIndex(null)}
         >
@@ -83,7 +89,7 @@ export function ProviderGallery({ images, providerName }: ProviderGalleryProps) 
             type="button"
             onClick={() => setOpenIndex(null)}
             className="absolute top-4 right-4 grid size-11 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20"
-            aria-label="Close gallery"
+            aria-label={t('Close gallery')}
           >
             <X className="size-5" aria-hidden />
           </button>
@@ -105,7 +111,7 @@ export function ProviderGallery({ images, providerName }: ProviderGalleryProps) 
                 type="button"
                 onClick={() => setOpenIndex((index) => ((index ?? 0) - 1 + images.length) % images.length)}
                 className="grid size-11 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20"
-                aria-label="Previous image"
+                aria-label={t('Previous image')}
               >
                 <ChevronLeft className="size-5" aria-hidden />
               </button>
@@ -116,7 +122,7 @@ export function ProviderGallery({ images, providerName }: ProviderGalleryProps) 
                 type="button"
                 onClick={() => setOpenIndex((index) => ((index ?? 0) + 1) % images.length)}
                 className="grid size-11 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20"
-                aria-label="Next image"
+                aria-label={t('Next image')}
               >
                 <ChevronRight className="size-5" aria-hidden />
               </button>

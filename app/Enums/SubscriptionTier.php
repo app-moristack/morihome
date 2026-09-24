@@ -10,10 +10,6 @@ enum SubscriptionTier: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::Free => 'Free',
-            self::Plus => 'Plus',
-            self::Pro => 'Pro',
-        };
+        return __('subscription.tier.'.$this->value);
     }
 }

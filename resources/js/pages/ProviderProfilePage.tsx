@@ -1,5 +1,9 @@
+import { categoryLabel } from '@/i18n/labels'
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { Phone, UserX } from 'lucide-react'
 import { Link, useParams, useSearchParams } from 'react-router'
+import { ProviderProperties } from '@/components/provider/ProviderProperties'
 import { ProviderContactPanel } from '@/components/provider/ProviderContactPanel'
 import { ProviderGallery } from '@/components/provider/ProviderGallery'
 import { ProviderProfileHeader } from '@/components/provider/ProviderProfileHeader'
@@ -12,6 +16,7 @@ import { useProviderProfile } from '@/hooks/useSearchQueries'
 import { buildTelUrl } from '@/lib/whatsapp'
 
 export default function ProviderProfilePage() {
+  useLocale()
   const { slug } = useParams<{ slug: string }>()
   const [searchParams] = useSearchParams()
   const { data: provider, isLoading, isError } = useProviderProfile(slug)
@@ -32,11 +37,11 @@ export default function ProviderProfilePage() {
       <div className="container-page py-12">
         <EmptyState
           icon={<UserX className="size-6" aria-hidden />}
-          title="This profile is not available"
-          description="It may have been removed, suspended, or is still waiting for validation."
+          title={t('This profile is not available')}
+          description={t('It may have been removed, suspended, or is still waiting for validation.')}
           action={
             <Link to="/search">
-              <Button variant="secondary">Back to search</Button>
+              <Button variant="secondary">{t('Back to search')}</Button>
             </Link>
           }
         />
@@ -71,7 +76,7 @@ export default function ProviderProfilePage() {
           <div className="flex flex-col gap-6">
             {provider.description ? (
               <section className="card p-5 sm:p-6">
-                <h2 className="text-lg font-bold text-ink-900">About</h2>
+                <h2 className="text-lg font-bold text-ink-900">{t('About')}</h2>
                 <p className="mt-2 text-sm leading-relaxed whitespace-pre-line text-ink-600">
                   {provider.description}
                 </p>
@@ -80,12 +85,12 @@ export default function ProviderProfilePage() {
 
             {provider.service_categories.length > 0 ? (
               <section className="card p-5 sm:p-6">
-                <h2 className="text-lg font-bold text-ink-900">Services offered</h2>
+                <h2 className="text-lg font-bold text-ink-900">{t('Services offered')}</h2>
                 <ul className="mt-3 flex flex-wrap gap-2">
                   {provider.service_categories.map((category) => (
                     <li key={category.id}>
                       <Badge tone={category.is_primary ? 'dark' : 'brand'}>
-                        {category.name}
+                        {categoryLabel(category.name)}
                         {category.specialty ? ` · ${category.specialty}` : ''}
                       </Badge>
                     </li>
@@ -93,6 +98,8 @@ export default function ProviderProfilePage() {
                 </ul>
               </section>
             ) : null}
+
+            <ProviderProperties key={provider.slug} slug={provider.slug} />
 
             <ProviderGallery images={provider.portfolio_images} providerName={provider.name} />
           </div>
@@ -114,10 +121,10 @@ export default function ProviderProfilePage() {
             source="profile"
             size="lg"
             isFullWidth
-            label="Message on WhatsApp"
+            label={t('Message on WhatsApp')}
           />
           {telHref ? (
-            <a href={telHref} aria-label={`Call ${provider.name}`}>
+            <a href={telHref} aria-label={t('Call {name}', { name: provider.name })}>
               <Button variant="secondary" size="lg" className="px-4">
                 <Phone className="size-5" aria-hidden />
               </Button>

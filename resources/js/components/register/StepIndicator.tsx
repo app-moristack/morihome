@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { Check } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
@@ -7,8 +9,12 @@ type StepIndicatorProps = {
 }
 
 export function StepIndicator({ labels, activeIndex }: StepIndicatorProps) {
+  useLocale()
   return (
-    <ol className="flex items-center gap-1.5" aria-label={`Step ${activeIndex + 1} of ${labels.length}`}>
+    <ol
+      className="flex items-center gap-1.5"
+      aria-label={t('Step {current} of {total}', { current: activeIndex + 1, total: labels.length })}
+    >
       {labels.map((label, index) => {
         const isComplete = index < activeIndex
         const isActive = index === activeIndex
@@ -30,7 +36,7 @@ export function StepIndicator({ labels, activeIndex }: StepIndicatorProps) {
               aria-current={isActive ? 'step' : undefined}
             >
               {isComplete ? <Check className="size-3 shrink-0" aria-hidden /> : null}
-              {label}
+              {t(label)}
             </span>
           </li>
         )

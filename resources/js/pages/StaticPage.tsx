@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { Mail, MessageCircle } from 'lucide-react'
 import { Link } from 'react-router'
 import { PageHeader } from '@/components/layout/PageHeader'
@@ -29,7 +31,7 @@ const CONTENT: Record<string, { title: string; intro: string; sections: Section[
       {
         heading: 'What we are building next',
         body: [
-          'Customer reviews, request-a-quote, and support for French and Mauritian Creole are on the roadmap. The directory has been built so those can arrive without disrupting what already works.',
+          'Customer reviews and quote requests are on the roadmap. MoriHome is available in English and French.',
         ],
       },
     ],
@@ -120,6 +122,7 @@ const CONTENT: Record<string, { title: string; intro: string; sections: Section[
 }
 
 export default function StaticPage({ slug }: { slug: string }) {
+  useLocale()
   const page = CONTENT[slug]
 
   if (!page) {
@@ -133,15 +136,15 @@ export default function StaticPage({ slug }: { slug: string }) {
 
   return (
     <div className="container-page max-w-3xl py-10 sm:py-14">
-      <PageHeader title={page.title} description={page.intro} />
+      <PageHeader title={t(page.title)} description={t(page.intro)} />
 
       <div className="mt-8 flex flex-col gap-8">
         {page.sections.map((section) => (
           <section key={section.heading}>
-            <h2 className="text-lg font-bold text-ink-900">{section.heading}</h2>
+            <h2 className="text-lg font-bold text-ink-900">{t(section.heading)}</h2>
             {section.body.map((paragraph) => (
               <p key={paragraph} className="mt-2 text-sm leading-relaxed text-ink-600">
-                {paragraph}
+                {t(paragraph)}
               </p>
             ))}
           </section>
@@ -165,7 +168,7 @@ export default function StaticPage({ slug }: { slug: string }) {
               className="inline-flex min-h-11 items-center gap-2.5 font-semibold text-ink-800 hover:text-ink-900"
             >
               <MessageCircle className="size-5 text-ink-400" aria-hidden />
-              Message us on WhatsApp
+              {t('Message us on WhatsApp')}
             </a>
           ) : null}
         </div>
@@ -173,7 +176,7 @@ export default function StaticPage({ slug }: { slug: string }) {
 
       <p className="mt-10 text-sm text-ink-500">
         <Link to="/" className="font-semibold text-ink-900 underline underline-offset-2">
-          Back to MoriHome
+          {t('Back to MoriHome')}
         </Link>
       </p>
     </div>

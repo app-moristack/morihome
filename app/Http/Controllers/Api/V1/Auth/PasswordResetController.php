@@ -22,7 +22,7 @@ class PasswordResetController extends Controller
             Password::sendResetLink($validated);
         }
 
-        return response()->json(['message' => 'If an account matches this email, you will receive password reset instructions.']);
+        return response()->json(['message' => __('messages.reset_sent')]);
     }
 
     public function reset(Request $request, RevokeAccountSessions $revokeSessions): JsonResponse

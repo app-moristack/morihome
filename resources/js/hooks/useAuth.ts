@@ -1,3 +1,4 @@
+import { t } from '@/i18n'
 import { use } from 'react'
 import { ApiError } from '@/api/client'
 import { AuthContext, type AuthContextValue } from '@/providers/authContext'
@@ -17,5 +18,5 @@ export function describeAuthError(error: unknown): string {
     return error.firstErrorFor('identifier') ?? error.message
   }
 
-  return 'Something went wrong. Please try again.'
+  return t('Something went wrong. Please try again.')
 }

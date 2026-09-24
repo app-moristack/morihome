@@ -1,3 +1,6 @@
+import { planLabel, enumLabel } from '@/i18n/labels'
+import { t, getFormatLocale } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { Check, Clock3, Plus, RefreshCw } from 'lucide-react'
 import { useState } from 'react'
 import { ApiError } from '@/api/client'
@@ -18,6 +21,7 @@ type SubscriptionManagerProps = {
 }
 
 export function SubscriptionManager({ providerType }: SubscriptionManagerProps) {
+  useLocale()
   const { data: memberships = [], isLoading: membershipsLoading } = useProviderSubscriptions()
   const { data: catalog = [], isLoading: catalogLoading } = useSubscriptions()
   const requestSubscriptions = useRequestSubscriptions()
@@ -53,16 +57,16 @@ export function SubscriptionManager({ providerType }: SubscriptionManagerProps) 
         showToast('Your subscriptions are awaiting admin approval.', 'success')
       },
       onError: (error) =>
-        showToast(error instanceof ApiError ? error.message : 'Could not request subscriptions.', 'error'),
+        showToast(error instanceof ApiError ? error.message : t('Could not request subscriptions.'), 'error'),
     })
   }
 
   return (
     <section id="subscriptions" className="card flex flex-col gap-5 p-5">
       <div>
-        <h2 className="text-lg font-bold text-ink-900">Your subscriptions</h2>
+        <h2 className="text-lg font-bold text-ink-900">{t('Your subscriptions')}</h2>
         <p className="mt-1 text-sm text-ink-500">
-          Track approvals, dates and add another category at any time.
+          {t('Track approvals, dates and add another category at any time.')}
         </p>
       </div>
 
@@ -81,19 +85,19 @@ export function SubscriptionManager({ providerType }: SubscriptionManagerProps) 
               >
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <strong className="text-ink-900">{subscription.name}</strong>
+                    <strong className="text-ink-900">{planLabel(subscription.name)}</strong>
                     <p className="text-xs text-ink-500">{subscription.category_label}</p>
                   </div>
-                  <Badge tone={tone}>{state.replace('_', ' ')}</Badge>
+                  <Badge tone={tone}>{enumLabel(state)}</Badge>
                 </div>
                 {subscription.membership?.starts_at && subscription.membership.ends_at ? (
                   <p className="mt-3 text-xs text-ink-600">
-                    {new Date(subscription.membership.starts_at).toLocaleDateString()} -{' '}
-                    {new Date(subscription.membership.ends_at).toLocaleDateString()}
+                    {new Date(subscription.membership.starts_at).toLocaleDateString(getFormatLocale())} -{' '}
+                    {new Date(subscription.membership.ends_at).toLocaleDateString(getFormatLocale())}
                   </p>
                 ) : (
                   <p className="mt-3 flex items-center gap-1.5 text-xs text-ink-600">
-                    <Clock3 className="size-3.5" aria-hidden /> Waiting for admin approval
+                    <Clock3 className="size-3.5" aria-hidden /> {t('Waiting for admin approval')}
                   </p>
                 )}
               </li>
@@ -101,7 +105,7 @@ export function SubscriptionManager({ providerType }: SubscriptionManagerProps) 
           })}
         </ul>
       ) : (
-        <p className="text-sm text-ink-500">You have not requested a subscription yet.</p>
+        <p className="text-sm text-ink-500">{t('You have not requested a subscription yet.')}</p>
       )}
 
       <PaymentInstructions subscriptions={pendingPaidPlans} isAfterRequest />
@@ -111,9 +115,9 @@ export function SubscriptionManager({ providerType }: SubscriptionManagerProps) 
       ) : eligiblePlans.length ? (
         <div className="flex flex-col gap-4 border-t border-ink-100 pt-5">
           <div>
-            <h3 className="font-bold text-ink-900">Add a subscription</h3>
+            <h3 className="font-bold text-ink-900">{t('Add a subscription')}</h3>
             <p className="text-sm text-ink-500">
-              Select one plan from any category you do not currently have.
+              {t('Select one plan from any category you do not currently have.')}
             </p>
           </div>
           <div className="grid gap-4 lg:grid-cols-3">
@@ -139,7 +143,12 @@ export function SubscriptionManager({ providerType }: SubscriptionManagerProps) 
                       >
                         <span>
                           <strong className="block">{subscription.tier_label}</strong>
-                          {subscription.price_rupees ? `Rs ${subscription.price_rupees} / 6 months` : 'Free'}
+                          {subscription.price_rupees
+                            ? t('Rs {price} / {months} months', {
+                                price: subscription.price_rupees.toLocaleString(getFormatLocale()),
+                                months: subscription.duration_months ?? 6,
+                              })
+                            : t('Free')}
                         </span>
                         {isSelected ? (
                           <Check className="size-5 text-success" aria-hidden />
@@ -165,12 +174,12 @@ export function SubscriptionManager({ providerType }: SubscriptionManagerProps) 
               )
             }
           >
-            Request selected subscriptions
+            {t('Request selected subscriptions')}
           </Button>
         </div>
       ) : (
         <p className="border-t border-ink-100 pt-4 text-sm text-ink-500">
-          All available categories are already active or awaiting approval.
+          {t('All available categories are already active or awaiting approval.')}
         </p>
       )}
     </section>

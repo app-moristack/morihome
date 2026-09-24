@@ -34,7 +34,7 @@ describe('Contact page', () => {
     )
     expect(screen.getByRole('heading', { name: 'Quick Answers' })).toBeInTheDocument()
     expect(screen.getByText('How do I register as a professional?')).toBeInTheDocument()
-    expect(screen.getByText(/Agencies and companies pay a yearly subscription/)).not.toBeVisible()
+    expect(screen.getByText(/Agencies and companies choose a six-month paid plan/)).not.toBeVisible()
     expect(
       within(screen.getByRole('navigation', { name: 'Main' })).getByRole('link', { name: 'Contact' }),
     ).toHaveAttribute('aria-current', 'page')
@@ -58,7 +58,7 @@ describe('Contact page', () => {
     expect(answer).not.toBeVisible()
     await userEvent.click(question)
     expect(answer).toBeVisible()
-    expect(screen.getByText(/Agencies and companies pay a yearly subscription/)).not.toBeVisible()
+    expect(screen.getByText(/Agencies and companies choose a six-month paid plan/)).not.toBeVisible()
     await userEvent.click(question)
     expect(answer).not.toBeVisible()
   })

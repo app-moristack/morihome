@@ -1,3 +1,6 @@
+import { planLabel, enumLabel } from '@/i18n/labels'
+import { t, getFormatLocale } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { Building2, Camera, CircleAlert, Home, Plus } from 'lucide-react'
 import { useState } from 'react'
 import { ApiError } from '@/api/client'
@@ -13,9 +16,12 @@ import {
   useUploadPropertyImage,
 } from '@/hooks/useProviderQueries'
 import { useToast } from '@/hooks/useToast'
+import { PROPERTY_AMENITIES } from '@/lib/propertyAmenities'
 import type { PropertyListing } from '@/types/api'
 
 type FormState = {
+  amenities: string[]
+  is_furnished: boolean
   purpose: 'rental' | 'sales'
   property_type: string
   title: string
@@ -31,6 +37,8 @@ type FormState = {
 }
 
 const INITIAL_FORM: FormState = {
+  amenities: [],
+  is_furnished: false,
   purpose: 'rental',
   property_type: 'house',
   title: '',
@@ -46,6 +54,7 @@ const INITIAL_FORM: FormState = {
 }
 
 function ListingPhotos({ listing }: { listing: PropertyListing }) {
+  useLocale()
   const upload = useUploadPropertyImage()
   const { showToast } = useToast()
   const atLimit = listing.images.length >= listing.photo_limit
@@ -53,7 +62,7 @@ function ListingPhotos({ listing }: { listing: PropertyListing }) {
   return (
     <div className="mt-4 border-t border-ink-100 pt-4">
       <div className="flex items-center justify-between gap-3 text-sm">
-        <strong>Photos</strong>
+        <strong>{t('Photos')}</strong>
         <span className={atLimit ? 'font-bold text-danger' : 'text-ink-500'}>
           {listing.images.length} / {listing.photo_limit}
         </span>
@@ -74,7 +83,7 @@ function ListingPhotos({ listing }: { listing: PropertyListing }) {
         className={`mt-3 inline-flex min-h-10 items-center gap-2 rounded-lg border px-3 text-sm font-semibold ${atLimit ? 'cursor-not-allowed border-ink-100 text-ink-400' : 'cursor-pointer border-ink-200 text-ink-800 hover:border-brand-400'}`}
       >
         <Camera className="size-4" aria-hidden />
-        {atLimit ? 'Photo limit reached' : upload.isPending ? 'Uploading...' : 'Add photo'}
+        {atLimit ? t('Photo limit reached') : upload.isPending ? t('Uploading...') : t('Add photo')}
         <input
           type="file"
           accept="image/jpeg,image/png,image/webp"
@@ -100,6 +109,7 @@ function ListingPhotos({ listing }: { listing: PropertyListing }) {
 }
 
 export default function ProviderPropertiesPage() {
+  useLocale()
   const { data, isLoading, isError } = usePropertyListings()
   const createListing = useCreatePropertyListing()
   const { showToast } = useToast()
@@ -147,7 +157,7 @@ export default function ProviderPropertiesPage() {
           showToast('Property listing published.', 'success')
         },
         onError: (error) => {
-          const message = error instanceof ApiError ? error.message : 'Could not create the listing.'
+          const message = error instanceof ApiError ? error.message : t('Could not create the listing.')
           setFormError(message)
           showToast(message, 'error')
         },
@@ -167,7 +177,7 @@ export default function ProviderPropertiesPage() {
         <EmptyState
           tone="danger"
           icon={<CircleAlert className="size-6" />}
-          title="Could not load properties"
+          title={t('Could not load properties')}
         />
       </div>
     )
@@ -175,10 +185,10 @@ export default function ProviderPropertiesPage() {
   return (
     <div className="container-page flex flex-col gap-7 py-8 sm:py-10">
       <header>
-        <p className="text-sm font-bold text-brand-700 uppercase">Property dashboard</p>
-        <h1 className="mt-1 text-3xl font-extrabold">Manage property listings</h1>
+        <p className="text-sm font-bold text-brand-700 uppercase">{t('Property dashboard')}</p>
+        <h1 className="mt-1 text-3xl font-extrabold">{t('Manage property listings')}</h1>
         <p className="mt-2 text-ink-500">
-          Your active Rental or Sales subscription controls listing and photo limits.
+          {t('Your active Rental or Sales subscription controls listing and photo limits.')}
         </p>
       </header>
 
@@ -188,13 +198,20 @@ export default function ProviderPropertiesPage() {
           return (
             <div key={purpose} className="card p-4">
               <div className="flex items-center justify-between gap-3">
-                <strong>{purpose === 'rental' ? 'Rental listings' : 'Sale listings'}</strong>
-                <Badge tone={limit ? 'success' : 'warning'}>{limit?.plan ?? 'No active plan'}</Badge>
+                <strong>{purpose === 'rental' ? t('Rental listings') : t('Sale listings')}</strong>
+                <Badge tone={limit ? 'success' : 'warning'}>
+                  {(limit?.plan ? planLabel(limit.plan) : null) ?? t('No active plan')}
+                </Badge>
               </div>
               <p className="mt-2 text-sm text-ink-500">
                 {limit
-                  ? `${limit.used} used · ${limit.remaining} of ${limit.listing_limit} remaining · ${limit.photos_per_listing} photos/listing`
-                  : 'Activate a subscription from your dashboard to create listings.'}
+                  ? t('{used} used · {remaining} of {limit} remaining · {photos} photos/listing', {
+                      used: limit.used,
+                      remaining: limit.remaining,
+                      limit: limit.listing_limit,
+                      photos: limit.photos_per_listing,
+                    })
+                  : t('Activate a subscription from your dashboard to create listings.')}
               </p>
             </div>
           )
@@ -202,10 +219,10 @@ export default function ProviderPropertiesPage() {
       </section>
 
       <section className="card p-5 sm:p-6">
-        <h2 className="text-xl font-bold">Create a property listing</h2>
+        <h2 className="text-xl font-bold">{t('Create a property listing')}</h2>
         <form onSubmit={submit} className="mt-5 grid gap-4 sm:grid-cols-2" noValidate>
           <SelectField
-            label="Listing category"
+            label={t('Listing category')}
             isRequired
             value={form.purpose}
             onChange={(event) =>
@@ -213,37 +230,42 @@ export default function ProviderPropertiesPage() {
             }
           >
             <option value="rental" disabled={!limits.rental || limits.rental.remaining === 0}>
-              For rent {limits.rental ? `(${limits.rental.remaining} remaining)` : '(subscription required)'}
+              {t('For rent')}{' '}
+              {limits.rental
+                ? t('({count} remaining)', { count: limits.rental.remaining })
+                : t('(subscription required)')}
             </option>
             <option value="sales" disabled={!limits.sales || limits.sales.remaining === 0}>
-              For sale {limits.sales ? `(${limits.sales.remaining} remaining)` : '(subscription required)'}
+              {t('For sale')}{' '}
+              {limits.sales
+                ? t('({count} remaining)', { count: limits.sales.remaining })
+                : t('(subscription required)')}
             </option>
           </SelectField>
           <SelectField
-            label="Property type"
+            label={t('Property type')}
             isRequired
             value={form.property_type}
             onChange={(event) => setForm((current) => ({ ...current, property_type: event.target.value }))}
           >
             {['house', 'apartment', 'villa', 'land', 'commercial', 'other'].map((type) => (
               <option key={type} value={type}>
-                {type[0]?.toUpperCase()}
-                {type.slice(1)}
+                {enumLabel(type)}
               </option>
             ))}
           </SelectField>
           <TextField
-            label="Listing title"
+            label={t('Listing title')}
             isRequired
             minLength={5}
             maxLength={160}
             value={form.title}
             onChange={(event) => setForm((current) => ({ ...current, title: event.target.value }))}
-            placeholder="Modern family home in Moka"
+            placeholder={t('Modern family home in Moka')}
             wrapperClassName="sm:col-span-2"
           />
           <TextAreaField
-            label="Description"
+            label={t('Description')}
             isRequired
             minLength={20}
             maxLength={5000}
@@ -252,7 +274,7 @@ export default function ProviderPropertiesPage() {
           />
           <div className="grid gap-4">
             <TextField
-              label="Price (Rs)"
+              label={t('Price (Rs)')}
               isRequired
               type="number"
               min="1"
@@ -261,21 +283,21 @@ export default function ProviderPropertiesPage() {
             />
             <div className="grid grid-cols-3 gap-2">
               <TextField
-                label="Bedrooms"
+                label={t('Bedrooms')}
                 type="number"
                 min="0"
                 value={form.bedrooms}
                 onChange={(event) => setForm((current) => ({ ...current, bedrooms: event.target.value }))}
               />
               <TextField
-                label="Bathrooms"
+                label={t('Bathrooms')}
                 type="number"
                 min="0"
                 value={form.bathrooms}
                 onChange={(event) => setForm((current) => ({ ...current, bathrooms: event.target.value }))}
               />
               <TextField
-                label="Area m²"
+                label={t('Area m²')}
                 type="number"
                 min="1"
                 value={form.area_sqm}
@@ -283,6 +305,40 @@ export default function ProviderPropertiesPage() {
               />
             </div>
           </div>
+          <fieldset className="sm:col-span-2">
+            <legend className="mb-3 text-sm font-bold">{t('Furnishing & amenities')}</legend>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <label className="flex min-h-10 items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  className="size-5 accent-brand-400"
+                  checked={form.is_furnished}
+                  onChange={(event) =>
+                    setForm((current) => ({ ...current, is_furnished: event.target.checked }))
+                  }
+                />
+                {t('Furnished')}
+              </label>
+              {PROPERTY_AMENITIES.map(({ value, label }) => (
+                <label key={value} className="flex min-h-10 items-center gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    className="size-5 accent-brand-400"
+                    checked={form.amenities.includes(value)}
+                    onChange={(event) =>
+                      setForm((current) => ({
+                        ...current,
+                        amenities: event.target.checked
+                          ? [...current.amenities, value]
+                          : current.amenities.filter((item) => item !== value),
+                      }))
+                    }
+                  />
+                  {t(label)}
+                </label>
+              ))}
+            </div>
+          </fieldset>
           <div className="sm:col-span-2">
             <AddressAutocomplete
               value={form.address}
@@ -291,7 +347,7 @@ export default function ProviderPropertiesPage() {
             />
           </div>
           <TextField
-            label="Locality"
+            label={t('Locality')}
             isRequired
             value={form.locality}
             onChange={(event) => setForm((current) => ({ ...current, locality: event.target.value }))}
@@ -303,19 +359,19 @@ export default function ProviderPropertiesPage() {
               disabled={!canCreate || createListing.isPending}
               leadingIcon={<Plus className="size-4" />}
             >
-              {createListing.isPending ? 'Publishing...' : 'Publish listing'}
+              {createListing.isPending ? t('Publishing...') : t('Publish listing')}
             </Button>
           </div>
           {formError ? (
             <p className="text-sm font-semibold text-danger sm:col-span-2" role="alert">
-              {formError}
+              {t(formError)}
             </p>
           ) : null}
         </form>
       </section>
 
       <section>
-        <h2 className="text-xl font-bold">Your properties</h2>
+        <h2 className="text-xl font-bold">{t('Your properties')}</h2>
         {data.data.length ? (
           <ul className="mt-4 grid gap-4 lg:grid-cols-2">
             {data.data.map((listing) => (
@@ -327,11 +383,11 @@ export default function ProviderPropertiesPage() {
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <h3 className="font-bold">{listing.title}</h3>
-                      <Badge>{listing.status}</Badge>
+                      <Badge>{enumLabel(listing.status)}</Badge>
                     </div>
                     <p className="mt-1 text-sm text-ink-500">
-                      {listing.purpose === 'rental' ? 'For rent' : 'For sale'} · Rs{' '}
-                      {listing.price_rupees.toLocaleString('en-MU')} · {listing.locality}
+                      {listing.purpose === 'rental' ? t('For rent') : t('For sale')} {'· Rs'}{' '}
+                      {listing.price_rupees.toLocaleString(getFormatLocale())} · {listing.locality}
                     </p>
                   </div>
                 </div>
@@ -342,8 +398,8 @@ export default function ProviderPropertiesPage() {
         ) : (
           <EmptyState
             icon={<Building2 className="size-6" />}
-            title="No property listings yet"
-            description="Create your first listing when a Rental or Sales subscription is active."
+            title={t('No property listings yet')}
+            description={t('Create your first listing when a Rental or Sales subscription is active.')}
           />
         )}
       </section>

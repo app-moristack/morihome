@@ -27,6 +27,7 @@ use App\Http\Controllers\Api\V1\Public\LocalitiesController;
 use App\Http\Controllers\Api\V1\Public\PageViewsController;
 use App\Http\Controllers\Api\V1\Public\PropertySearchController;
 use App\Http\Controllers\Api\V1\Public\ProviderSearchController;
+use App\Http\Controllers\Api\V1\Public\PublicPropertiesController;
 use App\Http\Controllers\Api\V1\Public\PublicProvidersController;
 use App\Http\Controllers\Api\V1\Public\ServiceCategoriesController;
 use App\Http\Controllers\Api\V1\Public\SubscriptionsController;
@@ -43,6 +44,8 @@ Route::prefix('v1')->group(function () {
         Route::get('localities', [LocalitiesController::class, 'index']);
         Route::get('providers/search', ProviderSearchController::class);
         Route::get('properties/search', PropertySearchController::class);
+        Route::get('properties/{slug}', [PublicPropertiesController::class, 'show']);
+        Route::get('providers/{slug}/properties', [PublicPropertiesController::class, 'forProvider']);
         Route::get('providers/featured', FeaturedProvidersController::class);
         Route::get('providers/{slug}', [PublicProvidersController::class, 'show']);
         Route::post('providers/{slug}/contact-events', [ContactEventsController::class, 'store'])

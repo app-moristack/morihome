@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import {
   ChevronRight,
   CircleHelp,
@@ -32,7 +34,7 @@ const FAQS = [
     icon: Settings,
     question: 'Is MoriHome free to use?',
     answer:
-      'Yes. Finding and contacting professionals is free for customers. MoriHome is also free for individual and self-employed professionals. Agencies and companies pay a yearly subscription, with no commitment or credit card required. Payment is made through Juice to activate the account.',
+      'Yes. Finding and contacting professionals is free for customers. Free plans are available for individuals and self-employed professionals. Agencies and companies choose a six-month paid plan, with no automatic renewal. Payment is made via Juice, then verified by our team before the subscription is activated.',
   },
   {
     icon: CircleHelp,
@@ -47,6 +49,7 @@ const FAQS = [
 ]
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
+  useLocale()
   return (
     <p className="contact-eyebrow">
       <span aria-hidden />
@@ -56,10 +59,12 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 }
 
 function FieldIcon({ children }: { children: React.ReactNode }) {
+  useLocale()
   return <span className="contact-field-icon">{children}</span>
 }
 
 export default function ContactPage() {
+  useLocale()
   const [isSending, setIsSending] = useState(false)
   const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
   const whatsappUrl = buildWhatsappUrl({
@@ -80,7 +85,7 @@ export default function ContactPage() {
         name: String(form.get('name') ?? ''),
         email: String(form.get('email') ?? ''),
         phone: String(form.get('phone') ?? ''),
-        subject: String(form.get('subject') ?? 'General question'),
+        subject: String(form.get('subject') ?? t('General question')),
         message: String(form.get('message') ?? ''),
       })
 
@@ -92,7 +97,7 @@ export default function ContactPage() {
         message:
           error instanceof ApiError
             ? error.message
-            : 'We could not send your message. Please try again or contact us by email.',
+            : t('We could not send your message. Please try again or contact us by email.'),
       })
     } finally {
       setIsSending(false)
@@ -104,22 +109,23 @@ export default function ContactPage() {
       <section className="site-page-hero contact-hero" aria-labelledby="contact-title">
         <img
           src={heroImage}
-          alt="A contemporary Mauritian home beneath a mountain at sunset"
+          alt={t('A contemporary Mauritian home beneath a mountain at sunset')}
           className="contact-hero-image"
           fetchPriority="high"
         />
         <div className="contact-hero-wash" aria-hidden />
         <div className="container-page relative">
           <div className="contact-hero-copy">
-            <Eyebrow>Contact us</Eyebrow>
+            <Eyebrow>{t('Contact us')}</Eyebrow>
             <h1 id="contact-title">
-              We’re here
+              {t('We’re here')}
               <br />
-              <span>to help.</span>
+              <span>{t('to help.')}</span>
             </h1>
             <p>
-              Have a question, suggestion or need assistance? Our team is here to help you. Get in touch with
-              us and we’ll get back to you as soon as possible.
+              {t(
+                'Have a question, suggestion or need assistance? Our team is here to help you. Get in touch with us and we’ll get back to you as soon as possible.',
+              )}
             </p>
             <div className="contact-promises">
               {[
@@ -129,38 +135,38 @@ export default function ContactPage() {
               ].map(({ icon: Icon, label }) => (
                 <div key={label}>
                   <Icon className="home-illustrated-icon" aria-hidden />
-                  <span>{label}</span>
+                  <span>{t(label)}</span>
                 </div>
               ))}
             </div>
           </div>
           <p className="home-handwritten site-page-hero-note">
-            Let’s
+            {t('Let’s')}
             <br />
-            Build a Better
+            {t('Build a Better')}
             <br />
-            Mauritius Together
+            {t('Mauritius Together')}
             <span aria-hidden />
           </p>
         </div>
       </section>
 
-      <section className="container-page contact-main" aria-label="Contact MoriHome">
+      <section className="container-page contact-main" aria-label={t('Contact MoriHome')}>
         <form className="contact-form-card" onSubmit={handleSubmit}>
           <div>
-            <h2>Send us a message</h2>
-            <p>Fill in the form below and we’ll get back to you shortly.</p>
+            <h2>{t('Send us a message')}</h2>
+            <p>{t('Fill in the form below and we’ll get back to you shortly.')}</p>
           </div>
 
           <label>
-            <span className="sr-only">Your name</span>
+            <span className="sr-only">{t('Your name')}</span>
             <FieldIcon>
               <UserRound aria-hidden />
             </FieldIcon>
-            <input name="name" type="text" autoComplete="name" placeholder="Your name *" required />
+            <input name="name" type="text" autoComplete="name" placeholder={t('Your name *')} required />
           </label>
           <label>
-            <span className="sr-only">Your email address</span>
+            <span className="sr-only">{t('Your email address')}</span>
             <FieldIcon>
               <Mail aria-hidden />
             </FieldIcon>
@@ -168,58 +174,58 @@ export default function ContactPage() {
               name="email"
               type="email"
               autoComplete="email"
-              placeholder="Your email address *"
+              placeholder={t('Your email address *')}
               required
             />
           </label>
           <label>
-            <span className="sr-only">Your phone number</span>
+            <span className="sr-only">{t('Your phone number')}</span>
             <FieldIcon>
               <MessageCircle aria-hidden />
             </FieldIcon>
-            <input name="phone" type="tel" autoComplete="tel" placeholder="Your phone number" />
+            <input name="phone" type="tel" autoComplete="tel" placeholder={t('Your phone number')} />
           </label>
           <label>
-            <span className="sr-only">Subject</span>
+            <span className="sr-only">{t('Subject')}</span>
             <FieldIcon>
               <ListFilter aria-hidden />
             </FieldIcon>
             <select name="subject" defaultValue="General question" required>
-              <option>General question</option>
-              <option>Professional registration</option>
-              <option>Profile or listing support</option>
-              <option>Report a concern</option>
-              <option>Partnership enquiry</option>
+              <option>{t('General question')}</option>
+              <option>{t('Professional registration')}</option>
+              <option>{t('Profile or listing support')}</option>
+              <option>{t('Report a concern')}</option>
+              <option>{t('Partnership enquiry')}</option>
             </select>
           </label>
           <label className="contact-message-field">
-            <span className="sr-only">Your message</span>
+            <span className="sr-only">{t('Your message')}</span>
             <FieldIcon>
               <MessageCircle aria-hidden />
             </FieldIcon>
-            <textarea name="message" rows={5} placeholder="Your message *" required />
+            <textarea name="message" rows={5} placeholder={t('Your message *')} required />
           </label>
 
           <button type="submit" className="contact-submit" disabled={isSending}>
-            <Send size={18} aria-hidden /> {isSending ? 'Sending…' : 'Send Message'}
+            <Send size={18} aria-hidden /> {isSending ? t('Sending…') : t('Send Message')}
           </button>
           {status ? (
             <p
               className={`contact-form-status contact-form-status-${status.type}`}
               role={status.type === 'error' ? 'alert' : 'status'}
             >
-              {status.message}
+              {t(status.message)}
             </p>
           ) : null}
           <p className="contact-response-time">
-            <Clock3 size={16} aria-hidden /> We usually respond within 24 hours.
+            <Clock3 size={16} aria-hidden /> {t('We usually respond within 24 hours.')}
           </p>
         </form>
 
         <aside className="contact-info-card" aria-labelledby="contact-info-title">
           <div>
-            <h2 id="contact-info-title">Contact Information</h2>
-            <p>You can also reach us through the following channels.</p>
+            <h2 id="contact-info-title">{t('Contact Information')}</h2>
+            <p>{t('You can also reach us through the following channels.')}</p>
           </div>
           <div className="contact-info-list">
             <div>
@@ -227,9 +233,9 @@ export default function ContactPage() {
                 <Mail aria-hidden />
               </span>
               <p>
-                <strong>Email</strong>
+                <strong>{t('Email')}</strong>
                 <a href={`mailto:${bootstrap.supportEmail}`}>{bootstrap.supportEmail}</a>
-                <small>We’ll get back to you soon.</small>
+                <small>{t('We’ll get back to you soon.')}</small>
               </p>
             </div>
             <div>
@@ -237,9 +243,9 @@ export default function ContactPage() {
                 <MapPin aria-hidden />
               </span>
               <p>
-                <strong>Service area</strong>
-                <span>Mauritius</span>
-                <small>Local support, island-wide.</small>
+                <strong>{t('Service area')}</strong>
+                <span>{t('Mauritius')}</span>
+                <small>{t('Local support, island-wide.')}</small>
               </p>
             </div>
             <div>
@@ -247,9 +253,9 @@ export default function ContactPage() {
                 <Clock3 aria-hidden />
               </span>
               <p>
-                <strong>Response time</strong>
-                <span>Within 24 hours</span>
-                <small>Monday to Friday.</small>
+                <strong>{t('Response time')}</strong>
+                <span>{t('Within 24 hours')}</span>
+                <small>{t('Monday to Friday.')}</small>
               </p>
             </div>
             {whatsappUrl ? (
@@ -260,9 +266,9 @@ export default function ContactPage() {
                 <p>
                   <strong>WhatsApp</strong>
                   <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-                    Chat with us directly
+                    {t('Chat with us directly')}
                   </a>
-                  <small>Fast, friendly assistance.</small>
+                  <small>{t('Fast, friendly assistance.')}</small>
                 </p>
               </div>
             ) : null}
@@ -270,11 +276,11 @@ export default function ContactPage() {
           <div className="contact-island-note">
             <MapPin aria-hidden />
             <p className="home-handwritten">
-              Local Solutions
+              {t('Local Solutions')}
               <br />
-              for a Brighter
+              {t('for a Brighter')}
               <br />
-              Mauritius
+              {t('Mauritius')}
               <span aria-hidden />
             </p>
           </div>
@@ -283,8 +289,8 @@ export default function ContactPage() {
 
       <section className="contact-faq" aria-labelledby="faq-title">
         <div className="container-page">
-          <Eyebrow>Frequently asked questions</Eyebrow>
-          <h2 id="faq-title">Quick Answers</h2>
+          <Eyebrow>{t('Frequently asked questions')}</Eyebrow>
+          <h2 id="faq-title">{t('Quick Answers')}</h2>
           <div className="contact-faq-grid">
             {FAQS.map(({ icon: Icon, question, answer }) => (
               <details key={question}>
@@ -293,11 +299,11 @@ export default function ContactPage() {
                     <Icon aria-hidden />
                   </span>
                   <span>
-                    <strong>{question}</strong>
+                    <strong>{t(question)}</strong>
                   </span>
                   <ChevronRight aria-hidden />
                 </summary>
-                <p>{answer}</p>
+                <p>{t(answer)}</p>
               </details>
             ))}
           </div>

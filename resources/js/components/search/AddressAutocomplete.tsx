@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { LoaderCircle, LocateFixed, MapPin } from 'lucide-react'
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { AddressSuggestionList } from './AddressSuggestionList'
@@ -26,6 +28,7 @@ export function AddressAutocomplete({
   error,
   label = 'Where do you need help?',
 }: AddressAutocompleteProps) {
+  useLocale()
   const fieldId = useId()
   const listboxId = `${fieldId}-suggestions`
   const [isOpen, setIsOpen] = useState(false)
@@ -104,7 +107,7 @@ export function AddressAutocomplete({
   return (
     <div ref={containerRef} className="relative flex flex-col gap-1.5">
       <label htmlFor={fieldId} className="text-sm font-semibold text-ink-800">
-        {label}
+        {t(label)}
       </label>
 
       <div className="relative">
@@ -124,7 +127,7 @@ export function AddressAutocomplete({
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? `${fieldId}-error` : undefined}
           aria-activedescendant={activeIndex >= 0 ? `${listboxId}-${activeIndex}` : undefined}
-          placeholder="Town, village or address"
+          placeholder={t('Town, village or address')}
           value={value}
           onChange={(event) => {
             onChange(event.target.value)
@@ -145,8 +148,8 @@ export function AddressAutocomplete({
           type="button"
           onClick={requestCurrentLocation}
           disabled={isLocating}
-          title="Use my current location"
-          aria-label="Use my current location"
+          title={t('Use my current location')}
+          aria-label={t('Use my current location')}
           className="absolute top-1/2 right-2 grid size-9 -translate-y-1/2 place-items-center rounded-full text-ink-500 hover:bg-ink-100 hover:text-ink-900 disabled:opacity-50"
         >
           {isLocating ? (
@@ -159,7 +162,7 @@ export function AddressAutocomplete({
 
       {error ? (
         <p id={`${fieldId}-error`} role="alert" className="text-sm font-medium text-danger">
-          {error}
+          {t(error)}
         </p>
       ) : null}
 

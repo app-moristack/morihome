@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+import { useLocale } from '@/hooks/useLocale'
 import { LayoutDashboard, LogOut, Menu, ShieldCheck, UserRound, X } from 'lucide-react'
 import { useState } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router'
@@ -6,17 +8,19 @@ import { cn } from '@/lib/cn'
 import { useAuth } from '@/hooks/useAuth'
 import { useToast } from '@/hooks/useToast'
 import { Brand } from './Brand'
+import { LanguageSwitcher } from './LanguageSwitcher'
 
 const NAV_LINKS = [
   { to: '/', label: 'Home' },
   { to: '/search', label: 'Services' },
   { to: '/properties', label: 'Properties' },
-  { to: '/for-professionals', label: 'For Professionals' },
+  { to: '/for-professionals', label: 'Join us' },
   { to: '/about', label: 'About' },
   { to: '/contact', label: 'Contact' },
 ]
 
 export function Header() {
+  useLocale()
   const { isAuthenticated, isAdmin, isProvider, logout } = useAuth()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const location = useLocation()
@@ -43,7 +47,7 @@ export function Header() {
       <div className="container-page flex h-20 items-center justify-between gap-2 lg:gap-4">
         <Brand />
 
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
+        <nav className="hidden items-center gap-1 xl:flex" aria-label={t('Main')}>
           {NAV_LINKS.map((link) => (
             <NavLink
               key={link.to}
@@ -51,17 +55,17 @@ export function Header() {
               end={link.to === '/'}
               className={({ isActive }) =>
                 cn(
-                  'rounded-pill px-2 py-3 text-xs font-medium transition-colors xl:px-3 xl:text-sm',
+                  'rounded-pill px-2 py-3 text-xs font-medium whitespace-nowrap transition-colors xl:px-3 xl:text-sm',
                   isActive ? 'bg-ink-100 text-ink-900' : 'text-ink-600 hover:bg-ink-50 hover:text-ink-900',
                 )
               }
             >
-              {link.label}
+              {t(link.label)}
             </NavLink>
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2 lg:flex">
+        <div className="hidden items-center gap-2 xl:flex">
           {isAdmin ? (
             <Button
               size="sm"
@@ -69,7 +73,7 @@ export function Header() {
               leadingIcon={<ShieldCheck className="size-4" />}
               onClick={() => navigate('/admin')}
             >
-              Admin
+              {t('Admin')}
             </Button>
           ) : null}
           {isProvider ? (
@@ -79,7 +83,7 @@ export function Header() {
               leadingIcon={<LayoutDashboard className="size-4" />}
               onClick={() => navigate('/dashboard')}
             >
-              Dashboard
+              {t('Dashboard')}
             </Button>
           ) : null}
           {isAuthenticated ? (
@@ -89,28 +93,33 @@ export function Header() {
               leadingIcon={<LogOut className="size-4" />}
               onClick={handleLogout}
             >
-              Sign out
+              {t('Sign out')}
             </Button>
           ) : (
             <>
-              <Link to="/login" className="theme-toggle" aria-label="Sign in">
+              <Link to="/login" className="theme-toggle" aria-label={t('Sign in')}>
                 <UserRound className="size-5" aria-hidden />
               </Link>
-              <Button size="sm" onClick={() => navigate('/for-professionals')} className="min-h-11 px-5">
-                Start for free
+              <Button
+                size="sm"
+                onClick={() => navigate('/for-professionals')}
+                className="min-h-11 px-5 whitespace-nowrap"
+              >
+                {t('Start for free')}
               </Button>
             </>
           )}
         </div>
 
         <div className="flex items-center gap-1">
+          <LanguageSwitcher />
           <button
             type="button"
             onClick={() => setIsMenuOpen((open) => !open)}
-            className="grid size-11 place-items-center rounded-full text-ink-800 hover:bg-ink-100 lg:hidden"
+            className="grid size-11 place-items-center rounded-full text-ink-800 hover:bg-ink-100 xl:hidden"
             aria-expanded={isMenuOpen}
             aria-controls="mobile-navigation"
-            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-label={isMenuOpen ? t('Close menu') : t('Open menu')}
           >
             {isMenuOpen ? <X className="size-6" aria-hidden /> : <Menu className="size-6" aria-hidden />}
           </button>
@@ -120,8 +129,8 @@ export function Header() {
       {isMenuOpen ? (
         <nav
           id="mobile-navigation"
-          aria-label="Mobile"
-          className="animate-rise border-t border-ink-100 bg-surface lg:hidden"
+          aria-label={t('Mobile')}
+          className="animate-rise border-t border-ink-100 bg-surface xl:hidden"
         >
           <div className="container-page flex flex-col gap-1 py-3">
             {NAV_LINKS.map((link) => (
@@ -135,7 +144,7 @@ export function Header() {
                   )
                 }
               >
-                {link.label}
+                {t(link.label)}
               </NavLink>
             ))}
 
@@ -144,7 +153,7 @@ export function Header() {
                 to="/dashboard"
                 className="flex min-h-12 items-center rounded-xl px-3 font-semibold text-ink-700"
               >
-                My dashboard
+                {t('My dashboard')}
               </NavLink>
             ) : null}
             {isAdmin ? (
@@ -152,18 +161,18 @@ export function Header() {
                 to="/admin"
                 className="flex min-h-12 items-center rounded-xl px-3 font-semibold text-ink-700"
               >
-                Admin
+                {t('Admin')}
               </NavLink>
             ) : null}
 
             <div className="mt-2">
               {isAuthenticated ? (
                 <Button isFullWidth variant="secondary" onClick={handleLogout}>
-                  Sign out
+                  {t('Sign out')}
                 </Button>
               ) : (
                 <Button isFullWidth onClick={() => navigate('/login')}>
-                  Sign in
+                  {t('Sign in')}
                 </Button>
               )}
             </div>

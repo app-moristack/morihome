@@ -1,0 +1,1006 @@
+{
+  "Change language": ["Changer de langue", "Sanz lang"],
+  "Loading properties": ["Chargement des biens", "Pe sarz bann propriyete"],
+  "Loading profile": ["Chargement du profil", "Pe sarz profil"],
+  "Loading professional plans": ["Chargement des offres professionnelles", "Pe sarz bann plan profesionel"],
+  "Loading registration": ["Chargement de l’inscription", "Pe sarz inskripsion"],
+  "Loading your dashboard": ["Chargement de votre tableau de bord", "Pe sarz ou tablo de bor"],
+  "Loading users": ["Chargement des utilisateurs", "Pe sarz bann itilizater"],
+  "Loading admin": ["Chargement de l’administration", "Pe sarz administrasion"],
+  "Loading subscriptions": ["Chargement des abonnements", "Pe sarz bann labonnman"],
+  "Request failed": ["La demande a échoué", "Demann-la pa finn reisi"],
+  "All Users": ["Tous les utilisateurs", "Tou itilizater"],
+  "Individuals": ["Particuliers et indépendants", "Bann endepandan"],
+  "Businesses": ["Entreprises", "Bann lantrepriz"],
+  "Pending Verification": ["En attente de vérification", "Pe atann verifikasion"],
+  "Close navigation": ["Fermer la navigation", "Ferm navigasion"],
+  "MoriHome admin dashboard": ["Administration de MoriHome", "Administrasion MoriHome"],
+  "Home": ["Accueil", "Lakey"],
+  "Local professionals. A stronger tomorrow.": [
+    "Des professionnels locaux. Un avenir plus solide.",
+    "Bann profesionel lokal. Enn lavenir pli solid."
+  ],
+  "Close menu": ["Fermer le menu", "Ferm meni"],
+  "Admin navigation": ["Navigation de l’administration", "Navigasion administrasion"],
+  "Dashboard": ["Tableau de bord", "Tablo de bor"],
+  "Manage": ["Gérer", "Zere"],
+  "Users": ["Utilisateurs", "Itilizater"],
+  "Service Categories": ["Catégories de services", "Kategori servis"],
+  "Subscriptions": ["Abonnements", "Labonnman"],
+  "View Website": ["Voir le site", "Get sit-la"],
+  "Toggle navigation": ["Ouvrir ou fermer la navigation", "Ouver ouswa ferm navigasion"],
+  "Search administration": ["Rechercher dans l’administration", "Rod dan administrasion"],
+  "Search users, services, categories…": [
+    "Rechercher utilisateurs, services, catégories…",
+    "Rod itilizater, servis, kategori…"
+  ],
+  "Search in": ["Rechercher dans", "Rod dan"],
+  "Categories": ["Catégories", "Kategori"],
+  "Search": ["Rechercher", "Rode"],
+  "Pending verification": ["En attente de vérification", "Pe atann verifikasion"],
+  "You’re all caught up.": ["Tout est à jour.", "Tou azour."],
+  "Open review queue →": ["Voir les profils à vérifier →", "Get bann profil pou verifye →"],
+  "Admin": ["Admin", "Admin"],
+  "Administrator": ["Administrateur", "Administrater"],
+  "Sign out": ["Se déconnecter", "Dekonekte"],
+  "Could not sign out. Please try again.": [
+    "Impossible de vous déconnecter. Réessayez.",
+    "Pa finn kapav dekonekte ou. Esey ankor."
+  ],
+  "Name / Business": ["Nom / Entreprise", "Nom / Lantrepriz"],
+  "Type": ["Type", "Tip"],
+  "Location": ["Localisation", "Landrwa"],
+  "Status": ["Statut", "Stati"],
+  "Joined": ["Inscription", "Dat inskripsion"],
+  "Actions": ["Actions", "Aksion"],
+  "Account": ["Compte", "Kont"],
+  "Individual": ["Compte individuel", "Endepandan"],
+  "Business": ["Entreprise", "Lantrepriz"],
+  "No users match this selection.": [
+    "Aucun utilisateur ne correspond à cette sélection.",
+    "Pena itilizater ki koresponn ar sa seleksion-la."
+  ],
+  "Audit trail": ["Historique des actions", "Listorik bann aksion"],
+  "No moderation actions yet.": [
+    "Aucune action de modération pour le moment.",
+    "Pena aksion moderasion ankor."
+  ],
+  "System": ["Système", "Sistem"],
+  "Changed:": ["Modifié :", "Finn sanze :"],
+  "A reason is required so the provider knows what to fix.": [
+    "Indiquez un motif pour que le professionnel sache quoi corriger.",
+    "Donn enn rezon pou profesionel-la kone ki li bizin korize."
+  ],
+  "Decision": ["Décision", "Desizion"],
+  "Reason": ["Motif", "Rezon"],
+  "Explain what needs to change…": ["Expliquez ce qui doit être modifié…", "Explike ki bizin sanze…"],
+  "Confirm": ["Confirmer", "Konfirme"],
+  "Cancel": ["Annuler", "Anile"],
+  "Approve & publish": ["Approuver et publier", "Aprouve ek pibliye"],
+  "Reject with reason": ["Refuser avec un motif", "Refize avek enn rezon"],
+  "Suspend listing": ["Suspendre le profil", "Sispann profil"],
+  "Reactivate listing": ["Réactiver le profil", "Reaktiv profil"],
+  "This profile is with the provider. It will return here once they submit it.": [
+    "Le professionnel prépare ce profil. Il apparaîtra ici après sa soumission.",
+    "Profesionel-la pe prepar sa profil-la. Li pou revini isi kan li soumet li."
+  ],
+  "View public profile": ["Voir le profil public", "Get profil piblik"],
+  "Phone": ["Téléphone", "Telefonn"],
+  "Email": ["E-mail", "Imel"],
+  "Website": ["Site web", "Sit web"],
+  "Address": ["Adresse", "Ladres"],
+  "Locality": ["Localité", "Lokalite"],
+  "Coordinates": ["Coordonnées GPS", "Kordone GPS"],
+  "Submitted": ["Soumis", "Finn soumet"],
+  "Submitted details": ["Informations soumises", "Bann detay soumet"],
+  "Description": ["Description", "Deskripsion"],
+  "Services": ["Services", "Servis"],
+  "Your profile is a draft": ["Votre profil est en cours de préparation", "Ou profil ankor enn bouyon"],
+  "Complete the required details, then submit it so our team can review and publish it.": [
+    "Complétez les informations requises, puis soumettez votre profil pour vérification et publication.",
+    "Ranpli bann detay neseser, apre soumet ou profil pou nou lekip verifye ek pibliye li."
+  ],
+  "Waiting for validation": ["En attente de validation", "Pe atann validasion"],
+  "Our team is reviewing your profile. You can keep editing it while you wait — it is not yet visible in public search.": [
+    "Notre équipe vérifie votre profil. Vous pouvez continuer à le modifier ; il n’est pas encore visible dans les recherches publiques.",
+    "Nou lekip pe verifye ou profil. Ou kapav kontign modifye li pandan ou pe atann. Li pankor vizib dan resers piblik."
+  ],
+  "Your profile is live": ["Votre profil est en ligne", "Ou profil an-lign"],
+  "Customers within your area can find you and message you on WhatsApp.": [
+    "Les clients de votre région peuvent vous trouver et vous contacter sur WhatsApp.",
+    "Bann kliyan dan ou rezion kapav trouv ou ek avoy ou mesaz lor WhatsApp."
+  ],
+  "Changes needed before publication": [
+    "Modifications requises avant publication",
+    "Bizin fer bann sanzman avan piblikasion"
+  ],
+  "Fix the points below, then submit your profile again.": [
+    "Corrigez les points ci-dessous, puis soumettez à nouveau votre profil.",
+    "Koriz bann pwin anba, apre soumet ou profil ankor."
+  ],
+  "Your listing is suspended": ["Votre profil est suspendu", "Ou profil finn sispann"],
+  "Your profile is hidden from public search. Contact support if you believe this is a mistake.": [
+    "Votre profil est masqué dans les recherches publiques. Contactez l’assistance si vous pensez qu’il s’agit d’une erreur.",
+    "Ou profil kasiet dan resers piblik. Kontakte sipor si ou panse ena enn erer."
+  ],
+  "Reviewer note:": ["Message de notre équipe :", "Not verifikasion :"],
+  "Profile completeness": ["État d’avancement du profil", "Profil ranpli"],
+  "Still required:": ["Informations manquantes :", "Ankor neseser :"],
+  "Recommended:": ["Recommandé :", "Rekomande :"],
+  "Submit for review": ["Soumettre pour vérification", "Soumet pou verifikasion"],
+  "Upload failed.": ["L’envoi a échoué.", "Lanvwa pa finn reisi."],
+  "Cover": ["Photo de couverture", "Kouvertir"],
+  "Upload a cover image": ["Ajouter une image de couverture", "Azout enn zimaz kouvertir"],
+  "Your logo": ["Votre logo", "Ou logo"],
+  "Logo & cover": ["Logo et photo de couverture", "Logo ek kouvertir"],
+  "Images are resized on your phone before upload, so they stay light on data.": [
+    "Les images sont redimensionnées sur votre téléphone avant l’envoi pour économiser les données.",
+    "Bann zimaz redimensione lor ou telefonn avan lanvwa pou servi mwins done."
+  ],
+  "Change logo": ["Changer le logo", "Sanz logo"],
+  "Upload a logo": ["Ajouter un logo", "Azout enn logo"],
+  "Saved. Your profile is back in review because you changed key details.": [
+    "Enregistré. Votre profil sera revérifié, car vous avez modifié des informations essentielles.",
+    "Finn anrezistre. Nou pou reverifye ou profil parski ou finn sanz bann detay inportan."
+  ],
+  "Your profile has been saved.": ["Votre profil a été enregistré.", "Ou profil finn anrezistre."],
+  "We could not save your profile.": [
+    "Impossible d’enregistrer votre profil.",
+    "Nou pa finn kapav anrezistre ou profil."
+  ],
+  "Business details": ["Informations professionnelles", "Detay profesionel"],
+  "Type of professional": ["Type de professionnel", "Tip profesionel"],
+  "Name or business name": ["Nom ou raison sociale", "Nom ouswa nom lantrepriz"],
+  "About your work": ["À propos de votre activité", "Lor ou travay"],
+  "Contact": ["Contact", "Kontak"],
+  "Mobile number": ["Numéro de mobile", "Nimero mobil"],
+  "WhatsApp number": ["Numéro WhatsApp", "Nimero WhatsApp"],
+  "Search a new address": ["Rechercher une nouvelle adresse", "Rod enn nouvo ladres"],
+  "Town or village shown publicly": [
+    "Ville ou village affiché publiquement",
+    "Lavil ouswa vilaz ki piblik pou trouve"
+  ],
+  "Pinned at": ["Position :", "Pozision :"],
+  "— used to measure distance only, never shown publicly.": [
+    "— utilisé uniquement pour mesurer la distance, jamais affiché publiquement.",
+    "— servi zis pou mezir distans, zame montre piblikman."
+  ],
+  "Save changes": ["Enregistrer", "Anrezistre bann sanzman"],
+  "Service categories": ["Catégories de services", "Kategori servis"],
+  "selected. The first stays your main trade.": [
+    "sélectionnées. La première reste votre activité principale.",
+    "finn swazir. Premie-la res ou metie prinsipal."
+  ],
+  "Your subscriptions are awaiting admin approval.": [
+    "Vos demandes d’abonnement sont en attente de validation.",
+    "Ou bann labonnman pe atann laprouvasion administrater."
+  ],
+  "Could not request subscriptions.": [
+    "Impossible de demander les abonnements.",
+    "Pa finn kapav demann bann labonnman."
+  ],
+  "Your subscriptions": ["Vos abonnements", "Ou bann labonnman"],
+  "Track approvals, dates and add another category at any time.": [
+    "Suivez la validation et les dates de vos abonnements. Ajoutez une catégorie selon vos besoins.",
+    "Swiv bann laprouvasion ek dat, ek azout enn lot kategori ninport kan."
+  ],
+  "Waiting for admin approval": ["En attente d’approbation", "Pe atann laprouvasion administrater"],
+  "You have not requested a subscription yet.": [
+    "Vous n’avez pas encore demandé d’abonnement.",
+    "Ou pankor demann enn labonnman."
+  ],
+  "Add a subscription": ["Ajouter un abonnement", "Azout enn labonnman"],
+  "Select one plan from any category you do not currently have.": [
+    "Choisissez une offre dans une catégorie que vous n’avez pas encore.",
+    "Swazir enn plan dan enn kategori ki ou pena ankor."
+  ],
+  "Free": ["Gratuit", "Gratis"],
+  "Request selected subscriptions": [
+    "Demander les abonnements sélectionnés",
+    "Demann bann labonnman ki ou finn swazir"
+  ],
+  "All available categories are already active or awaiting approval.": [
+    "Toutes les catégories disponibles sont déjà actives ou en attente d’approbation.",
+    "Tou kategori disponib deza aktif ouswa pe atann laprouvasion."
+  ],
+  "MoriHome home": ["Accueil MoriHome", "Lakey MoriHome"],
+  "For Professionals": ["Professionnels", "Profesionel"],
+  "About": ["À propos", "Lor nou"],
+  "All services": ["Tous les services", "Tou servis"],
+  "Properties": ["Immobilier", "Propriyete"],
+  "You have been signed out.": ["Vous êtes déconnecté.", "Ou finn dekonekte."],
+  "Main": ["Navigation principale", "Navigasion prinsipal"],
+  "Sign in": ["Se connecter", "Konekte"],
+  "Start for free": ["Commencer gratuitement", "Koumanse gratis"],
+  "Open menu": ["Ouvrir le menu", "Ouver meni"],
+  "Mobile": ["Navigation mobile", "Navigasion mobil"],
+  "My dashboard": ["Mon tableau de bord", "Mo tablo de bor"],
+  "Skip to content": ["Aller au contenu", "Al direk lor konteni"],
+  "Checking your account": ["Vérification de votre compte", "Pe verifye ou kont"],
+  "home professional": ["professionnel de l’habitat", "profesionel pou lakaz"],
+  "Contact via WhatsApp": ["Contacter sur WhatsApp", "Kontakte lor WhatsApp"],
+  "View profile": ["Voir le profil", "Get profil"],
+  "Areas served": ["Zones desservies", "Bann rezion kot servi"],
+  "Opening hours": ["Horaires d’ouverture", "Ler louvertir"],
+  "Closed": ["Fermé", "Ferme"],
+  "Previous work": ["Réalisations", "Bann travay fini fer"],
+  "Work sample": ["Exemple de réalisation", "Enn lexanp travay"],
+  "Close gallery": ["Fermer la galerie", "Ferm galri"],
+  "Previous image": ["Image précédente", "Zimaz avan"],
+  "Next image": ["Image suivante", "Prosenn zimaz"],
+  "Call": ["Appeler", "Telefone"],
+  "Profile link copied.": ["Lien du profil copié.", "Lien profil finn kopie."],
+  "Could not copy the link. Copy it from the address bar.": [
+    "Impossible de copier le lien. Copiez-le depuis la barre d’adresse.",
+    "Pa finn kapav kopie lien-la. Kopie li dan bar ladres."
+  ],
+  "Share this profile": ["Partager ce profil", "Partaz sa profil-la"],
+  "Copied": ["Copié", "Finn kopie"],
+  "Share": ["Partager", "Partaze"],
+  "Featured": ["À la une", "An vedet"],
+  "Verified": ["Vérifié", "Verifye"],
+  "Opening WhatsApp…": ["Ouverture de WhatsApp…", "Pe ouver WhatsApp…"],
+  "MoriHome is being added to your home screen.": [
+    "MoriHome est en cours d’ajout à votre écran d’accueil.",
+    "Pe azout MoriHome lor ou lekran lakey."
+  ],
+  "Install MoriHome": ["Installer MoriHome", "Instal MoriHome"],
+  "Add MoriHome to your home screen": [
+    "Ajouter MoriHome à l’écran d’accueil",
+    "Azout MoriHome lor ou lekran lakey"
+  ],
+  "Open it like an app, full screen and one tap away.": [
+    "Ouvrez-le comme une application, en plein écran et d’un seul geste.",
+    "Ouver li kouma enn aplikasion, lor lekran antie ek dan enn sel klik."
+  ],
+  "Tap": ["Appuyez sur", "Apiy lor"],
+  "the Share button": ["le bouton Partager", "bouton Partaze"],
+  "Add to Home Screen": ["Sur l’écran d’accueil", "Azout lor lekran lakey"],
+  "Install": ["Installer", "Instale"],
+  "Show me how (": ["Voir comment faire (", "Montre mwa kouma ("],
+  "my phone": ["mon téléphone", "mo telefonn"],
+  "Dismiss install suggestion": ["Fermer la suggestion d’installation", "Ferm sizesion instalasion"],
+  "A new version of MoriHome is ready.": [
+    "Une nouvelle version de MoriHome est disponible.",
+    "Enn nouvo version MoriHome disponib."
+  ],
+  "Reload": ["Actualiser", "Re-sarze"],
+  "Tell us who you are": ["Présentez-vous", "Dir nou kisannla ou ete"],
+  "First, choose your account type": ["Choisissez d’abord votre type de compte", "Dabor swazir ou tip kont"],
+  "Choose Individual or Agency": [
+    "Choisir un compte individuel ou professionnel",
+    "Swazir Endepandan ouswa Lazans"
+  ],
+  "Agency or company name": ["Nom de l’agence ou de l’entreprise", "Nom lazans ouswa lantrepriz"],
+  "Full name": ["Nom complet", "Nom konple"],
+  "This is how you sign in, and how customers reach you.": [
+    "Ce numéro sert à vous connecter et permet aux clients de vous joindre.",
+    "Sa nimero-la servi pou konekte ek pou bann kliyan kontakte ou."
+  ],
+  "Leave blank to use your mobile number": [
+    "Laissez vide pour utiliser votre numéro de mobile",
+    "Les vid pou servi ou nimero mobil"
+  ],
+  "Email address": ["Adresse e-mail", "Ladres imel"],
+  "Optional, but it lets you reset your password.": [
+    "Facultatif, mais permet de réinitialiser votre mot de passe.",
+    "Opsionel, me li permet ou re-inisializ ou modpas."
+  ],
+  "Continue": ["Continuer", "Kontinie"],
+  "Secure your account": ["Sécurisez votre compte", "Sekiriz ou kont"],
+  "Password": ["Mot de passe", "Modpas"],
+  "Confirm password": ["Confirmer le mot de passe", "Konfirm modpas"],
+  "I accept the": ["J’accepte les", "Mo aksepte bann"],
+  "terms of use": ["conditions d’utilisation", "kondision itilizasion"],
+  "and the": ["et la", "ek"],
+  "privacy policy": ["politique de confidentialité", "politik konfidansialite"],
+  "Back": ["Retour", "Retour"],
+  "Create my profile": ["Créer mon profil", "Kree mo profil"],
+  "Where do you work from?": ["Où exercez-vous ?", "Kot ou travay ?"],
+  "We use this to measure the distance to customers. Your exact address is never shown publicly — only your town or village.": [
+    "Ces informations servent à mesurer la distance avec les clients. Seule votre ville ou votre village est public, jamais votre adresse exacte.",
+    "Nou servi sa pou mezir distans ar bann kliyan. Zis ou lavil ouswa vilaz piblik, zame ou ladres exakt."
+  ],
+  "Search your town, village or address": [
+    "Rechercher votre ville, village ou adresse",
+    "Rod ou lavil, vilaz ouswa ladres"
+  ],
+  "Other areas you serve": ["Autres zones desservies", "Bann lezot rezion kot ou servi"],
+  "Separate each area with a comma.": [
+    "Séparez chaque zone par une virgule.",
+    "Separ sak rezion avek enn virgil."
+  ],
+  "Location pinned. Customers nearby will find you.": [
+    "Position enregistrée. Les clients à proximité pourront vous trouver.",
+    "Pozision finn anrezistre. Bann kliyan pre ar ou pou trouv ou."
+  ],
+  "What do you do?": ["Quelle est votre activité ?", "Ki travay ou fer ?"],
+  "Pick every service you offer. The first one you pick becomes your main trade.": [
+    "Sélectionnez tous vos services. Le premier devient votre activité principale.",
+    "Swazir tou servis ki ou ofer. Premie-la vinn ou metie prinsipal."
+  ],
+  "Describe your work": ["Décrivez votre activité", "Dekrir ou travay"],
+  "Years of experience, the kind of jobs you take on, what makes your work stand out…": [
+    "Années d’expérience, types de travaux, ce qui vous distingue…",
+    "Lane lexperyans, tip travay ou fer, seki fer ou travay diferan…"
+  ],
+  "Optional, but profiles with a description get contacted more often.": [
+    "Facultatif. Une description aide les clients à comprendre vos services et votre expérience.",
+    "Opsionel, me bann profil avek enn deskripsion gagn plis kontak."
+  ],
+  "No service expiry while active": [
+    "Services sans expiration tant que l’offre est active",
+    "Servis pa expire tan ki plan-la aktif"
+  ],
+  "Business verification eligible": [
+    "Vérification de l’entreprise possible",
+    "Kapav gagn verifikasion lantrepriz"
+  ],
+  "Priority in search": ["Priorité dans les recherches", "Priorite dan resers"],
+  "Homepage exposure": ["Visibilité sur la page d’accueil", "Vizibilite lor paz lakey"],
+  "Choose your subscriptions": ["Choisissez vos abonnements", "Swazir ou bann labonnman"],
+  "Free plans are reserved for individuals. Choose the categories you need.": [
+    "Les offres gratuites sont réservées aux comptes individuels. Choisissez les catégories qui vous intéressent.",
+    "Bann plan gratis rezerve pou endepandan. Swazir bann kategori ki ou bizin."
+  ],
+  "Choose Plus or Pro in up to three categories—one plan per category.": [
+    "Choisissez Plus ou Pro dans trois catégories maximum, une offre par catégorie.",
+    "Swazir Plus ouswa Pro dan ziska trwa kategori, enn plan par kategori."
+  ],
+  "Optional": ["Facultatif", "Opsionel"],
+  "Where do you need help?": ["Où avez-vous besoin d’aide ?", "Kot ou bizin led ?"],
+  "Town, village or address": ["Ville, village ou adresse", "Lavil, vilaz ouswa ladres"],
+  "Use my current location": ["Utiliser ma position actuelle", "Servi mo pozision aktiel"],
+  "Address suggestions": ["Suggestions d’adresses", "Sizesion ladres"],
+  "Searching…": ["Recherche…", "Pe rode…"],
+  "Service categories are unavailable right now.": [
+    "Les catégories de services sont indisponibles pour le moment.",
+    "Bann kategori servis pa disponib aster-la."
+  ],
+  "Search all professionals": ["Rechercher un professionnel", "Rod tou profesionel"],
+  "Maximum budget must be at least the minimum budget.": [
+    "Le budget maximal doit être supérieur ou égal au budget minimal.",
+    "Bidze maximem bizin egal ouswa plis ki bidze minimem."
+  ],
+  "Filters": ["Filtres", "Filt"],
+  "Clear all": ["Tout effacer", "Efas tou"],
+  "I am looking for": ["Je recherche", "Mo pe rode"],
+  "For rent": ["À louer", "Pou lwe"],
+  "For sale": ["À vendre", "Pou vann"],
+  "Property type": ["Type de bien", "Tip propriyete"],
+  "All types": ["Tous les types", "Tou tip"],
+  "House": ["Maison", "Lakaz"],
+  "Apartment": ["Appartement", "Apartman"],
+  "Villa": ["Villa", "Vila"],
+  "Land": ["Terrain", "Terin"],
+  "Commercial": ["Local commercial", "Lokal komersial"],
+  "Other": ["Autre", "Lezot"],
+  "Minimum budget (Rs)": ["Budget minimum (Rs)", "Bidze minimem (Rs)"],
+  "Maximum budget": ["Budget maximum", "Bidze maximem"],
+  "Any budget": ["Tous les budgets", "Tou bidze"],
+  "Up to Rs": ["Jusqu’à Rs", "Ziska Rs"],
+  "Up to Rs 15,000": ["Jusqu’à 15 000 Rs", "Ziska Rs 15 000"],
+  "Up to Rs 30,000": ["Jusqu’à 30 000 Rs", "Ziska Rs 30 000"],
+  "Up to Rs 50,000": ["Jusqu’à 50 000 Rs", "Ziska Rs 50 000"],
+  "Up to Rs 100,000": ["Jusqu’à 100 000 Rs", "Ziska Rs 100 000"],
+  "Up to Rs 2,000,000": ["Jusqu’à 2 000 000 Rs", "Ziska Rs 2 000 000"],
+  "Up to Rs 5,000,000": ["Jusqu’à 5 000 000 Rs", "Ziska Rs 5 000 000"],
+  "Up to Rs 10,000,000": ["Jusqu’à 10 000 000 Rs", "Ziska Rs 10 000 000"],
+  "Up to Rs 25,000,000": ["Jusqu’à 25 000 000 Rs", "Ziska Rs 25 000 000"],
+  "Bedrooms": ["Chambres", "Lasam"],
+  "Any": ["Indifférent", "Ninport"],
+  "Bathrooms": ["Salles de bains", "Sal-de-bin"],
+  "Minimum area (m²)": ["Surface minimale (m²)", "Siperfisi minimem (m²)"],
+  "Furnishing": ["Mobilier", "Meb"],
+  "Furnished": ["Meublé", "Meble"],
+  "Unfurnished": ["Non meublé", "Pa meble"],
+  "Amenities": ["Équipements", "Lekipman"],
+  "Listings must include all selected amenities.": [
+    "Les annonces doivent proposer tous les équipements sélectionnés.",
+    "Bann lanons bizin ena tou lekipman ki ou finn swazir."
+  ],
+  "Apply filters": ["Appliquer les filtres", "Aplik bann filt"],
+  "this area": ["cette zone", "sa rezion-la"],
+  "Map search results": ["Résultats sur la carte", "Rezilta lor kart"],
+  "Showing": ["Affichage de", "Pe montre"],
+  "professionals on this page. Pins show approximate locations.": [
+    "professionnels sur cette page. Les repères indiquent des positions approximatives.",
+    "profesionel lor sa paz-la. Bann reper montre bann pozision aproksimatif."
+  ],
+  "Fit results": ["Centrer sur les résultats", "Santre lor bann rezilta"],
+  "Some map tiles could not load. You can still browse the professionals below.": [
+    "Certaines parties de la carte n’ont pas pu être chargées. Vous pouvez consulter les professionnels ci-dessous.",
+    "Sertin parti kart pa finn sarze. Ou ankor kapav get bann profesionel anba."
+  ],
+  "Retry map": ["Recharger la carte", "Re-sarz kart"],
+  "Professional locations map": ["Carte des professionnels", "Kart bann profesionel"],
+  "Show on map": ["Voir sur la carte", "Get lor kart"],
+  "Map location unavailable": ["Position indisponible", "Pozision pa disponib"],
+  "Service category": ["Catégorie de service", "Kategori servis"],
+  "Filter by service category": ["Filtrer par catégorie de service", "Filtre par kategori servis"],
+  "Filter by location": ["Filtrer par lieu", "Filtre par landrwa"],
+  "Radius": ["Rayon", "Reyon"],
+  "Search radius": ["Rayon de recherche", "Reyon resers"],
+  "Professional type": ["Type de professionnel", "Tip profesionel"],
+  "Trust & contact": ["Confiance et contact", "Konfians ek kontak"],
+  "Verified profiles only": ["Profils vérifiés uniquement", "Zis bann profil verifye"],
+  "Reachable on WhatsApp": ["Joignable sur WhatsApp", "Kapav kontakte lor WhatsApp"],
+  "Show results": ["Afficher les résultats", "Montre bann rezilta"],
+  "Choose a service category or enter a location to search.": [
+    "Choisissez une catégorie ou saisissez un lieu pour rechercher.",
+    "Swazir enn kategori servis ouswa met enn landrwa pou rode."
+  ],
+  "Find professionals near you": [
+    "Trouvez des professionnels près de chez vous",
+    "Trouv bann profesionel pre ar ou"
+  ],
+  "What do you need?": ["De quoi avez-vous besoin ?", "Ki ou bizin ?"],
+  "Within": ["Dans un rayon de", "Dan enn reyon"],
+  "No payment required": ["Aucun paiement requis", "Pena peyman pou fer"],
+  "Your free subscription request will await admin approval.": [
+    "Votre demande d’abonnement gratuit sera soumise à validation.",
+    "Ou demann labonnman gratis pou atann laprouvasion administrater."
+  ],
+  "Payment procedure": ["Procédure de paiement", "Prosedir peyman"],
+  "Complete payment to activate your request": [
+    "Réglez votre abonnement pour permettre son activation",
+    "Fer peyman pou aktiv ou demann"
+  ],
+  "Payment after account creation": ["Paiement après création du compte", "Peyman apre kreasion kont"],
+  "Total:": ["Total :", "Total :"],
+  "Send the full amount by": ["Réglez le montant total via", "Avoy montan total par"],
+  "Send your proof of payment on WhatsApp to": [
+    "Envoyez votre preuve de paiement sur WhatsApp au",
+    "Avoy ou prev peyman lor WhatsApp lor"
+  ],
+  "An admin will verify the payment, set the start and end dates, and activate the subscription.": [
+    "Un administrateur vérifiera le paiement, fixera les dates de début et de fin et activera l’abonnement.",
+    "Enn administrater pou verifye peyman, met dat koumansman ek lafin, ek aktiv labonnman."
+  ],
+  "Loading professionals near you": [
+    "Chargement des professionnels à proximité",
+    "Pe sarz bann profesionel pre ar ou"
+  ],
+  "Loading": ["Chargement", "Pe sarze"],
+  "Something went wrong. Please try again.": [
+    "Une erreur est survenue. Réessayez.",
+    "Enn erer finn arive. Esey ankor."
+  ],
+  "Your browser cannot share your location.": [
+    "Votre navigateur ne peut pas partager votre position.",
+    "Ou navigater pa kapav partaz ou pozision."
+  ],
+  "My current location": ["Ma position actuelle", "Mo pozision aktiel"],
+  "Using your current location.": ["Utilisation de votre position actuelle.", "Pe servi ou pozision aktiel."],
+  "We found your position but could not name the area.": [
+    "Votre position a été trouvée, mais le nom du lieu est indisponible.",
+    "Nou finn trouv ou pozision me pa finn kapav idantifie nom rezion-la."
+  ],
+  "We could not read your location. Type your area instead.": [
+    "Impossible d’obtenir votre position. Saisissez votre région.",
+    "Nou pa finn kapav gagn ou pozision. Ekrir ou rezion."
+  ],
+  "Active": ["Actif", "Aktif"],
+  "Suspended": ["Suspendu", "Sispann"],
+  "Inactive": ["Inactif", "Inaktif"],
+  "Individual worker": ["Professionnel indépendant", "Travayer endepandan"],
+  "Agency/Business": ["Agence / entreprise", "Lazans/Lantrepriz"],
+  "Hello, I found your profile on :app. I am looking for help with :service.": [
+    "Bonjour, j’ai trouvé votre profil sur :app. Je cherche de l’aide pour :service.",
+    "Bonzour, mo finn trouv ou profil lor :app. Mo pe rod led pou :service."
+  ],
+  "Sunday": ["Dimanche", "Dimans"],
+  "Monday": ["Lundi", "Lindi"],
+  "Tuesday": ["Mardi", "Mardi"],
+  "Wednesday": ["Mercredi", "Merkredi"],
+  "Thursday": ["Jeudi", "Zedi"],
+  "Friday": ["Vendredi", "Vandredi"],
+  "Saturday": ["Samedi", "Samdi"],
+  "Parking": ["Parking", "Parking"],
+  "Swimming pool": ["Piscine", "Pisin"],
+  "Garden": ["Jardin", "Zardin"],
+  "Balcony / terrace": ["Balcon / terrasse", "Balkon / teras"],
+  "Air conditioning": ["Climatisation", "Klimatizasion"],
+  "Security": ["Sécurité", "Sekirite"],
+  "Lift / elevator": ["Ascenseur", "Asanser"],
+  "Pet friendly": ["Animaux acceptés", "Zanimo aksepte"],
+  "Enter your mobile number.": ["Saisissez votre numéro de mobile.", "Met ou nimero mobil."],
+  "Enter a valid Mauritian mobile (e.g. 5765 4321) or an international number.": [
+    "Saisissez un numéro mobile mauricien valide (ex. 5765 4321) ou un numéro international.",
+    "Met enn nimero mobil Moris valab (par exanp 5765 4321) ouswa enn nimero internasional."
+  ],
+  "Enter a valid phone number.": [
+    "Saisissez un numéro de téléphone valide.",
+    "Met enn nimero telefonn valab."
+  ],
+  "Use at least 12 characters.": ["Utilisez au moins 12 caractères.", "Servi omwin 12 karakter."],
+  "Use no more than 128 characters.": [
+    "Utilisez au maximum 128 caractères.",
+    "Pa servi plis ki 128 karakter."
+  ],
+  "Include a lowercase letter.": ["Ajoutez une lettre minuscule.", "Met enn let miniskil."],
+  "Include an uppercase letter.": ["Ajoutez une lettre majuscule.", "Met enn let maziskil."],
+  "Include a number.": ["Ajoutez un chiffre.", "Met enn sif."],
+  "Choose the kind of professional you are.": [
+    "Choisissez votre type de professionnel.",
+    "Swazir ki tip profesionel ou ete."
+  ],
+  "Enter your name or business name.": [
+    "Saisissez votre nom ou raison sociale.",
+    "Met ou nom ouswa nom ou lantrepriz."
+  ],
+  "Enter a valid email address.": ["Saisissez une adresse e-mail valide.", "Met enn ladres imel valab."],
+  "Enter the address you work from.": [
+    "Saisissez votre adresse professionnelle.",
+    "Met ladres kot ou travay."
+  ],
+  "Choose your town or village.": ["Choisissez votre ville ou village.", "Swazir ou lavil ouswa vilaz."],
+  "Pick your location so customers can find you.": [
+    "Indiquez votre position pour que les clients vous trouvent.",
+    "Swazir ou pozision pou bann kliyan trouv ou."
+  ],
+  "Pick at least one service.": ["Choisissez au moins un service.", "Swazir omwin enn servis."],
+  "Choose at least one subscription.": ["Choisissez au moins un abonnement.", "Swazir omwin enn labonnman."],
+  "Choose no more than one subscription from each category.": [
+    "Choisissez au maximum un abonnement par catégorie.",
+    "Swazir pa plis ki enn labonnman par kategori."
+  ],
+  "You must accept the terms to continue.": [
+    "Vous devez accepter les conditions pour continuer.",
+    "Ou bizin aksepte bann kondision pou kontinie."
+  ],
+  "The passwords do not match.": ["Les mots de passe ne correspondent pas.", "Bann modpas pa parey."],
+  "Enter your mobile number or email.": [
+    "Saisissez votre numéro de téléphone mobile ou votre adresse e-mail.",
+    "Met ou nimero mobil ouswa ou imel."
+  ],
+  "Enter your password.": ["Saisissez votre mot de passe.", "Met ou modpas."],
+  "Enter your current password.": ["Saisissez votre mot de passe actuel.", "Met ou modpas aktiel."],
+  "Enter a full URL including https://": [
+    "Saisissez une adresse web complète commençant par https://",
+    "Met enn URL konple avek https://"
+  ],
+  "Enter your address.": ["Saisissez votre adresse.", "Met ou ladres."],
+  "a project at home": ["un projet pour mon logement", "enn proze lakaz"],
+  "Try again": ["Réessayer", "Esey ankor"],
+  "View all": ["Tout voir", "Get tou"],
+  "Welcome back,": ["Ravi de vous revoir,", "Bienveni ankor,"],
+  "This page does not exist": ["Cette page n’existe pas", "Sa paz-la pa existe"],
+  "The link may be outdated, or the profile may have been removed from the directory.": [
+    "Le lien est peut-être obsolète ou le profil a été retiré de l’annuaire.",
+    "Lien-la kapav pa azour ouswa profil-la finn retire dan repertwar."
+  ],
+  "Back to home": ["Retour à l’accueil", "Retour lakey"],
+  "Property in Mauritius": ["Immobilier à l’île Maurice", "Propriyete dan Moris"],
+  "Find a place to rent or buy.": [
+    "Trouvez un bien à louer ou à acheter.",
+    "Trouv enn landrwa pou lwe ouswa aste."
+  ],
+  "Explore local homes, apartments, land and commercial property listed on MoriHome.": [
+    "Découvrez les maisons, appartements, terrains et locaux commerciaux à louer ou à vendre à Maurice.",
+    "Dekouver bann lakaz, apartman, terin ek lokal komersial lor MoriHome."
+  ],
+  "Hide filters": ["Masquer les filtres", "Kasiet bann filt"],
+  "Show filters": ["Afficher les filtres", "Montre bann filt"],
+  "Property filters": ["Filtres immobiliers", "Filt propriyete"],
+  "Properties for rent": ["Biens à louer", "Propriyete pou lwe"],
+  "Properties for sale": ["Biens à vendre", "Propriyete pou vann"],
+  "listings found": ["annonces trouvées", "lanons trouve"],
+  "List your property": ["Publier une annonce", "Pibliye ou propriyete"],
+  "Could not load properties": ["Impossible de charger les biens", "Pa finn kapav sarz bann propriyete"],
+  "Contact on WhatsApp": ["Contacter sur WhatsApp", "Kontakte lor WhatsApp"],
+  "No properties found": ["Aucun bien trouvé", "Pena propriyete trouve"],
+  "Try another location or check back as new listings are added.": [
+    "Essayez une autre localité ou revenez découvrir les nouvelles annonces.",
+    "Esey enn lot landrwa ouswa revini kan ena nouvo lanons."
+  ],
+  "Previous": ["Précédent", "Avan"],
+  "Page": ["Page", "Paz"],
+  "Next": ["Suivant", "Prosenn"],
+  "This profile is not available": ["Ce profil n’est pas disponible", "Sa profil-la pa disponib"],
+  "It may have been removed, suspended, or is still waiting for validation.": [
+    "Il a peut-être été supprimé, suspendu ou attend encore sa validation.",
+    "Li kapav finn retire, sispann ouswa ankor pe atann validasion."
+  ],
+  "Back to search": ["Retour à la recherche", "Retour dan resers"],
+  "Services offered": ["Services proposés", "Bann servis ofer"],
+  "Message on WhatsApp": ["Écrire sur WhatsApp", "Avoy mesaz lor WhatsApp"],
+  "Unable to reset your password. Please try again.": [
+    "Impossible de réinitialiser votre mot de passe. Réessayez.",
+    "Pa finn kapav re-inisializ ou modpas. Esey ankor."
+  ],
+  "Reset your password": ["Réinitialiser votre mot de passe", "Re-inisializ ou modpas"],
+  "Your password was updated and other sessions were signed out.": [
+    "Votre mot de passe a été modifié et vos autres sessions déconnectées.",
+    "Ou modpas finn sanze ek bann lezot sesion finn dekonekte."
+  ],
+  "Open the complete link from your reset email.": [
+    "Ouvrez le lien complet reçu dans l’e-mail de réinitialisation.",
+    "Ouver lien konple dan ou imel re-inisializasion."
+  ],
+  "Contact us for help.": ["Contactez-nous pour obtenir de l’aide.", "Kontakte nou pou gagn led."],
+  "New password": ["Nouveau mot de passe", "Nouvo modpas"],
+  "Confirm new password": ["Confirmer le nouveau mot de passe", "Konfirm nouvo modpas"],
+  "Update password": ["Modifier le mot de passe", "Sanz modpas"],
+  "Search filters": ["Filtres de recherche", "Filt resers"],
+  "Professional search results": ["Résultats de recherche de professionnels", "Rezilta resers profesionel"],
+  "Choose a category or location to start searching": [
+    "Choisissez une catégorie ou un lieu pour commencer",
+    "Swazir enn kategori ouswa landrwa pou koumans rode"
+  ],
+  "Sort by": ["Trier par", "Triye par"],
+  "Most relevant": ["Les plus pertinents", "Pli apropriye"],
+  "Nearest first": ["Les plus proches", "Pli pre avan"],
+  "Results view": ["Affichage des résultats", "Lafisaz bann rezilta"],
+  "Grid": ["Grille", "Gril"],
+  "List": ["Liste", "Lalis"],
+  "Map": ["Carte", "Kart"],
+  "Where should we look?": ["Où souhaitez-vous chercher ?", "Kot nou bizin rode ?"],
+  "Choose a service category to search across Mauritius, or enter a town, village or address to find nearby professionals.": [
+    "Choisissez une catégorie pour rechercher à Maurice, ou saisissez un lieu pour trouver des professionnels à proximité.",
+    "Swazir enn kategori servis pou rod dan Moris, ouswa met enn lavil, vilaz ouswa ladres pou trouv bann profesionel pre ar ou."
+  ],
+  "We could not run that search": [
+    "Impossible d’effectuer cette recherche",
+    "Nou pa finn kapav fer sa resers-la"
+  ],
+  "Please check your connection and try again.": [
+    "Vérifiez votre connexion et réessayez.",
+    "Verifye ou koneksion ek esey ankor."
+  ],
+  "No professionals in this radius yet": [
+    "Aucun professionnel dans ce rayon pour le moment",
+    "Pena profesionel dan sa reyon-la ankor"
+  ],
+  "No professionals match your filters": [
+    "Aucun professionnel ne correspond à votre recherche",
+    "Pena profesionel ki koresponn ar ou bann filt"
+  ],
+  "Try widening the radius, removing a filter, or searching a nearby town.": [
+    "Élargissez le rayon de recherche, retirez un filtre ou choisissez une ville voisine.",
+    "Ogmant reyon-la, retir enn filt ouswa rod dan enn lavil pre."
+  ],
+  "Try another service category or remove a filter.": [
+    "Essayez une autre catégorie ou retirez un filtre.",
+    "Esey enn lot kategori servis ouswa retir enn filt."
+  ],
+  "Widen to 50 km": ["Élargir à 50 km", "Ogmant ziska 50 km"],
+  "Loading map…": ["Chargement de la carte…", "Pe sarz kart…"],
+  "Search results pages": ["Pages de résultats", "Bann paz rezilta"],
+  "Are you a professional?": ["Vous êtes professionnel ?", "Ou enn profesionel ?"],
+  "Join MoriHome for free and get discovered by people near you.": [
+    "Créez votre profil sur MoriHome et faites-vous connaître près de chez vous.",
+    "Zwenn MoriHome gratis ek fer bann dimounn pre ar ou dekouver ou."
+  ],
+  "Create Your Free Account": ["Créer votre compte gratuit", "Kree ou kont gratis"],
+  "Reviewed": ["Vérifiés", "Verifye"],
+  "Reach more": ["Touchez plus de", "Tous plis"],
+  "Grow your": ["Développez votre", "Devlop ou"],
+  "Browse by Area": ["Parcourir par région", "Rod par rezion"],
+  "Find professionals in your area": [
+    "Trouvez des professionnels dans votre région",
+    "Trouv bann profesionel dan ou rezion"
+  ],
+  "Close filters": ["Fermer les filtres", "Ferm bann filt"],
+  "Refine results": ["Affiner les résultats", "Afin bann rezilta"],
+  "Category saved.": ["Catégorie enregistrée.", "Kategori finn anrezistre."],
+  "Save failed.": ["L’enregistrement a échoué.", "Anrezistreman pa finn reisi."],
+  "Administration": ["Administration", "Administrasion"],
+  "Categories drive the search dropdown and the popular-services grid on the home page.": [
+    "Les catégories alimentent la recherche et les services populaires de la page d’accueil.",
+    "Bann kategori servi dan meni resers ek dan bann servis popiler lor paz lakey."
+  ],
+  "New category": ["Nouvelle catégorie", "Nouvo kategori"],
+  "Name": ["Nom", "Nom"],
+  "Slug": ["Identifiant URL", "Idantifian URL"],
+  "auto-generated from the name": ["généré automatiquement à partir du nom", "kree otomatikman depi nom"],
+  "Lucide icon name": ["Nom de l’icône Lucide", "Nom ikon Lucide"],
+  "Sort order": ["Ordre d’affichage", "Lord lafisaz"],
+  "Active — providers can choose it and customers can search it": [
+    "Active — les professionnels peuvent la choisir et les clients la rechercher",
+    "Aktif — bann profesionel kapav swazir li ek bann kliyan kapav rod li"
+  ],
+  "Show in the popular-services grid on the home page": [
+    "Afficher dans les services populaires de la page d’accueil",
+    "Montre dan bann servis popiler lor paz lakey"
+  ],
+  "Save category": ["Enregistrer la catégorie", "Anrezistre kategori"],
+  "Search categories": ["Rechercher des catégories", "Rod bann kategori"],
+  "Search service categories": ["Rechercher des catégories de services", "Rod bann kategori servis"],
+  "Could not load categories.": [
+    "Impossible de charger les catégories.",
+    "Pa finn kapav sarz bann kategori."
+  ],
+  "Retry": ["Réessayer", "Esey ankor"],
+  "· icon:": ["· icône :", "· ikon :"],
+  "· order": ["· ordre", "· lord"],
+  "Popular": ["Populaire", "Popiler"],
+  "Edit": ["Modifier", "Modifye"],
+  "No categories match this search.": [
+    "Aucune catégorie ne correspond à cette recherche.",
+    "Pena kategori ki koresponn ar sa resers-la."
+  ],
+  "New": ["Nouveau", "Nouvo"],
+  "New activity compared with the previous period": [
+    "Nouvelle activité par rapport à la période précédente",
+    "Nouvo aktivite konpare ar peryod avan"
+  ],
+  "Website views by period": ["Vues du site par période", "Vizit sit par peryod"],
+  "New individual and business registrations by period": [
+    "Inscriptions d’indépendants et d’entreprises par période",
+    "Nouvo inskripsion endepandan ek lantrepriz par peryod"
+  ],
+  "Website views": ["Vues du site", "Vizit sit"],
+  "New registrations": ["Nouvelles inscriptions", "Nouvo inskripsion"],
+  "Period": ["Période", "Peryod"],
+  "Views": ["Vues", "Vizit"],
+  "Loading dashboard": ["Chargement du tableau de bord", "Pe sarz tablo de bor"],
+  "Could not load the dashboard": [
+    "Impossible de charger le tableau de bord",
+    "Pa finn kapav sarz tablo de bor"
+  ],
+  "Please try again.": ["Veuillez réessayer.", "Esey ankor."],
+  "Total Users": ["Total des utilisateurs", "Total itilizater"],
+  "Website Views": ["Vues du site", "Vizit sit"],
+  "Here’s what’s happening on MoriHome today.": [
+    "Voici l’activité de MoriHome aujourd’hui.",
+    "Ala seki pe pase lor MoriHome zordi."
+  ],
+  "Dashboard period": ["Période du tableau de bord", "Peryod tablo de bor"],
+  "Last 7 days": ["7 derniers jours", "7 dernie zour"],
+  "Last 30 days": ["30 derniers jours", "30 dernie zour"],
+  "Last 90 days": ["90 derniers jours", "90 dernie zour"],
+  "Page views": ["Pages vues", "Paz vizite"],
+  "in the last": ["sur une période de", "dan bann dernie"],
+  "User totals are all-time. Growth compares new activity with the previous": [
+    "Le total couvre toutes les inscriptions. L’évolution est calculée par rapport à la période précédente de",
+    "Total-la inklir tou itilizater depi koumansman. Kwasans konpar aktivite avek bann"
+  ],
+  "Recent Users": ["Utilisateurs récents", "Bann dernie itilizater"],
+  "Add Category": ["Ajouter une catégorie", "Azout kategori"],
+  "Category Name": ["Nom de la catégorie", "Nom kategori"],
+  "Icon": ["Icône", "Ikon"],
+  "No categories yet. Add your first service category.": [
+    "Aucune catégorie. Ajoutez votre première catégorie de services.",
+    "Pena kategori ankor. Azout ou premie kategori servis."
+  ],
+  "Users Overview": ["Vue d’ensemble des utilisateurs", "Apersi bann itilizater"],
+  "New provider accounts in the selected period": [
+    "Nouveaux comptes professionnels sur la période sélectionnée",
+    "Nouvo kont profesionel dan peryod ki ou finn swazir"
+  ],
+  "User Status": ["Statut des utilisateurs", "Stati bann itilizater"],
+  "Inactive includes draft, rejected and unpublished profiles.": [
+    "Inactifs : brouillons, profils refusés et non publiés.",
+    "Inaktif inklir bann bouyon, profil refize ek profil pa pibliye."
+  ],
+  "Most viewed pages": ["Pages les plus consultées", "Bann paz pli vizite"],
+  "No visits recorded in this period. Real visits will appear here as people browse the website.": [
+    "Aucune visite sur cette période. Les visites apparaîtront ici au fil de la navigation des utilisateurs.",
+    "Pena vizit anrezistre dan sa peryod-la. Bann vizit pou paret isi kan dimounn servi sit-la."
+  ],
+  "Public page loads and navigation, excluding administrator visits. These are page views, not unique visitors.": [
+    "Chargements et navigation des pages publiques, hors administration. Il s’agit de pages vues, pas de visiteurs uniques.",
+    "Sarzman ek navigasion bann paz piblik, san bann vizit administrater. Sa se paz vizite, pa viziter inik."
+  ],
+  "The action failed.": ["L’action a échoué.", "Aksion-la pa finn reisi."],
+  "Loading provider": ["Chargement du professionnel", "Pe sarz profesionel"],
+  "Provider not found": ["Professionnel introuvable", "Pa finn trouv profesionel"],
+  "It may have been deleted.": ["Il a peut-être été supprimé.", "Li kapav finn efase."],
+  "Back to queue": ["Retour à la liste d’attente", "Retour dan lalis latant"],
+  "Review": ["Vérifier", "Verifye"],
+  "Portfolio": ["Réalisations", "Bann realizasion"],
+  "Pending": ["En attente", "An atant"],
+  "Approved": ["Approuvé", "Aprouve"],
+  "Rejected": ["Refusé", "Refize"],
+  "Drafts": ["Brouillons", "Bouyon"],
+  "Draft": ["Brouillon", "Bouyon"],
+  "All": ["Tous", "Tou"],
+  "Provider review queue": ["Profils à vérifier", "Bann profil pou verifye"],
+  "Approve, reject or suspend listings. Every decision is written to the audit trail.": [
+    "Approuvez, refusez ou suspendez les profils. Chaque décision est enregistrée dans l’historique.",
+    "Aprouve, refiz ouswa sispann bann profil. Sak desizion anrezistre dan listorik."
+  ],
+  "Filter by status": ["Filtrer par statut", "Filtre par stati"],
+  "Could not load the queue": ["Impossible de charger la liste d’attente", "Pa finn kapav sarz lalis latant"],
+  "Please refresh and try again.": ["Actualisez et réessayez.", "Re-sarze ek esey ankor."],
+  "Nothing here": ["Rien à afficher", "Pena nanye isi"],
+  "No registrations are waiting for review. Good work.": [
+    "Aucune inscription en attente de vérification. Tout est à jour.",
+    "Pena inskripsion pe atann verifikasion. Tou azour."
+  ],
+  "No providers match this status.": [
+    "Aucun professionnel avec ce statut.",
+    "Pena profesionel avek sa stati-la."
+  ],
+  "· registered": ["· inscrit le", "· anrezistre le"],
+  "Review queue pages": ["Pages de la liste d’attente", "Bann paz lalis latant"],
+  "Subscription activated.": ["Abonnement activé.", "Labonnman finn aktive."],
+  "Could not activate this subscription.": [
+    "Impossible d’activer cet abonnement.",
+    "Pa finn kapav aktiv sa labonnman-la."
+  ],
+  "Start date": ["Date de début", "Dat koumansman"],
+  "End date": ["Date de fin", "Dat lafin"],
+  "Activate": ["Activer", "Aktive"],
+  "Update dates": ["Modifier les dates", "Sanz bann dat"],
+  "Verify payments, activate requests and manage subscription dates.": [
+    "Vérifiez les paiements, activez les demandes et gérez les dates d’abonnement.",
+    "Verifye bann peyman, aktiv bann demann ek zer bann dat labonnman."
+  ],
+  "Subscription status": ["Statut de l’abonnement", "Stati labonnman"],
+  "Could not load subscriptions.": [
+    "Impossible de charger les abonnements.",
+    "Pa finn kapav sarz bann labonnman."
+  ],
+  "Customer": ["Client", "Kliyan"],
+  "Plan": ["Offre", "Plan"],
+  "Amount": ["Montant", "Montan"],
+  "Activation": ["Activation", "Aktivasion"],
+  "Requested": ["Demandé", "Finn demande"],
+  "No subscriptions in this state.": ["Aucun abonnement avec ce statut.", "Pena labonnman avek sa stati-la."],
+  "Find accounts and manage their provider profiles.": [
+    "Recherchez des comptes et gérez leurs profils professionnels.",
+    "Rod bann kont ek zer zot profil profesionel."
+  ],
+  "User directory": ["Annuaire des utilisateurs", "Lalis bann itilizater"],
+  "Search users": ["Rechercher des utilisateurs", "Rod bann itilizater"],
+  "Name, email, locality or service": [
+    "Nom, e-mail, localité ou service",
+    "Nom, imel, lokalite ouswa servis"
+  ],
+  "Filter account type": ["Filtrer par type de compte", "Filtre par tip kont"],
+  "Filter user status": ["Filtrer par statut utilisateur", "Filtre par stati itilizater"],
+  "All statuses": ["Tous les statuts", "Tou stati"],
+  "Could not load users.": ["Impossible de charger les utilisateurs.", "Pa finn kapav sarz bann itilizater."],
+  "No results": ["Aucun résultat", "Pena rezilta"],
+  "Edit profile": ["Modifier le profil", "Modifye profil"],
+  "Contact details, services and location.": [
+    "Coordonnées, services et localisation.",
+    "Detay kontak, servis ek landrwa."
+  ],
+  "Create rental and sale listings within your plan limits.": [
+    "Créez des annonces de location et de vente selon les limites de votre offre.",
+    "Kree bann lanons pou lwe ek vann dan limit ou plan."
+  ],
+  "Show photos of your previous work.": [
+    "Présentez des photos de vos réalisations.",
+    "Montre bann foto ou travay ki ou finn fer."
+  ],
+  "Change your password.": ["Modifiez votre mot de passe.", "Sanz ou modpas."],
+  "We could not load your dashboard": [
+    "Impossible de charger votre tableau de bord",
+    "Nou pa finn kapav sarz ou tablo de bor"
+  ],
+  "Please refresh the page or sign in again.": [
+    "Actualisez la page ou reconnectez-vous.",
+    "Re-sarz paz-la ouswa konekte ankor."
+  ],
+  "Your profile has been sent for review.": [
+    "Votre profil a été envoyé pour vérification.",
+    "Ou profil finn avoye pou verifikasion."
+  ],
+  "We could not submit your profile.": [
+    "Impossible de soumettre votre profil.",
+    "Nou pa finn kapav soumet ou profil."
+  ],
+  "Provider dashboard": ["Tableau de bord professionnel", "Tablo de bor profesionel"],
+  "Keep your details current — customers see this information when they search.": [
+    "Gardez vos informations à jour : les clients les voient dans leurs recherches.",
+    "Gard ou bann detay azour. Bann kliyan trouv sa bann linformasion-la kan zot rode."
+  ],
+  "Manage your listing": ["Gérer votre profil", "Zer ou profil"],
+  "Your services": ["Vos services", "Ou bann servis"],
+  "No services selected yet.": ["Aucun service sélectionné.", "Pena servis swazir ankor."],
+  "Add your trades": ["Ajouter vos métiers", "Azout ou bann metie"],
+  "Base location": ["Lieu d’activité", "Landrwa kot ou travay"],
+  "Edit these details": ["Modifier ces informations", "Modifye sa bann detay-la"],
+  "Your portfolio": ["Vos réalisations", "Ou bann realizasion"],
+  "Photos of finished work are the single biggest reason customers choose one professional over another.": [
+    "Des photos de vos réalisations aident les clients à découvrir votre savoir-faire et à choisir un professionnel.",
+    "Foto travay fini fer se rezon prinsipal kifer bann kliyan swazir enn profesionel olye enn lot."
+  ],
+  "Add photos": ["Ajouter des photos", "Azout bann foto"],
+  "Upload portfolio photos": ["Ajouter des photos de réalisations", "Azout bann foto realizasion"],
+  "photos. Photos are resized on your device before upload.": [
+    "photos. Elles sont redimensionnées sur votre appareil avant l’envoi.",
+    "foto. Bann foto redimensione lor ou laparey avan lanvwa."
+  ],
+  "No photos yet": ["Aucune photo pour le moment", "Pena foto ankor"],
+  "Add a few pictures of jobs you have completed. Three to six good photos is plenty.": [
+    "Ajoutez des photos de travaux terminés. Trois à six bonnes photos suffisent.",
+    "Azout bann foto travay ki ou finn fini. Trwa a sis bon foto ase."
+  ],
+  "Add your first photo": ["Ajouter votre première photo", "Azout ou premie foto"],
+  "Photo removed.": ["Photo supprimée.", "Foto finn retire."],
+  "Changing your name, phone, location or services sends an approved profile back for a quick re-check before it is public again.": [
+    "Toute modification de votre nom, téléphone, localisation ou de vos services entraîne une nouvelle vérification du profil avant sa remise en ligne.",
+    "Si ou sanz ou nom, telefonn, landrwa ouswa servis, nou bizin reverifye ou profil avan li revinn piblik."
+  ],
+  "Loading your profile": ["Chargement de votre profil", "Pe sarz ou profil"],
+  "We could not load your profile": [
+    "Impossible de charger votre profil",
+    "Nou pa finn kapav sarz ou profil"
+  ],
+  "Edit your profile": ["Modifier votre profil", "Modifye ou profil"],
+  "Photos": ["Photos", "Foto"],
+  "Photo limit reached": ["Limite de photos atteinte", "Limit foto finn arive"],
+  "Uploading...": ["Envoi…", "Pe avoye…"],
+  "Add photo": ["Ajouter une photo", "Azout foto"],
+  "Property photo added.": ["Photo du bien ajoutée.", "Foto propriyete finn azoute."],
+  "Could not upload photo.": ["Impossible d’envoyer la photo.", "Pa finn kapav avoy foto."],
+  "You need an active subscription with an available listing slot.": [
+    "Un abonnement actif avec une place disponible pour une annonce est nécessaire.",
+    "Ou bizin enn labonnman aktif avek enn plas lanons disponib."
+  ],
+  "Choose an address suggestion so the property can be located.": [
+    "Choisissez une adresse suggérée pour localiser le bien.",
+    "Swazir enn ladres propoze pou kapav lokaliz propriyete-la."
+  ],
+  "Property listing published.": ["Annonce immobilière publiée.", "Lanons propriyete finn pibliye."],
+  "Could not create the listing.": ["Impossible de créer l’annonce.", "Pa finn kapav kree lanons-la."],
+  "Property dashboard": ["Tableau de bord immobilier", "Tablo de bor propriyete"],
+  "Manage property listings": ["Gérer les annonces immobilières", "Zer bann lanons propriyete"],
+  "Your active Rental or Sales subscription controls listing and photo limits.": [
+    "Votre abonnement Location ou Vente actif détermine les limites d’annonces et de photos.",
+    "Ou labonnman Lokasion ouswa Lavant aktif kontrol limit bann lanons ek foto."
+  ],
+  "Rental listings": ["Annonces de location", "Lanons lokasion"],
+  "Sale listings": ["Annonces de vente", "Lanons lavant"],
+  "No active plan": ["Aucune offre active", "Pena plan aktif"],
+  "Activate a subscription from your dashboard to create listings.": [
+    "Activez un abonnement depuis votre tableau de bord pour créer des annonces.",
+    "Aktiv enn labonnman depi ou tablo de bor pou kree bann lanons."
+  ],
+  "Create a property listing": ["Créer une annonce immobilière", "Kree enn lanons propriyete"],
+  "Listing category": ["Catégorie d’annonce", "Kategori lanons"],
+  "(subscription required)": ["(abonnement requis)", "(bizin enn labonnman)"],
+  "Listing title": ["Titre de l’annonce", "Tit lanons"],
+  "Modern family home in Moka": ["Maison familiale moderne à Moka", "Lakaz familial modern dan Moka"],
+  "Price (Rs)": ["Prix (Rs)", "Pri (Rs)"],
+  "Area m²": ["Surface (m²)", "Siperfisi m²"],
+  "Furnishing & amenities": ["Mobilier et équipements", "Meb ek lekipman"],
+  "Publishing...": ["Publication…", "Pe pibliye…"],
+  "Publish listing": ["Publier l’annonce", "Pibliye lanons"],
+  "Your properties": ["Vos biens", "Ou bann propriyete"],
+  "No property listings yet": ["Aucune annonce immobilière", "Pena lanons propriyete ankor"],
+  "Create your first listing when a Rental or Sales subscription is active.": [
+    "Créez votre première annonce une fois un abonnement Location ou Vente activé.",
+    "Kree ou premie lanons kan enn labonnman Lokasion ouswa Lavant aktif."
+  ],
+  "Your password has been changed.": ["Votre mot de passe a été modifié.", "Ou modpas finn sanze."],
+  "We could not change your password.": [
+    "Impossible de modifier votre mot de passe.",
+    "Nou pa finn kapav sanz ou modpas."
+  ],
+  "Change the password you sign in with.": [
+    "Modifiez votre mot de passe de connexion.",
+    "Sanz modpas ki ou servi pou konekte."
+  ],
+  "Current password": ["Mot de passe actuel", "Modpas aktiel"],
+  "At least 12 characters, with uppercase and lowercase letters and a number.": [
+    "Au moins 12 caractères, dont une majuscule, une minuscule et un chiffre.",
+    "Omwin 12 karakter, avek let maziskil, miniskil ek enn sif."
+  ],
+  "Change password": ["Changer le mot de passe", "Sanz modpas"],
+  "Dismiss notification": ["Fermer la notification", "Ferm notifikasion"],
+  "Rental": ["Location", "Lokasion"],
+  "Sales": ["Vente", "Lavant"],
+  "Pending validation": ["En attente de validation", "Pe atann validasion"],
+  "Published": ["Publié", "Pibliye"],
+  "Expired": ["Expiré", "Expire"],
+  "Cancelled": ["Annulé", "Anile"],
+  "of": ["sur", "lor"],
+  "days": ["jours", "zour"],
+  "days.": ["jours.", "zour."],
+  "professionals": ["professionnels", "profesionel"],
+  "customers": ["clients", "kliyan"],
+  "business": ["activité", "biznes"],
+  "beds": ["chambres", "lasam"],
+  "baths": ["salles de bains", "sal-de-bin"],
+  "/ month": ["/ mois", "/ mwa"],
+  "months": ["mois", "mwa"],
+  "Unlimited": ["Illimité", "San limit"],
+  "Yes": ["Oui", "Wi"],
+  "No": ["Non", "Non"]
+}
