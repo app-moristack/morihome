@@ -14,6 +14,23 @@ describe('PropertySearchPage filters', () => {
     })
   })
 
+  it('sorts all results through the API, resets the page and preserves filters', async () => {
+    renderWithProviders(<PropertySearchPage />, {
+      route: '/properties?purpose=sales&amenities[]=pool&page=2',
+    })
+    await userEvent.selectOptions(screen.getByLabelText('Sort by'), 'price_asc')
+    await waitFor(() =>
+      expect(publicApi.searchProperties).toHaveBeenLastCalledWith(
+        expect.objectContaining({ sort: 'price_asc', page: 1, purpose: 'sales', amenities: ['pool'] }),
+      ),
+    )
+    await userEvent.click(screen.getByRole('button', { name: 'List' }))
+    expect(screen.getByRole('button', { name: 'List' })).toHaveAttribute('aria-pressed', 'true')
+    await userEvent.click(screen.getByRole('button', { name: 'Map' }))
+    expect(screen.getByRole('button', { name: 'Map' })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByLabelText('Sort by')).toHaveValue('price_asc')
+  })
+
   it('initializes the hero from the URL and submits property searches without dropping amenities', async () => {
     vi.spyOn(publicApi, 'suggestAddresses').mockResolvedValue([])
     renderWithProviders(<PropertySearchPage />, {
@@ -55,7 +72,7 @@ describe('PropertySearchPage filters', () => {
 
   it('applies attributes and amenities together and resets pagination', async () => {
     renderWithProviders(<PropertySearchPage />, { route: '/properties?purpose=sales&page=2' })
-    await userEvent.click(screen.getByRole('button', { name: 'Show filters' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Filters' }))
     await userEvent.selectOptions(screen.getByLabelText('Bedrooms'), '3')
     await userEvent.selectOptions(screen.getByLabelText('Bathrooms'), '2')
     await userEvent.type(screen.getByLabelText('Minimum area (m²)'), '100')
@@ -92,7 +109,7 @@ describe('PropertySearchPage filters', () => {
         }),
       ),
     )
-    await userEvent.click(screen.getByRole('button', { name: 'Show filters' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Filters' }))
     expect(screen.getByLabelText('Swimming pool')).toBeChecked()
     await userEvent.click(screen.getByRole('button', { name: 'Clear all' }))
     await waitFor(() =>

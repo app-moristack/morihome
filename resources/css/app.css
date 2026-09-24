@@ -1115,6 +1115,10 @@ section.site-page-hero {
   --page-hero-height: 560px;
   min-height: var(--page-hero-height);
 }
+.filter-drawer-body .search-filter-card {
+  max-height: none;
+  overflow: visible;
+}
 section.site-page-hero > .container-page {
   display: flex;
   flex-direction: column;

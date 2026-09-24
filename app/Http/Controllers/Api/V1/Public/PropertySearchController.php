@@ -31,6 +31,7 @@ class PropertySearchController extends Controller
             'amenities' => ['sometimes', 'array', 'max:8'],
             'amenities.*' => ['string', 'distinct', Rule::in(PropertyListing::AMENITIES)],
             'featured_only' => ['sometimes', 'boolean'],
+            'sort' => ['sometimes', Rule::in(['newest', 'price_asc', 'price_desc'])],
             'page' => ['sometimes', 'integer', 'min:1'],
         ]);
 
@@ -57,6 +58,8 @@ class PropertySearchController extends Controller
                 }
             })
             ->with(['images', 'provider', 'membership.subscription'])
+            ->when(($validated['sort'] ?? 'newest') === 'price_asc', fn ($query) => $query->orderBy('price_rupees'))
+            ->when(($validated['sort'] ?? 'newest') === 'price_desc', fn ($query) => $query->orderByDesc('price_rupees'))
             ->latest('published_at')
             ->orderByDesc('id')
             ->paginate(24)

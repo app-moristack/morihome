@@ -6,18 +6,22 @@ import {
   Bath,
   BedDouble,
   Building2,
+  Grid2X2,
+  List,
+  Map,
   MapPin,
   MessageCircle,
   SlidersHorizontal,
 } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
-import { useMemo, useState } from 'react'
+import { lazy, Suspense, useCallback, useMemo, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router'
 import { publicApi } from '@/api/endpoints'
 import { queryKeys } from '@/api/queryKeys'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { EmptyState } from '@/components/ui/EmptyState'
+import { FilterDrawer } from '@/components/search/FilterDrawer'
 import { PropertyFilters } from '@/components/search/PropertyFilters'
 import { PropertyImageCarousel } from '@/components/ui/PropertyImageCarousel'
 import { Skeleton } from '@/components/ui/Skeleton'
@@ -25,11 +29,17 @@ import { SearchHero, type PropertyHeroSearch } from '@/components/search/SearchH
 import { emptySearchState, writeSearchState } from '@/lib/searchParams'
 import villaImage from '../../images/mauritius-luxury-home-about-hero.png'
 
+const PropertyMap = lazy(() => import('@/components/search/PropertyMap'))
+const PROPERTY_SORTS = ['newest', 'price_asc', 'price_desc'] as const
+type PropertySort = (typeof PROPERTY_SORTS)[number]
+
 export default function PropertySearchPage() {
   useLocale()
   const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
   const [filtersOpen, setFiltersOpen] = useState(false)
+  const closeFilters = useCallback(() => setFiltersOpen(false), [])
+  const [resultsView, setResultsView] = useState<'grid' | 'list' | 'map'>('grid')
   const params = useMemo(
     () => ({
       purpose: (searchParams.get('purpose') === 'sales' ? 'sales' : 'rental') as 'rental' | 'sales',
@@ -44,6 +54,9 @@ export default function PropertySearchPage() {
       is_furnished: searchParams.has('is_furnished') ? searchParams.get('is_furnished') === '1' : undefined,
       amenities: searchParams.getAll('amenities[]'),
       page: Number(searchParams.get('page') ?? 1),
+      sort: (PROPERTY_SORTS.includes(searchParams.get('sort') as PropertySort)
+        ? searchParams.get('sort')
+        : 'newest') as PropertySort,
     }),
     [searchParams],
   )
@@ -106,28 +119,16 @@ export default function PropertySearchPage() {
       />
 
       <main className="container-page py-8">
-        <Button
-          variant="secondary"
-          className="mb-4 lg:hidden"
-          aria-expanded={filtersOpen}
-          aria-controls="property-filters"
-          onClick={() => setFiltersOpen(!filtersOpen)}
-          leadingIcon={<SlidersHorizontal className="size-4" />}
-        >
-          {filtersOpen ? t('Hide filters') : t('Show filters')}
-        </Button>
         <div className="grid items-start gap-7 lg:grid-cols-[280px_minmax(0,1fr)]">
-          <aside
-            id="property-filters"
-            aria-label={t('Property filters')}
-            className={filtersOpen ? 'block' : 'hidden lg:block'}
-          >
-            <PropertyFilters
-              params={searchParams}
-              onApply={(next) => {
-                setSearchParams(next, { preventScrollReset: true, replace: true })
-              }}
-            />
+          <aside id="property-filters-sidebar" aria-label={t('Property filters')} className="hidden lg:block">
+            {!filtersOpen && (
+              <PropertyFilters
+                params={searchParams}
+                onApply={(next) => {
+                  setSearchParams(next, { preventScrollReset: true, replace: true })
+                }}
+              />
+            )}
           </aside>
           <div className="min-w-0">
             <div className="mb-5 flex items-center justify-between gap-4">
@@ -143,6 +144,58 @@ export default function PropertySearchPage() {
                 {t('List your property')}
               </Link>
             </div>
+            <div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-ink-100 bg-surface px-4 py-3">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="lg:hidden"
+                aria-expanded={filtersOpen}
+                aria-controls="property-filters"
+                onClick={() => setFiltersOpen(!filtersOpen)}
+                leadingIcon={<SlidersHorizontal className="size-4" />}
+              >
+                {t('Filters')}
+              </Button>
+              <div className="flex items-center gap-2">
+                <label htmlFor="property-sort" className="text-xs text-ink-500">
+                  {t('Sort by')}
+                </label>
+                <select
+                  id="property-sort"
+                  value={params.sort}
+                  onChange={(event) => {
+                    const next = new URLSearchParams(searchParams)
+                    next.set('sort', event.target.value)
+                    next.delete('page')
+                    setSearchParams(next, { preventScrollReset: true })
+                  }}
+                  className="min-h-10 rounded-lg border border-ink-200 bg-surface px-3 text-xs font-semibold"
+                >
+                  <option value="newest">{t('Most recent')}</option>
+                  <option value="price_asc">{t('Price: low to high')}</option>
+                  <option value="price_desc">{t('Price: high to low')}</option>
+                </select>
+              </div>
+              <div className="flex rounded-lg bg-ink-50 p-1" aria-label={t('Results view')}>
+                {(
+                  [
+                    { value: 'grid', label: 'Grid', icon: Grid2X2 },
+                    { value: 'list', label: 'List', icon: List },
+                    { value: 'map', label: 'Map', icon: Map },
+                  ] as const
+                ).map(({ value, label, icon: Icon }) => (
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() => setResultsView(value)}
+                    aria-pressed={resultsView === value}
+                    className={`search-view-button ${resultsView === value ? 'search-view-button-active' : ''}`}
+                  >
+                    <Icon className="size-4" aria-hidden /> {t(label)}
+                  </button>
+                ))}
+              </div>
+            </div>
             {isLoading ? (
               <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-2">
                 <Skeleton className="h-80 rounded-card" />
@@ -155,13 +208,28 @@ export default function PropertySearchPage() {
                 tone="danger"
                 title={t('Could not load properties')}
               />
+            ) : data?.data.length && resultsView === 'map' ? (
+              <Suspense fallback={<Skeleton className="h-[420px] rounded-card" />}>
+                <PropertyMap properties={data.data} />
+              </Suspense>
             ) : data?.data.length ? (
-              <ul className="grid gap-5 sm:grid-cols-2 xl:grid-cols-2">
+              <ul className={resultsView === 'list' ? 'grid gap-5' : 'grid gap-5 sm:grid-cols-2'}>
                 {data.data.map((listing) => {
                   const whatsapp = listing.provider?.whatsapp_phone ?? listing.provider?.phone
                   return (
-                    <li key={listing.id} className="card overflow-hidden">
-                      <PropertyImageCarousel images={listing.images} title={listing.title} />
+                    <li
+                      key={listing.id}
+                      className={
+                        resultsView === 'list'
+                          ? 'card overflow-hidden sm:grid sm:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]'
+                          : 'card overflow-hidden'
+                      }
+                    >
+                      <PropertyImageCarousel
+                        images={listing.images}
+                        title={listing.title}
+                        className={resultsView === 'list' ? 'h-52 sm:h-full sm:min-h-64' : 'h-52'}
+                      />
                       <div className="flex flex-col gap-3 p-5">
                         <div className="flex items-center justify-between gap-2">
                           <Badge tone="brand">
@@ -261,6 +329,14 @@ export default function PropertySearchPage() {
           </div>
         </div>
       </main>
+      {filtersOpen && (
+        <FilterDrawer id="property-filters" title={t('Property filters')} onClose={closeFilters}>
+          <PropertyFilters
+            params={searchParams}
+            onApply={(next) => setSearchParams(next, { preventScrollReset: true, replace: true })}
+          />
+        </FilterDrawer>
+      )}
     </div>
   )
 }

@@ -73,6 +73,7 @@ export const publicApi = {
     min_area?: number
     is_furnished?: boolean
     amenities?: string[]
+    sort?: 'newest' | 'price_asc' | 'price_desc'
     featured_only?: boolean
     page?: number
   }) => apiRequest<Paginated<PropertyListing>>(`/properties/search?${buildQueryString(params)}`),

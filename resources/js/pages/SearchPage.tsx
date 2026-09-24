@@ -10,12 +10,12 @@ import {
   SearchX,
   SlidersHorizontal,
   Users,
-  X,
   Zap,
 } from 'lucide-react'
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useCallback, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { ProviderCard } from '@/components/provider/ProviderCard'
+import { FilterDrawer } from '@/components/search/FilterDrawer'
 import { SearchFilters } from '@/components/search/SearchFilters'
 import { SearchHero } from '@/components/search/SearchHero'
 import { Button } from '@/components/ui/Button'
@@ -46,14 +46,7 @@ export function SearchPage() {
   const { data, isLoading, isFetching, isError, error, refetch } = useProviderSearch(apiParams)
   const { data: categories = [] } = useCategories(true)
 
-  useEffect(() => {
-    if (!areFiltersOpen) return
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setAreFiltersOpen(false)
-    }
-    document.addEventListener('keydown', closeOnEscape)
-    return () => document.removeEventListener('keydown', closeOnEscape)
-  }, [areFiltersOpen])
+  const closeFilters = useCallback(() => setAreFiltersOpen(false), [])
 
   const updateState = (next: SearchFormState) => {
     setSearchParams(writeSearchState(next), { preventScrollReset: true })
@@ -75,7 +68,7 @@ export function SearchPage() {
 
       <div className="container-page grid max-w-none gap-5 py-5 lg:grid-cols-[250px_minmax(0,1fr)] lg:items-start">
         <aside className="sticky top-24 hidden lg:block" aria-label={t('Search filters')}>
-          <SearchFilters state={state} onChange={updateState} />
+          {!areFiltersOpen && <SearchFilters state={state} onChange={updateState} />}
         </aside>
 
         <main className="min-w-0" aria-label={t('Professional search results')}>
@@ -301,40 +294,13 @@ export function SearchPage() {
               </ul>
             </div>
           </section>
-
-
         </main>
       </div>
 
       {areFiltersOpen ? (
-        <div
-          id="mobile-search-filters"
-          className="fixed inset-0 z-50 lg:hidden"
-          role="dialog"
-          aria-modal="true"
-          aria-label={t('Search filters')}
-        >
-          <button
-            type="button"
-            className="absolute inset-0 bg-black/55"
-            onClick={() => setAreFiltersOpen(false)}
-            aria-label={t('Close filters')}
-          />
-          <div className="absolute inset-y-0 right-0 w-[min(92vw,360px)] overflow-y-auto bg-canvas p-4 shadow-2xl">
-            <div className="mb-3 flex items-center justify-between">
-              <strong>{t('Refine results')}</strong>
-              <button
-                type="button"
-                onClick={() => setAreFiltersOpen(false)}
-                className="grid size-11 place-items-center rounded-full hover:bg-ink-100"
-                aria-label={t('Close filters')}
-              >
-                <X className="size-5" aria-hidden />
-              </button>
-            </div>
-            <SearchFilters state={state} onChange={updateState} onClose={() => setAreFiltersOpen(false)} />
-          </div>
-        </div>
+        <FilterDrawer id="mobile-search-filters" title={t('Search filters')} onClose={closeFilters}>
+          <SearchFilters state={state} onChange={updateState} onClose={closeFilters} />
+        </FilterDrawer>
       ) : null}
     </div>
   )

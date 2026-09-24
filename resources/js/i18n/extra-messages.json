@@ -1,12 +1,19 @@
 {
+  "Close": ["Fermer", "Ferme"],
   "Area": ["Superficie", "Sirfas"],
   "This property is not available": ["Cette propriété n’est pas disponible", "Sa propriyete-la pa disponib"],
   "Back to properties": ["Retour aux propriétés", "Retourn lor bann propriyete"],
   "Property details": ["Détails de la propriété", "Detay propriyete"],
   "Listed by": ["Annonce publiée par", "Lanons pibliye par"],
-  "View profile and other listings": ["Voir son profil et ses autres annonces", "Get so profil ek so lezot lanons"],
+  "View profile and other listings": [
+    "Voir son profil et ses autres annonces",
+    "Get so profil ek so lezot lanons"
+  ],
   "Property listings": ["Annonces immobilières", "Bann lanons propriyete"],
-  "No properties currently listed.": ["Aucune propriété publiée pour le moment.", "Pena propriyete pibliye pou lemoman."],
+  "No properties currently listed.": [
+    "Aucune propriété publiée pour le moment.",
+    "Pena propriyete pibliye pou lemoman."
+  ],
   "Photos of {name}": ["Photos de {name}", "Foto {name}"],
   "Previous photo": ["Photo précédente", "Foto avan"],
   "Next photo": ["Photo suivante", "Prosenn foto"],
@@ -133,7 +140,6 @@
   "{count} professionals found": ["{count} professionnels trouvés", "{count} profesionel trouve"],
   "{count} listing found": ["{count} annonce trouvée", "{count} lanons trouve"],
   "{count} listings found": ["{count} annonces trouvées", "{count} lanons trouve"],
-  "Page {page} of {total}": ["Page {page} sur {total}", "Paz {page} lor {total}"],
   "{count} bedroom": ["{count} chambre", "{count} lasam"],
   "{count} bedrooms": ["{count} chambres", "{count} lasam"],
   "{count} bathroom": ["{count} salle de bains", "{count} sal-de-bin"],
@@ -323,5 +329,21 @@
   "Add MoriHome to your iPhone or Android home screen and use it like an app.": [
     "Ajoutez MoriHome à l’écran d’accueil de votre iPhone ou téléphone Android pour retrouver facilement les services et les annonces immobilières à Maurice.",
     "Azout MoriHome lor ekran lakey ou iPhone ouswa Android ek servi li kouma enn aplikasion."
+  ],
+  "Most recent": ["Les plus récentes", "Pli resan"],
+  "Price: low to high": ["Prix croissant", "Pri pli ba avan"],
+  "Price: high to low": ["Prix décroissant", "Pri pli o avan"],
+  "Property locations map": ["Carte des propriétés", "Kart bann propriyete"],
+  "{count} properties near {locality}": [
+    "{count} propriétés près de {locality}",
+    "{count} propriyete pre {locality}"
+  ],
+  "properties on this page. Pins show property locations.": [
+    "propriétés sur cette page. Les repères indiquent leur emplacement.",
+    "propriyete lor sa paz-la. Bann reper montre zot plas."
+  ],
+  "Some map tiles could not load. You can still browse the properties below.": [
+    "Certaines parties de la carte ne se chargent pas. Vous pouvez consulter les propriétés ci-dessous.",
+    "Sertin parti kart pa finn sarze. Ou kapav get bann propriyete anba."
   ]
 }
