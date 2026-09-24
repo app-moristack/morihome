@@ -17,6 +17,26 @@ class DemoListingImageSeederTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_explicit_production_run_only_adds_images_to_existing_known_demo_records(): void
+    {
+        Storage::fake('public');
+        $demo = PropertyListing::factory()->create(['slug' => 'demo-property-rental-01', 'property_type' => 'villa']);
+        $other = PropertyListing::factory()->create(['slug' => 'demo-property-custom', 'property_type' => 'villa']);
+        $this->app->detectEnvironment(fn () => 'production');
+        try {
+            $this->artisan('db:seed', ['--class' => DemoListingImageSeeder::class, '--force' => true])->assertSuccessful();
+            $this->artisan('db:seed', ['--class' => DemoListingImageSeeder::class, '--force' => true])->assertSuccessful();
+        } finally {
+            $this->app->detectEnvironment(fn () => 'testing');
+        }
+        $this->assertSame(2, PropertyListing::count());
+        $this->assertSame(2, $demo->images()->count());
+        $this->assertSame(0, $other->images()->count());
+        foreach ($demo->images as $image) {
+            Storage::disk('public')->assertExists($image->path);
+        }
+    }
+
     public function test_all_demo_listings_receive_locally_stored_images_without_duplicates(): void
     {
         Storage::fake('public');

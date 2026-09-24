@@ -45,12 +45,8 @@ class DemoListingImageSeeder extends Seeder
 
     public function run(): void
     {
-        if (app()->isProduction()) {
-            $this->command?->warn('Demo listing images are only seeded outside production.');
-
-            return;
-        }
-
+        // Safe to invoke explicitly in production: only fill missing photos on
+        // existing demo records. DatabaseSeeder still excludes demos there.
         $blueprints = collect(DemoProviderBlueprints::all())->keyBy('slug');
         $providerSlugs = $blueprints->keys()->merge(['demo-property-agency-1', 'demo-property-agency-2']);
 
@@ -74,7 +70,11 @@ class DemoListingImageSeeder extends Seeder
                 }
             }
 
-            $listings = PropertyListing::query()->where('slug', 'like', 'demo-property-%')->whereDoesntHave('images')->get();
+            $listingSlugs = collect(['rental', 'sales'])->flatMap(fn (string $purpose) => collect(range(1, 20))->map(fn (int $number) => 'demo-property-'.$purpose.'-'.str_pad((string) $number, 2, '0', STR_PAD_LEFT))
+            );
+            $listings = PropertyListing::query()->whereIn('slug', $listingSlugs)
+                ->whereIn('property_type', array_keys(self::PROPERTY_IMAGES))
+                ->whereDoesntHave('images')->get();
             foreach ($listings as $listing) {
                 $assets = self::PROPERTY_IMAGES[$listing->property_type];
                 $number = (int) substr($listing->slug, -2);
