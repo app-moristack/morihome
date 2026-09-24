@@ -51,7 +51,11 @@ jobs:
             -o ServerAliveInterval=15 -o ServerAliveCountMax=120 \
             "$DEPLOY_USER@$DEPLOY_HOST" "deploy $GITHUB_SHA"
       - name: Check public HTTPS endpoint
-        run: curl --fail --silent --show-error --retry 5 --retry-delay 5 https://morihom.duckdns.org/up > /dev/null
+        run: |
+          set -euo pipefail
+          for path in up build/manifest.webmanifest icons/icon-192.png icons/icon-512.png icons/maskable-192.png icons/maskable-512.png icons/apple-touch-icon.png; do
+            curl --fail --silent --show-error --retry 5 --retry-delay 5 "https://morihom.duckdns.org/$path" > /dev/null
+          done
       - name: Remove temporary SSH key
         if: always()
         run: rm -f "$HOME/.ssh/deploy_key"
