@@ -21,7 +21,7 @@ import { SearchHero } from '@/components/search/SearchHero'
 import { Button } from '@/components/ui/Button'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { ProviderGridSkeleton, ProviderListSkeleton } from '@/components/ui/Skeleton'
-import { useCategories, useLocalities, useProviderSearch } from '@/hooks/useSearchQueries'
+import { useCategories, useProviderSearch } from '@/hooks/useSearchQueries'
 import {
   hasSearchLocation,
   readSearchState,
@@ -29,13 +29,10 @@ import {
   writeSearchState,
   type SearchFormState,
 } from '@/lib/searchParams'
-import hero from '../../images/le-morne-mauritius-home-services.webp'
 
 const ProviderMap = lazy(() => import('@/components/search/ProviderMap'))
 
 type ResultsView = 'grid' | 'list' | 'map'
-
-const AREA_IMAGE_POSITIONS = ['35%', '45%', '52%', '59%', '67%', '73%', '80%', '88%']
 
 export function SearchPage() {
   useLocale()
@@ -48,7 +45,6 @@ export function SearchPage() {
   const hasLocation = hasSearchLocation(state)
   const { data, isLoading, isFetching, isError, error, refetch } = useProviderSearch(apiParams)
   const { data: categories = [] } = useCategories(true)
-  const { data: localities = [] } = useLocalities()
 
   useEffect(() => {
     if (!areFiltersOpen) return
@@ -61,19 +57,6 @@ export function SearchPage() {
 
   const updateState = (next: SearchFormState) => {
     setSearchParams(writeSearchState(next), { preventScrollReset: true })
-  }
-
-  const selectArea = (index: number) => {
-    const locality = localities[index]
-    if (!locality) return
-    updateState({
-      ...state,
-      address: locality.name,
-      latitude: locality.latitude,
-      longitude: locality.longitude,
-      page: 1,
-    })
-    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const results = data?.data ?? []
@@ -319,37 +302,7 @@ export function SearchPage() {
             </div>
           </section>
 
-          {localities.length > 0 ? (
-            <section className="mt-5" aria-labelledby="areas-title">
-              <div className="mb-3 flex items-end justify-between gap-4">
-                <div>
-                  <h2 id="areas-title" className="text-xl font-extrabold">
-                    {t('Browse by Area')}
-                  </h2>
-                  <p className="text-xs text-ink-500">{t('Find professionals in your area')}</p>
-                </div>
-              </div>
-              <ul className="grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-8">
-                {localities.slice(0, 8).map((locality, index) => (
-                  <li key={locality.id}>
-                    <button type="button" onClick={() => selectArea(index)} className="search-area-card">
-                      <img
-                        src={hero}
-                        alt=""
-                        loading="lazy"
-                        className="absolute inset-0 h-full w-full object-cover"
-                        style={{ objectPosition: AREA_IMAGE_POSITIONS[index] }}
-                      />
-                      <span className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
-                      <span className="relative mt-auto truncate text-xs font-bold text-white">
-                        {locality.name}
-                      </span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ) : null}
+
         </main>
       </div>
 
