@@ -30,7 +30,7 @@
     <meta name="theme-color" content="#F5C518">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="MoriHome">
     <meta name="format-detection" content="telephone=no">
 
@@ -38,6 +38,14 @@
     <link rel="icon" href="/favicon.ico" sizes="48x48">
     <link rel="icon" href="/icons/icon-192.png" type="image/png" sizes="192x192">
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <style nonce="{{ Vite::cspNonce() }}">
+        html, body { background: #fff; }
+        .app-launch { position: fixed; inset: 0; z-index: 9999; display: grid; place-content: center; justify-items: center; gap: 24px; padding: 24px; background: #fff; color: #102c3f; text-align: center; font-family: system-ui, sans-serif; }
+        .app-launch img { width: clamp(100px, 30vw, 180px); height: auto; }
+        .app-launch p { margin: 0; font-size: clamp(20px, 5vw, 32px); font-weight: 700; animation: launch-welcome 1.6s ease-in-out infinite; }
+        @keyframes launch-welcome { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
+        @media (prefers-reduced-motion: reduce) { .app-launch p { animation: none; } }
+    </style>
 
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
     <link rel="stylesheet" href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800&display=swap">
@@ -62,7 +70,13 @@
             </filter>
         </defs>
     </svg>
-    <div id="app"></div>
+    <div id="app">
+        <div class="app-launch" role="status" aria-live="polite">
+            <img src="/icons/app-logo.webp" alt="MoriHome" width="256" height="256" fetchpriority="high">
+            <p>Welcome to MoriHome</p>
+        </div>
+    </div>
+    <noscript><style>.app-launch { display: none; }</style></noscript>
 
     @if ($meta->noscript)
         <noscript>

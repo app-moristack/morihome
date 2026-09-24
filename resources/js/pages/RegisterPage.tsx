@@ -21,7 +21,7 @@ import type {
   SubscriptionStepValues,
 } from '@/lib/schemas'
 import type { ProviderTypeValue } from '@/types/api'
-import individualHero from '../../images/Grow your business with MoriHome.png'
+import individualHero from '../../images/Grow your business with MoriHome.webp'
 import businessHero from '../../images/mauritius-business-contractor-hero.webp'
 
 const STEP_LABELS = ['Your details', 'Location', 'Services', 'Plans', 'Password']

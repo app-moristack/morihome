@@ -174,6 +174,9 @@ class ProviderDashboardTest extends TestCase
         ])->assertCreated()->assertJsonPath('data.caption', 'Bathroom refit');
 
         $this->assertDatabaseCount('provider_portfolio_images', 1);
+        $photo = $provider->portfolioImages()->firstOrFail();
+        $this->assertStringEndsWith('.webp', $photo->path);
+        $this->assertSame('image/webp', Storage::disk('public')->mimeType($photo->path));
     }
 
     public function test_a_non_image_upload_is_rejected(): void

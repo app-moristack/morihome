@@ -31,7 +31,7 @@ export function InstallPrompt() {
       aria-label={t('Install MoriHome')}
     >
       <div className="card animate-rise mx-auto flex max-w-md items-start gap-3 p-4 shadow-lifted">
-        <img src="/icons/icon-96.png" alt="" className="size-11 shrink-0 rounded-xl" width={44} height={44} />
+        <img src="/icons/app-logo.webp" alt="" className="size-11 shrink-0 rounded-xl" width={44} height={44} />
 
         <div className="min-w-0 flex-1">
           <p className="text-sm font-bold text-ink-900">{t('Add MoriHome to your home screen')}</p>

@@ -12,10 +12,10 @@ import {
   Smartphone,
   Users,
 } from 'lucide-react'
-import aboutHero from '../../images/mauritius-luxury-home-about-hero.png'
+import aboutHero from '../../images/mauritius-luxury-home-about-hero.webp'
 import coast from '../../images/le-morne-mauritius-home-services.webp'
-import storyImage from '../../images/mauritius-home-construction-about-story.png'
-import moristackLogo from '../../images/logo-moristack.png'
+import storyImage from '../../images/mauritius-home-construction-about-story.webp'
+import moristackLogo from '../../images/logo-moristack.webp'
 
 const VALUES = [
   {

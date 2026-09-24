@@ -62,7 +62,7 @@ export function HomeAppBanner() {
                 </div>
                 <div className="home-app-phone-island" />
                 <div className="home-app-phone-icon">
-                  <img src="/icons/icon-256.png" alt="" width={96} height={96} loading="lazy" />
+                  <img src="/icons/app-logo.webp" alt="" width={96} height={96} loading="lazy" />
                 </div>
                 <span className="home-app-phone-label">MoriHome</span>
                 <div className="home-app-phone-dock">

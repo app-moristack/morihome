@@ -6,7 +6,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 import laravel from 'laravel-vite-plugin'
 
 const THEME_COLOR = '#F5C518'
-const BACKGROUND_COLOR = '#171717'
+const BACKGROUND_COLOR = '#FFFFFF'
 
 export default defineConfig({
   plugins: [
@@ -55,7 +55,7 @@ export default defineConfig({
         globDirectory: 'public',
         globPatterns: [
           'build/assets/**/*.{js,css,woff2}',
-          'icons/*.png',
+          'icons/*.{png,webp}',
           'offline.html',
           'offline-language.js',
           'favicon.ico',

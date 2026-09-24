@@ -4,11 +4,15 @@ namespace App\Actions\Providers;
 
 use App\Models\Provider;
 use App\Models\ProviderPortfolioImage;
+use App\Services\WebpImageStorage;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class StorePortfolioImage
 {
+    public function __construct(private WebpImageStorage $images) {}
+
     public function handle(Provider $provider, UploadedFile $file, ?string $caption = null): ProviderPortfolioImage
     {
         $limit = config('morihome.uploads.max_portfolio_images');
@@ -17,21 +21,16 @@ class StorePortfolioImage
             throw new UnprocessableEntityHttpException(__('provider.portfolio_limit', ['limit' => $limit]));
         }
 
-        [$width, $height] = $this->dimensions($file);
-
-        return $provider->portfolioImages()->create([
-            'path' => $file->store('providers/'.$provider->id.'/portfolio', 'public'),
-            'caption' => $caption,
-            'width' => $width,
-            'height' => $height,
-            'sort_order' => (int) $provider->portfolioImages()->max('sort_order') + 10,
-        ]);
-    }
-
-    private function dimensions(UploadedFile $file): array
-    {
-        $size = @getimagesize($file->getRealPath());
-
-        return $size === false ? [null, null] : [$size[0], $size[1]];
+        $stored = $this->images->store($file->getRealPath(), 'providers/'.$provider->id.'/portfolio');
+        try {
+            return $provider->portfolioImages()->create([
+                ...$stored,
+                'caption' => $caption,
+                'sort_order' => (int) $provider->portfolioImages()->max('sort_order') + 10,
+            ]);
+        } catch (\Throwable $exception) {
+            Storage::disk('public')->delete($stored['path']);
+            throw $exception;
+        }
     }
 }

@@ -32,10 +32,10 @@ import { resolveCategoryIcon } from '@/lib/categoryIcons'
 import { emptySearchState, writeSearchState, type SearchFormState } from '@/lib/searchParams'
 import { initialsOf } from '@/lib/format'
 import type { PropertyListing, ProviderSummary } from '@/types/api'
-import professionalBanner from '../../images/Grow your business with MoriHome-services-properties.png'
+import professionalBanner from '../../images/Grow your business with MoriHome-services-properties.webp'
 
 import rentalPropertyImage from '../../images/luxury-apartment-rental.webp'
-import salePropertyImage from '../../images/mauritius-luxury-home-about-hero.png'
+import salePropertyImage from '../../images/mauritius-luxury-home-about-hero.webp'
 
 const MotionLink = motion.create(Link)
 

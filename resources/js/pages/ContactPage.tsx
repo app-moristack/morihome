@@ -22,7 +22,7 @@ import { publicApi } from '@/api/endpoints'
 import { ApiError } from '@/api/client'
 import { bootstrap } from '@/lib/bootstrap'
 import { buildWhatsappUrl } from '@/lib/whatsapp'
-import heroImage from '../../images/mauritius-luxury-home-about-hero.png'
+import heroImage from '../../images/mauritius-luxury-home-about-hero.webp'
 
 const FAQS = [
   {

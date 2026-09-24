@@ -27,7 +27,7 @@ import { PropertyImageCarousel } from '@/components/ui/PropertyImageCarousel'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { SearchHero, type PropertyHeroSearch } from '@/components/search/SearchHero'
 import { emptySearchState, writeSearchState } from '@/lib/searchParams'
-import villaImage from '../../images/mauritius-luxury-home-about-hero.png'
+import villaImage from '../../images/mauritius-luxury-home-about-hero.webp'
 
 const PropertyMap = lazy(() => import('@/components/search/PropertyMap'))
 const PROPERTY_SORTS = ['newest', 'price_asc', 'price_desc'] as const

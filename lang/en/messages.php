@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'image_conversion_invalid' => 'Upload a valid JPEG, PNG or WebP image of no more than 24 megapixels.',
     'contact_sent' => 'Your message has been sent. We will get back to you shortly.',
     'reset_sent' => 'If an account matches this email, you will receive password reset instructions.',
     'one_subscription' => 'Choose no more than one subscription from each category.',

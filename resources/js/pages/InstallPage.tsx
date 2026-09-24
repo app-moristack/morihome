@@ -57,7 +57,7 @@ function PhoneGuide({ android = false }: { android?: boolean }) {
           <ShieldCheck size={9} /> {'morihome.mu'} <MoreVertical size={10} />
         </div>
         <div className="install-phone-brand">
-          <img src="/icons/icon-96.png" alt="" />
+          <img src="/icons/app-logo.webp" alt="" />
           <strong>MoriHome</strong>
         </div>
         {android ? (
@@ -85,7 +85,7 @@ function PhoneGuide({ android = false }: { android?: boolean }) {
           <div className="install-share-sheet">
             <div className="install-share-grip" />
             <div className="install-share-app">
-              <img src="/icons/icon-96.png" alt="" />
+              <img src="/icons/app-logo.webp" alt="" />
               <span>
                 <strong>MoriHome</strong>
                 <small>{'morihome.mu'}</small>

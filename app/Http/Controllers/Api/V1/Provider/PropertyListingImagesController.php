@@ -7,12 +7,12 @@ use App\Http\Requests\StorePropertyListingImageRequest;
 use App\Http\Resources\PropertyListingImageResource;
 use App\Models\PropertyListing;
 use App\Models\PropertyListingImage;
+use App\Services\WebpImageStorage;
 use App\Support\SubscriptionEntitlements;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
-use RuntimeException;
 
 class PropertyListingImagesController extends Controller
 {
@@ -20,8 +20,9 @@ class PropertyListingImagesController extends Controller
         StorePropertyListingImageRequest $request,
         PropertyListing $propertyListing,
         SubscriptionEntitlements $entitlements,
+        WebpImageStorage $images,
     ): JsonResponse {
-        $image = DB::transaction(function () use ($request, $propertyListing, $entitlements): PropertyListingImage {
+        $image = DB::transaction(function () use ($request, $propertyListing, $entitlements, $images): PropertyListingImage {
             $membership = $entitlements->activeFor(
                 $propertyListing->provider->user,
                 $propertyListing->purpose,
@@ -41,19 +42,13 @@ class PropertyListingImagesController extends Controller
             }
 
             $uploadedImage = $request->file('image');
-            $dimensions = getimagesize($uploadedImage->getRealPath());
-            $path = $uploadedImage->store('property-listings/'.$propertyListing->id, 'public');
-
-            if ($path === false) {
-                throw new RuntimeException('The property image could not be stored.');
-            }
+            $stored = $images->store($uploadedImage->getRealPath(), 'property-listings/'.$propertyListing->id);
+            $path = $stored['path'];
 
             try {
                 return $propertyListing->images()->create([
-                    'path' => $path,
+                    ...$stored,
                     'caption' => $request->validated('caption'),
-                    'width' => $dimensions[0] ?? null,
-                    'height' => $dimensions[1] ?? null,
                     'sort_order' => ($propertyListing->images()->max('sort_order') ?? 0) + 10,
                 ]);
             } catch (\Throwable $exception) {

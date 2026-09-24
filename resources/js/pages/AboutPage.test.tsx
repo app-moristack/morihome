@@ -24,19 +24,19 @@ describe('About page', () => {
     ).toBeInTheDocument()
     expect(screen.getByRole('img', { name: /contemporary Mauritian home/ })).toHaveAttribute(
       'src',
-      expect.stringContaining('mauritius-luxury-home-about-hero.png'),
+      expect.stringContaining('mauritius-luxury-home-about-hero.webp'),
     )
     expect(
       screen.getByRole('region', { name: /A platform built for\s*Mauritius, by Mauritians/ }),
     ).toBeInTheDocument()
     expect(screen.getByRole('img', { name: /home under construction/ })).toHaveAttribute(
       'src',
-      expect.stringContaining('mauritius-home-construction-about-story.png'),
+      expect.stringContaining('mauritius-home-construction-about-story.webp'),
     )
     expect(screen.getByRole('region', { name: 'Our values' })).toBeInTheDocument()
     expect(screen.getByRole('img', { name: 'MoriStack' })).toHaveAttribute(
       'src',
-      expect.stringContaining('logo-moristack.png'),
+      expect.stringContaining('logo-moristack.webp'),
     )
     expect(
       within(screen.getByRole('navigation', { name: 'Main' })).getByRole('link', { name: 'About' }),

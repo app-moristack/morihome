@@ -17,7 +17,7 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Link } from 'react-router'
-import heroImage from '../../images/Grow your business with MoriHome.png'
+import heroImage from '../../images/Grow your business with MoriHome.webp'
 
 const FREE_BENEFITS = [
   'Create your professional profile',

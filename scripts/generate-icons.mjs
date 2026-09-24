@@ -45,6 +45,9 @@ async function main() {
   }
 
   written.push(await renderSquare(APPLE_TOUCH_SIZE, STANDARD_SAFE_RATIO, 'apple-touch-icon.png'))
+  await sharp(resolve(outputDirectory, 'icon-256.png'))
+    .webp({ lossless: true })
+    .toFile(resolve(outputDirectory, 'app-logo.webp'))
 
   const favicon = await sharp(resolve(outputDirectory, 'icon-64.png')).resize(48, 48).png().toBuffer()
   await writeFile(resolve(root, 'public/favicon.ico'), favicon)
