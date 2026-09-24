@@ -88,8 +88,10 @@ class ProviderSearch
 
     private function applySort(Builder $query, SearchCriteria $criteria): void
     {
+        $query->orderByDesc('is_featured');
+
         if ($criteria->sort === SearchCriteria::SORT_RECOMMENDED) {
-            $query->orderByDesc('is_featured')->orderByDesc('is_verified');
+            $query->orderByDesc('is_verified');
         }
 
         if ($criteria->coordinates !== null) {

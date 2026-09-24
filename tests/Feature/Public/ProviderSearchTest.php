@@ -74,6 +74,23 @@ class ProviderSearchTest extends TestCase
         $this->assertSame('Featured', $response->json('data.0.name'));
     }
 
+    public function test_featured_providers_lead_distance_sorting_after_filters_and_before_pagination(): void
+    {
+        $plain = $this->approvedProviderAt($this->portLouis);
+        $featured = Provider::factory()->approved()->featured()
+            ->at(Locality::where('slug', 'curepipe')->firstOrFail())->create();
+        $featured->serviceCategories()->attach($this->plumber);
+        Provider::factory()->approved()->featured()->at($this->portLouis)->create()
+            ->serviceCategories()->attach(ServiceCategory::where('slug', 'electrician')->firstOrFail());
+        $filters = ['radius_km' => 50, 'sort' => 'distance', 'service_category_id' => $this->plumber->id, 'per_page' => 1];
+        $this->getJson($this->searchUrl($filters))->assertOk()
+            ->assertJsonPath('meta.total', 2)->assertJsonPath('data.0.id', $featured->id);
+        $this->getJson($this->searchUrl([...$filters, 'page' => 2]))->assertOk()
+            ->assertJsonPath('data.0.id', $plain->id);
+        $this->getJson($this->searchUrl([...$filters, 'radius_km' => 10]))->assertOk()
+            ->assertJsonPath('meta.total', 1)->assertJsonPath('data.0.id', $plain->id);
+    }
+
     public function test_only_the_requested_category_is_returned(): void
     {
         $electrician = ServiceCategory::where('slug', 'electrician')->firstOrFail();

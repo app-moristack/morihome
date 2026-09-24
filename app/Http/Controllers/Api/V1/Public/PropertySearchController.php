@@ -58,6 +58,9 @@ class PropertySearchController extends Controller
                 }
             })
             ->with(['images', 'provider', 'membership.subscription'])
+            ->withExists(['membership as has_featured_placement' => fn ($query) => $query
+                ->whereHas('subscription', fn ($query) => $query->where('featured_items', true))])
+            ->orderByDesc('has_featured_placement')
             ->when(($validated['sort'] ?? 'newest') === 'price_asc', fn ($query) => $query->orderBy('price_rupees'))
             ->when(($validated['sort'] ?? 'newest') === 'price_desc', fn ($query) => $query->orderByDesc('price_rupees'))
             ->latest('published_at')
