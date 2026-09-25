@@ -2,6 +2,7 @@
 
 namespace App\Actions\Providers;
 
+use App\Enums\SubscriptionCategory;
 use App\Models\Provider;
 
 class CalculateProfileCompleteness
@@ -19,7 +20,7 @@ class CalculateProfileCompleteness
             $missingRecommended[] = 'portfolio_images';
         }
 
-        $totalWeighted = count(self::REQUIRED) + count(self::RECOMMENDED) + 1;
+        $totalWeighted = count(self::REQUIRED) + count(self::RECOMMENDED) + 1 + (int) $this->requiresServices($provider);
         $completed = $totalWeighted - count($missingRequired) - count($missingRecommended);
 
         return [
@@ -33,7 +34,7 @@ class CalculateProfileCompleteness
     {
         $missing = $this->missingOf($provider, self::REQUIRED);
 
-        if (! $provider->serviceCategories()->exists()) {
+        if ($this->requiresServices($provider) && ! $provider->serviceCategories()->exists()) {
             $missing[] = 'service_categories';
         }
 
@@ -43,5 +44,12 @@ class CalculateProfileCompleteness
     private function missingOf(Provider $provider, array $fields): array
     {
         return array_values(array_filter($fields, fn (string $field) => blank($provider->{$field})));
+    }
+
+    private function requiresServices(Provider $provider): bool
+    {
+        $categories = $provider->user->subscriptions()->pluck('category');
+
+        return $categories->isEmpty() || $categories->contains(SubscriptionCategory::Services);
     }
 }

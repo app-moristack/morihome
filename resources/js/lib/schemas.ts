@@ -55,7 +55,7 @@ export const optionalPhoneSchema = z
 
 const passwordSchema = z
   .string()
-  .min(12, 'Use at least 12 characters.')
+  .min(8, 'Use at least 8 characters.')
   .max(128, 'Use no more than 128 characters.')
   .regex(/[a-z]/, 'Include a lowercase letter.')
   .regex(/[A-Z]/, 'Include an uppercase letter.')

@@ -55,7 +55,7 @@ class RegisterProvider
                 'approval_status' => ApprovalStatus::Draft,
             ])->save();
 
-            $this->syncServiceCategories->handle($provider, $input['service_categories']);
+            $this->syncServiceCategories->handle($provider, $input['service_categories'] ?? []);
 
             return $provider->refresh();
         });

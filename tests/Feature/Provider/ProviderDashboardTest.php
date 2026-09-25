@@ -5,6 +5,7 @@ namespace Tests\Feature\Provider;
 use App\Enums\ApprovalStatus;
 use App\Models\Provider;
 use App\Models\ServiceCategory;
+use App\Models\Subscription;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -155,6 +156,8 @@ class ProviderDashboardTest extends TestCase
     {
         $provider = $this->completeDraft();
         $electrician = ServiceCategory::where('slug', 'electrician')->firstOrFail();
+
+        $provider->user->subscriptions()->attach(Subscription::where('slug', 'services-free')->firstOrFail()->id);
 
         $this->loginAs($provider->user)
             ->putJson('/api/v1/provider/profile', ['service_categories' => [$electrician->id]])

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'service_selection_limit' => 'Votre offre Services permet de sélectionner jusqu’à :limit services.',
     'image_conversion_invalid' => 'Importez une image JPEG, PNG ou WebP valide de 24 mégapixels maximum.',
     'contact_sent' => 'Votre message a été envoyé. Nous vous répondrons rapidement.',
     'reset_sent' => 'Si un compte correspond à cet e-mail, vous recevrez les instructions de réinitialisation du mot de passe.',

@@ -1380,13 +1380,23 @@ section.site-page-hero > .container-page {
   }
 }
 
-@media (max-width: 379px) {
+@media (max-width: 540px) {
+  .site-header .morihome-brand {
+    min-width: 0;
+    flex-shrink: 1;
+  }
   .site-header .brand-wordmark {
-    width: 102px;
+    width: calc(78% - 4px);
   }
   .site-header .brand-mark {
-    width: 34px;
+    width: 22%;
   }
+  .site-header .brand-tagline {
+    font-size: 6px;
+  }
+}
+
+@media (max-width: 379px) {
   .site-header .brand-tagline {
     font-size: 4.5px;
   }

@@ -513,7 +513,7 @@
     "Saisissez un numéro de téléphone valide.",
     "Met enn nimero telefonn valab."
   ],
-  "Use at least 12 characters.": ["Utilisez au moins 12 caractères.", "Servi omwin 12 karakter."],
+  "Use at least 8 characters.": ["Utilisez au moins 8 caractères.", "Servi omwin 8 karakter."],
   "Use no more than 128 characters.": [
     "Utilisez au maximum 128 caractères.",
     "Pa servi plis ki 128 karakter."
@@ -978,9 +978,9 @@
     "Sanz modpas ki ou servi pou konekte."
   ],
   "Current password": ["Mot de passe actuel", "Modpas aktiel"],
-  "At least 12 characters, with uppercase and lowercase letters and a number.": [
-    "Au moins 12 caractères, dont une majuscule, une minuscule et un chiffre.",
-    "Omwin 12 karakter, avek let maziskil, miniskil ek enn sif."
+  "At least 8 characters, with uppercase and lowercase letters and a number.": [
+    "Au moins 8 caractères, dont une majuscule, une minuscule et un chiffre.",
+    "Omwin 8 karakter, avek let maziskil, miniskil ek enn sif."
   ],
   "Change password": ["Changer le mot de passe", "Sanz modpas"],
   "Dismiss notification": ["Fermer la notification", "Ferm notifikasion"],

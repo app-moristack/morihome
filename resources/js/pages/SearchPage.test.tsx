@@ -206,7 +206,17 @@ describe('SearchPage', () => {
     expect(screen.queryByRole('dialog', { name: 'Search filters' })).not.toBeInTheDocument()
   })
 
-  it('starts a coordinate search from an area shortcut', async () => {
+  it('starts a coordinate search from a suggested location', async () => {
+    vi.spyOn(publicApi, 'suggestAddresses').mockResolvedValue([
+      {
+        label: 'Port Louis',
+        locality: 'Port Louis',
+        district: null,
+        latitude: -20.1609,
+        longitude: 57.5012,
+        source: 'locality',
+      },
+    ])
     renderWithProviders(
       <>
         <SearchPage />
@@ -214,7 +224,9 @@ describe('SearchPage', () => {
       </>,
       { route: '/search' },
     )
+    await userEvent.type(screen.getByRole('combobox', { name: 'Where do you need help?' }), 'Port')
     await userEvent.click(await screen.findByRole('button', { name: 'Port Louis' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Search' }))
 
     const route = screen.getByLabelText('Current route').textContent ?? ''
     expect(route).toContain('address=Port+Louis')

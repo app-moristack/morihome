@@ -2,7 +2,10 @@ import { t } from '@/i18n'
 import { useLocale } from '@/hooks/useLocale'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowLeft, CircleAlert } from 'lucide-react'
-import { Link } from 'react-router'
+import { useCallback, useState } from 'react'
+import { createPortal } from 'react-dom'
+import { FilterDrawer } from '@/components/search/FilterDrawer'
+import StaticPage from '@/pages/StaticPage'
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/Button'
 import { TextField } from '@/components/ui/Field'
@@ -17,6 +20,8 @@ type CredentialsStepProps = {
 
 export function CredentialsStep({ onSubmit, onBack, isSubmitting, error }: CredentialsStepProps) {
   useLocale()
+  const [legalPage, setLegalPage] = useState<'terms' | 'privacy' | null>(null)
+  const closeLegalPage = useCallback(() => setLegalPage(null), [])
   const {
     register,
     handleSubmit,
@@ -32,7 +37,7 @@ export function CredentialsStep({ onSubmit, onBack, isSubmitting, error }: Crede
         isRequired
         type="password"
         autoComplete="new-password"
-        hint={t('12–128 characters, with uppercase and lowercase letters and a number.')}
+        hint={t('8–128 characters, with uppercase and lowercase letters and a number.')}
         {...(errors.password?.message ? { error: errors.password.message } : {})}
         {...register('password')}
       />
@@ -54,16 +59,38 @@ export function CredentialsStep({ onSubmit, onBack, isSubmitting, error }: Crede
         />
         <span>
           {t('I accept the')}{' '}
-          <Link to="/terms" className="font-semibold text-ink-900 underline underline-offset-2">
+          <button
+            type="button"
+            onClick={() => setLegalPage('terms')}
+            className="font-semibold text-ink-900 underline underline-offset-2"
+          >
             {t('terms of use')}
-          </Link>{' '}
+          </button>{' '}
           {t('and the')}{' '}
-          <Link to="/privacy" className="font-semibold text-ink-900 underline underline-offset-2">
+          <button
+            type="button"
+            onClick={() => setLegalPage('privacy')}
+            className="font-semibold text-ink-900 underline underline-offset-2"
+          >
             {t('privacy policy')}
-          </Link>
+          </button>
           .
         </span>
       </label>
+
+      {legalPage &&
+        createPortal(
+          <FilterDrawer
+            id="registration-legal"
+            variant="modal"
+            title={t(legalPage === 'terms' ? 'Terms of use' : 'Privacy policy')}
+            closeLabel={t('Close')}
+            onClose={closeLegalPage}
+          >
+            <StaticPage slug={legalPage} embedded />
+          </FilterDrawer>,
+          document.body,
+        )}
 
       {errors.accepts_terms?.message ? (
         <p role="alert" className="-mt-2 text-sm font-medium text-danger">

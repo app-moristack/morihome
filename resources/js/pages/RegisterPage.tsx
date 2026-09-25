@@ -8,7 +8,6 @@ import type { RegistrationPayload } from '@/api/endpoints'
 import { AccountStep } from '@/components/register/AccountStep'
 import { CredentialsStep } from '@/components/register/CredentialsStep'
 import { LocationStep } from '@/components/register/LocationStep'
-import { ServicesStep } from '@/components/register/ServicesStep'
 import { StepIndicator } from '@/components/register/StepIndicator'
 import { SubscriptionStep } from '@/components/register/SubscriptionStep'
 import { useAuth } from '@/hooks/useAuth'
@@ -17,16 +16,15 @@ import type {
   AccountStepValues,
   CredentialsStepValues,
   LocationStepValues,
-  ServicesStepValues,
   SubscriptionStepValues,
 } from '@/lib/schemas'
 import type { ProviderTypeValue } from '@/types/api'
 import individualHero from '../../images/Grow your business with MoriHome.webp'
 import businessHero from '../../images/mauritius-business-contractor-hero.webp'
 
-const STEP_LABELS = ['Your details', 'Location', 'Services', 'Plans', 'Password']
+const STEP_LABELS = ['Your details', 'Location', 'Plans', 'Password']
 
-type Draft = Partial<AccountStepValues & LocationStepValues & ServicesStepValues & SubscriptionStepValues>
+type Draft = Partial<AccountStepValues & LocationStepValues & SubscriptionStepValues>
 
 export default function RegisterPage() {
   useLocale()
@@ -35,7 +33,17 @@ export default function RegisterPage() {
   const initialProviderType: ProviderTypeValue | undefined =
     suggestedType === 'individual' || suggestedType === 'agency' ? suggestedType : undefined
   const [step, setStep] = useState(0)
-  const [draft, setDraft] = useState<Draft>(initialProviderType ? { provider_type: initialProviderType } : {})
+  const suggestedPlan = Number(searchParams.get('plan'))
+  const [draft, setDraft] = useState<Draft>(
+    initialProviderType
+      ? {
+          provider_type: initialProviderType,
+          ...(Number.isSafeInteger(suggestedPlan) && suggestedPlan > 0
+            ? { subscription_ids: [suggestedPlan] }
+            : {}),
+        }
+      : {},
+  )
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submissionError, setSubmissionError] = useState<string>()
   const { register } = useAuth()
@@ -63,14 +71,9 @@ export default function RegisterPage() {
     setStep(2)
   }
 
-  const handleServices = (values: ServicesStepValues) => {
-    setDraft((current) => ({ ...current, ...values }))
-    setStep(3)
-  }
-
   const handleSubscriptions = (values: SubscriptionStepValues) => {
     setDraft((current) => ({ ...current, ...values }))
-    setStep(4)
+    setStep(3)
   }
 
   const handleSubmit = async (values: CredentialsStepValues) => {
@@ -187,7 +190,7 @@ export default function RegisterPage() {
             <h2>{isBusiness ? t('Tell customers about your agency') : t('Build your MoriHome profile')}</h2>
             <p>
               {t(
-                'Complete the five short steps below. Your account and selected plans are created together.',
+                'Complete the four short steps below. Your account and selected plans are created together.',
               )}
             </p>
           </div>
@@ -198,9 +201,6 @@ export default function RegisterPage() {
               <LocationStep defaultValues={draft} onSubmit={handleLocation} onBack={goBack} />
             ) : null}
             {step === 2 ? (
-              <ServicesStep defaultValues={draft} onSubmit={handleServices} onBack={goBack} />
-            ) : null}
-            {step === 3 ? (
               <SubscriptionStep
                 defaultValues={draft}
                 providerType={providerType as ProviderTypeValue}
@@ -208,7 +208,7 @@ export default function RegisterPage() {
                 onBack={goBack}
               />
             ) : null}
-            {step === 4 ? (
+            {step === 3 ? (
               <CredentialsStep
                 onSubmit={handleSubmit}
                 onBack={goBack}

@@ -203,6 +203,7 @@ export type PublicProvider = {
 }
 
 export type OwnedProvider = {
+  service_selection_limit: number
   id: number
   slug: string
   name: string

@@ -3,11 +3,12 @@ import { t } from '@/i18n'
 import { useLocale } from '@/hooks/useLocale'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowRight } from 'lucide-react'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { Button } from '@/components/ui/Button'
 import { SelectField, TextField } from '@/components/ui/Field'
 import { bootstrap } from '@/lib/bootstrap'
 import { accountStepSchema, type AccountStepValues } from '@/lib/schemas'
+import { apiRequest, ApiError } from '@/api/client'
 
 type AccountStepProps = {
   defaultValues: Partial<AccountStepValues>
@@ -19,16 +20,36 @@ export function AccountStep({ defaultValues, onSubmit }: AccountStepProps) {
   const {
     register,
     handleSubmit,
-    watch,
-    formState: { errors },
+    control,
+    setError,
+    formState: { errors, isSubmitting },
   } = useForm<AccountStepValues>({
     resolver: zodResolver(accountStepSchema),
     defaultValues: { ...defaultValues },
   })
-  const selectedProviderType = watch('provider_type')
+  const selectedProviderType = useWatch({ control, name: 'provider_type' })
+
+  const validateAccount = async (values: AccountStepValues) => {
+    try {
+      await apiRequest('/register/validate-account', { method: 'POST', body: values })
+      onSubmit(values)
+    } catch (error) {
+      if (error instanceof ApiError && error.isValidationError) {
+        const fields = ['provider_type', 'name', 'phone', 'whatsapp_phone', 'email'] as const
+        for (const field of fields) {
+          const message = error.firstErrorFor(field)
+          if (message) setError(field, { type: 'server', message }, { shouldFocus: true })
+        }
+      } else {
+        setError('root', {
+          message: error instanceof ApiError ? error.message : t('Something went wrong. Please try again.'),
+        })
+      }
+    }
+  }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
+    <form onSubmit={handleSubmit(validateAccount)} className="flex flex-col gap-4" noValidate>
       <h2 className="text-lg font-bold text-ink-900">{t('Tell us who you are')}</h2>
 
       <SelectField
@@ -85,7 +106,18 @@ export function AccountStep({ defaultValues, onSubmit }: AccountStepProps) {
         {...register('email')}
       />
 
-      <Button type="submit" size="lg" isFullWidth leadingIcon={<ArrowRight className="size-5" />}>
+      {errors.root?.message && (
+        <p role="alert" className="text-sm text-danger">
+          {t(errors.root.message)}
+        </p>
+      )}
+      <Button
+        type="submit"
+        size="lg"
+        isFullWidth
+        isLoading={isSubmitting}
+        leadingIcon={<ArrowRight className="size-5" />}
+      >
         {t('Continue')}
       </Button>
     </form>

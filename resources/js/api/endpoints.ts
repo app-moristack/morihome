@@ -109,7 +109,7 @@ export type RegistrationPayload = {
   latitude: number
   longitude: number
   service_areas?: string[]
-  service_categories: number[]
+  service_categories?: number[]
   subscription_ids: number[]
   accepts_terms: boolean
 }

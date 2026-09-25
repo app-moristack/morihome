@@ -118,7 +118,7 @@ export default function PropertySearchPage() {
         }
       />
 
-      <main className="container-page py-8">
+      <div className="container-page py-8">
         <div className="grid items-start gap-7 lg:grid-cols-[280px_minmax(0,1fr)]">
           <aside id="property-filters-sidebar" aria-label={t('Property filters')} className="hidden lg:block">
             {!filtersOpen && (
@@ -275,10 +275,10 @@ export default function PropertySearchPage() {
                             href={`https://wa.me/${whatsapp.replace(/\D/g, '')}`}
                             target="_blank"
                             rel="noreferrer"
+                            className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-brand-400 px-4 text-sm font-semibold text-ink-950 shadow-card hover:bg-brand-300"
                           >
-                            <Button isFullWidth leadingIcon={<MessageCircle className="size-4" />}>
-                              {t('Contact on WhatsApp')}
-                            </Button>
+                            <MessageCircle className="size-4" aria-hidden />
+                            {t('Contact on WhatsApp')}
                           </a>
                         ) : null}
                       </div>
@@ -328,7 +328,7 @@ export default function PropertySearchPage() {
             ) : null}
           </div>
         </div>
-      </main>
+      </div>
       {filtersOpen && (
         <FilterDrawer id="property-filters" title={t('Property filters')} onClose={closeFilters}>
           <PropertyFilters

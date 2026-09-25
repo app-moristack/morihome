@@ -50,8 +50,9 @@ export function ServiceCategoryPicker({ selectedIds, onChange, max = 10 }: Servi
               type="button"
               onClick={() => toggle(category.id)}
               aria-pressed={isSelected}
+              disabled={!isSelected && selectedIds.length >= max}
               className={cn(
-                'min-h-11 rounded-pill border px-4 text-sm font-semibold transition-colors',
+                'min-h-11 rounded-pill border px-4 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50',
                 isSelected
                   ? 'border-brand-500 bg-brand-400 text-ink-900'
                   : 'border-ink-200 text-ink-700 hover:bg-ink-50',

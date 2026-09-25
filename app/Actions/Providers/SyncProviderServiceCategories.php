@@ -4,13 +4,24 @@ namespace App\Actions\Providers;
 
 use App\Models\Provider;
 use App\Models\ServiceCategory;
+use App\Support\SubscriptionEntitlements;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class SyncProviderServiceCategories
 {
+    public function __construct(private readonly SubscriptionEntitlements $entitlements) {}
+
     public function handle(Provider $provider, array $categories): void
     {
         $normalized = $this->normalize($categories);
+
+        $limit = $this->entitlements->serviceSelectionLimit($provider->user);
+        if (count($normalized) > $limit) {
+            throw ValidationException::withMessages([
+                'service_categories' => __('messages.service_selection_limit', ['limit' => $limit]),
+            ]);
+        }
 
         $activeIds = ServiceCategory::query()
             ->whereIn('id', array_keys($normalized))

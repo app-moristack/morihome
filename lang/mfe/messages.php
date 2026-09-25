@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'service_selection_limit' => 'Ou plan Services permet swazir ziska :limit servis.',
     'image_conversion_invalid' => 'Met enn zimaz JPEG, PNG ouswa WebP valid ki pa depas 24 megapiksel.',
     'contact_sent' => 'Ou mesaz finn ale. Nou pou reponn ou biento.',
     'reset_sent' => 'Si enn kont koresponn ar sa imel-la, ou pou gagn bann instriksion pou re-inisializ ou modpas.',

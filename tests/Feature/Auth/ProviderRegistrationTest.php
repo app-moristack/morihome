@@ -9,11 +9,62 @@ use App\Models\ServiceCategory;
 use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class ProviderRegistrationTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_account_step_rejects_invalid_whatsapp_without_creating_a_user(): void
+    {
+        $this->postJson('/api/v1/register/validate-account', [
+            'provider_type' => 'individual', 'name' => 'Test Professional',
+            'phone' => '57654321', 'whatsapp_phone' => '123456789',
+        ])->assertUnprocessable()->assertJsonValidationErrors('whatsapp_phone');
+
+        $this->assertDatabaseCount('users', 0);
+    }
+
+    public function test_account_step_accepts_valid_details_without_creating_a_user(): void
+    {
+        $this->postJson('/api/v1/register/validate-account', [
+            'provider_type' => 'individual', 'name' => 'Test Professional',
+            'phone' => '5765 4321', 'whatsapp_phone' => '+33 6 12 34 56 78',
+        ])->assertNoContent();
+
+        $this->assertDatabaseCount('users', 0);
+    }
+
+    public function test_account_step_checks_normalized_phone_uniqueness(): void
+    {
+        User::factory()->create(['phone' => '+23057654321']);
+
+        $this->postJson('/api/v1/register/validate-account', [
+            'provider_type' => 'individual', 'name' => 'Test Professional',
+            'phone' => '5765 4321',
+        ])->assertUnprocessable()->assertJsonValidationErrors('phone');
+    }
+
+    public function test_registration_accepts_an_eight_character_password(): void
+    {
+        $this->postJson('/api/v1/register', $this->payload([
+            'password' => 'Abcdef12',
+            'password_confirmation' => 'Abcdef12',
+        ]))->assertCreated();
+
+        $this->assertTrue(Hash::check('Abcdef12', User::firstOrFail()->password));
+    }
+
+    public function test_registration_rejects_a_seven_character_password(): void
+    {
+        $this->postJson('/api/v1/register', $this->payload([
+            'password' => 'Abcdef1',
+            'password_confirmation' => 'Abcdef1',
+        ]))->assertUnprocessable()->assertJsonValidationErrors('password');
+
+        $this->assertDatabaseCount('users', 0);
+    }
 
     public function test_a_provider_can_register_with_the_mandatory_fields_only(): void
     {
@@ -82,11 +133,22 @@ class ProviderRegistrationTest extends TestCase
             ->assertJsonValidationErrors('accepts_terms');
     }
 
-    public function test_registration_requires_at_least_one_service_category(): void
+    public function test_registration_accepts_no_service_categories(): void
     {
         $this->postJson('/api/v1/register', $this->payload(['service_categories' => []]))
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('service_categories');
+            ->assertCreated();
+
+        $this->assertSame(0, Provider::firstOrFail()->serviceCategories()->count());
+    }
+
+    public function test_registration_accepts_omitted_service_categories(): void
+    {
+        $payload = $this->payload();
+        unset($payload['service_categories']);
+
+        $this->postJson('/api/v1/register', $payload)->assertCreated();
+
+        $this->assertSame(0, Provider::firstOrFail()->serviceCategories()->count());
     }
 
     public function test_registration_requires_a_location(): void

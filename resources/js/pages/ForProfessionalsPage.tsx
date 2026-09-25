@@ -1,10 +1,8 @@
 import { t } from '@/i18n'
 import { useLocale } from '@/hooks/useLocale'
 import {
-  ArrowRight,
   BarChart3,
   BriefcaseBusiness,
-  Check,
   CreditCard,
   Eye,
   FileText,
@@ -16,28 +14,8 @@ import {
   Users,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { Link } from 'react-router'
+import { PlanCarousel } from '@/components/subscriptions/PlanCarousel'
 import heroImage from '../../images/Grow your business with MoriHome.webp'
-
-const FREE_BENEFITS = [
-  'Create your professional profile',
-  'List your services',
-  'Appear in search results',
-  'Direct contact via WhatsApp',
-  'Upload up to 5 photos',
-  'No commission on jobs',
-  'No credit card required',
-]
-
-const BUSINESS_BENEFITS = [
-  'Everything in the free plan',
-  'Featured on the MoriHome homepage',
-  'Listed at the top of search results',
-  'Verified Business badge',
-  'Upload up to 15 photos',
-  'Direct contact via WhatsApp',
-  'No commission on jobs',
-]
 
 const WHY_JOIN = [
   { icon: Eye, title: 'More visibility', text: 'Reach more people actively looking for your services.' },
@@ -64,22 +42,6 @@ const PAYMENT_PROMISES: { icon: LucideIcon; title: string; text: string }[] = [
   { icon: MessageCircle, title: 'Payment via Juice', text: 'Secure and easy payment.' },
   { icon: RefreshCcw, title: 'No automatic renewal', text: 'You will never be charged automatically.' },
 ]
-
-function PlanBenefits({ items, business = false }: { items: string[]; business?: boolean }) {
-  useLocale()
-  return (
-    <ul className="pro-benefit-list">
-      {items.map((item) => (
-        <li key={item}>
-          <span className={business ? 'business-check' : ''}>
-            <Check aria-hidden />
-          </span>
-          <span>{t(item)}</span>
-        </li>
-      ))}
-    </ul>
-  )
-}
 
 export default function ForProfessionalsPage() {
   useLocale()
@@ -113,48 +75,7 @@ export default function ForProfessionalsPage() {
         </div>
       </section>
 
-      <section className="container-page pro-plans" aria-label={t('Choose your professional plan')}>
-        <article className="pro-plan-card">
-          <header>
-            <span className="pro-plan-icon free">
-              <Users aria-hidden />
-            </span>
-            <div>
-              <h2>{t('Individuals & Self-Employed')}</h2>
-              <strong className="free-price">{t('FREE FOREVER')}</strong>
-            </div>
-          </header>
-          <p>{t('Perfect for independent professionals and workers.')}</p>
-          <PlanBenefits items={FREE_BENEFITS} />
-          <Link to="/register?type=individual" className="pro-plan-button free-button">
-            {t('Create Free Account')} <ArrowRight aria-hidden />
-          </Link>
-          <small>{t('100% free. Always.')}</small>
-        </article>
-
-        <article className="pro-plan-card business-plan">
-          <span className="free-badge">
-            {t('6 PAID')}
-            <br />
-            {t('PLANS')}
-          </span>
-          <header>
-            <span className="pro-plan-icon">
-              <BriefcaseBusiness aria-hidden />
-            </span>
-            <div>
-              <h2>{t('Agencies & Companies')}</h2>
-              <strong>{t('From Rs 499 / 6 months')}</strong>
-            </div>
-          </header>
-          <p>{t('Give your business greater visibility on MoriHome.')}</p>
-          <PlanBenefits items={BUSINESS_BENEFITS} business />
-          <Link to="/register?type=agency" className="pro-plan-button">
-            {t('Choose Agency Plans')} <ArrowRight aria-hidden />
-          </Link>
-          <small>{t('Choose Plus or Pro for Services, Rental and Sales.')}</small>
-        </article>
-      </section>
+      <PlanCarousel />
 
       <section className="pro-payment-strip">
         <div className="container-page">

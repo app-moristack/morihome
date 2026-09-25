@@ -38,15 +38,15 @@ describe('language selection', () => {
     expect(localStorage.getItem('morihome_locale')).toBe('fr')
     expect(document.cookie).toContain('morihome_locale=fr')
 
-    await userEvent.click(screen.getByRole('button', { name: 'Appliquer les filtres' }))
-    const params = apply.mock.calls[0]![0] as URLSearchParams
+    expect(apply).toHaveBeenCalled()
+    const params = apply.mock.calls.at(-1)![0] as URLSearchParams
     expect(params.get('location')).toBe('Moka')
     expect(params.get('bedrooms')).toBe('3')
     expect(params.getAll('amenities[]')).toEqual(['pool'])
 
     await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Changer de langue' }), 'en')
     expect(screen.getByLabelText('Bedrooms')).toHaveValue('3')
-    expect(screen.getByRole('button', { name: 'Apply filters' })).toBeVisible()
+    expect(screen.getByRole('button', { name: 'Clear all' })).toBeVisible()
   })
 
   it('sends the current language to the API and isolates unsupported language codes', async () => {

@@ -19,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        Password::defaults(fn () => Password::min(12)->mixedCase()->numbers());
+        Password::defaults(fn () => Password::min(8)->mixedCase()->numbers());
         ResetPassword::createUrlUsing(fn ($user, string $token) => rtrim(config('app.url'), '/').'/reset-password?'.http_build_query(['token' => $token, 'email' => $user->getEmailForPasswordReset()]));
 
         TrustProxies::at(config('app.trusted_proxies'));

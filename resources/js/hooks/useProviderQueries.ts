@@ -98,6 +98,7 @@ export function useRequestSubscriptions() {
     mutationFn: providerApi.requestSubscriptions,
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['provider', 'subscriptions'] })
+      void queryClient.invalidateQueries({ queryKey: queryKeys.providerProfile() })
       void queryClient.invalidateQueries({ queryKey: queryKeys.currentUser() })
     },
   })

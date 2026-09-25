@@ -42,7 +42,7 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <section className="container-page py-12">
+    <section className="container-page py-8">
       <div className="mx-auto max-w-md rounded-2xl border border-ink-200 bg-surface p-8">
         <h1 className="text-3xl font-bold">{t('Reset your password')}</h1>
         {complete ? (
@@ -66,17 +66,17 @@ export default function ResetPasswordPage() {
               name="password"
               type="password"
               autoComplete="new-password"
-              minLength={12}
+              minLength={8}
               maxLength={128}
               isRequired
-              hint={t('12–128 characters, including uppercase, lowercase and a number.')}
+              hint={t('8–128 characters, including uppercase, lowercase and a number.')}
             />
             <TextField
               label={t('Confirm new password')}
               name="password_confirmation"
               type="password"
               autoComplete="new-password"
-              minLength={12}
+              minLength={8}
               maxLength={128}
               isRequired
             />

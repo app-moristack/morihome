@@ -7,11 +7,15 @@ export function FilterDrawer({
   title,
   onClose,
   children,
+  variant = 'drawer',
+  closeLabel = t('Close filters'),
 }: {
   id: string
   title: string
   onClose: () => void
   children: ReactNode
+  variant?: 'drawer' | 'modal'
+  closeLabel?: string
 }) {
   const panel = useRef<HTMLDivElement>(null)
   const closeButton = useRef<HTMLButtonElement>(null)
@@ -52,7 +56,11 @@ export function FilterDrawer({
       <div className="absolute inset-0 bg-black/55" onClick={onClose} aria-hidden="true" />
       <div
         ref={panel}
-        className="absolute inset-y-0 right-0 flex w-[min(92vw,380px)] flex-col bg-canvas shadow-2xl"
+        className={
+          variant === 'modal'
+            ? 'absolute top-1/2 left-1/2 flex max-h-[90dvh] w-[calc(100%-2rem)] max-w-2xl -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl bg-canvas shadow-2xl'
+            : 'absolute inset-y-0 right-0 flex w-[min(92vw,380px)] flex-col bg-canvas shadow-2xl'
+        }
       >
         <div className="flex shrink-0 items-center justify-between gap-3 border-b border-ink-100 bg-surface px-4 pt-[env(safe-area-inset-top)]">
           <strong>{title}</strong>
@@ -61,7 +69,7 @@ export function FilterDrawer({
             type="button"
             onClick={onClose}
             className="my-2 inline-flex min-h-11 items-center gap-2 rounded-full border border-ink-200 px-3 text-sm font-semibold hover:bg-ink-100"
-            aria-label={t('Close filters')}
+            aria-label={closeLabel}
           >
             <X className="size-5" aria-hidden /> {t('Close')}
           </button>

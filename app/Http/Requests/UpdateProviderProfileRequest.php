@@ -32,8 +32,8 @@ class UpdateProviderProfileRequest extends FormRequest
             'longitude' => ['sometimes', 'numeric', 'between:-180,180'],
             'service_areas' => ['nullable', 'array', 'max:20'],
             'service_areas.*' => ['string', 'max:120'],
-            'service_categories' => ['sometimes', 'array', 'min:1', 'max:10'],
-            'service_categories.*' => ['integer', Rule::exists('service_categories', 'id')->where('is_active', true)],
+            'service_categories' => ['sometimes', 'array'],
+            'service_categories.*' => ['integer', 'distinct', Rule::exists('service_categories', 'id')->where('is_active', true)],
         ];
     }
 }

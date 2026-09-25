@@ -1,4 +1,9 @@
 {
+  "Choose plan": ["Choisir cette offre", "Swazir sa plan-la"],
+  "Choose a Services plan to add services to your profile.": [
+    "Choisissez une offre Services pour ajouter des services à votre profil.",
+    "Swazir enn plan Services pou azout bann servis lor ou profil."
+  ],
   "Close": ["Fermer", "Ferme"],
   "Area": ["Superficie", "Sirfas"],
   "This property is not available": ["Cette propriété n’est pas disponible", "Sa propriyete-la pa disponib"],
@@ -40,13 +45,13 @@
   "Find your next home anytime": ["Vos recherches, à tout moment", "Trouv ou prosenn lakaz"],
   "Add to Home Screen": ["Ajouter à l’écran d’accueil", "Azout lor lekran lakey"],
   "Dismiss app banner": ["Fermer la bannière de l’application", "Ferm banyer aplikasion"],
-  "12–128 characters, with uppercase and lowercase letters and a number.": [
-    "De 12 à 128 caractères, dont une majuscule, une minuscule et un chiffre.",
-    "12 a 128 karakter, avek let maziskil, miniskil ek enn sif."
+  "8–128 characters, with uppercase and lowercase letters and a number.": [
+    "De 8 à 128 caractères, dont une majuscule, une minuscule et un chiffre.",
+    "8 a 128 karakter, avek let maziskil, miniskil ek enn sif."
   ],
-  "12–128 characters, including uppercase, lowercase and a number.": [
-    "De 12 à 128 caractères, dont une majuscule, une minuscule et un chiffre.",
-    "12 a 128 karakter, avek let maziskil, miniskil ek enn sif."
+  "8–128 characters, including uppercase, lowercase and a number.": [
+    "De 8 à 128 caractères, dont une majuscule, une minuscule et un chiffre.",
+    "8 a 128 karakter, avek let maziskil, miniskil ek enn sif."
   ],
   "more": ["autres", "ankor"],
   "then": ["puis", "apre"],

@@ -1,4 +1,4 @@
-import { act, screen } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { useLocation } from 'react-router'
@@ -60,6 +60,6 @@ describe('HomeAppBanner installation', () => {
     renderBanner()
     offerInstall('dismissed', true)
     await userEvent.click(screen.getByRole('button', { name: 'Add to Home Screen' }))
-    expect(screen.getByLabelText('Current route')).toHaveTextContent('/install')
+    await waitFor(() => expect(screen.getByLabelText('Current route')).toHaveTextContent('/install'))
   })
 })

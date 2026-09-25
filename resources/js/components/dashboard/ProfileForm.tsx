@@ -61,7 +61,9 @@ export function ProfileForm({ provider }: { provider: OwnedProvider }) {
         email: values.email || null,
         website: values.website || null,
         whatsapp_phone: values.whatsapp_phone || null,
-        service_categories: categoryIds,
+        ...(categoryIds.join(',') !== provider.service_categories.map((category) => category.id).join(',')
+          ? { service_categories: categoryIds }
+          : {}),
       },
       {
         onSuccess: (updated) =>
@@ -181,7 +183,14 @@ export function ProfileForm({ provider }: { provider: OwnedProvider }) {
       </p>
 
       <h2 className="mt-2 text-lg font-bold text-ink-900">{t('Services')}</h2>
-      <ServiceCategoryPicker selectedIds={categoryIds} onChange={setCategoryIds} />
+      {provider.service_selection_limit === 0 && (
+        <p className="text-sm text-ink-500">{t('Choose a Services plan to add services to your profile.')}</p>
+      )}
+      <ServiceCategoryPicker
+        selectedIds={categoryIds}
+        onChange={setCategoryIds}
+        max={provider.service_selection_limit}
+      />
 
       <Button
         type="submit"

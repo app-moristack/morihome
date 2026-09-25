@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Support\SubscriptionEntitlements;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -25,6 +26,7 @@ class OwnedProviderResource extends JsonResource
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'service_areas' => $this->service_areas,
+            'service_selection_limit' => app(SubscriptionEntitlements::class)->serviceSelectionLimit($this->user),
             'logo_url' => $this->logoUrl(),
             'cover_url' => $this->coverUrl(),
             'approval_status' => $this->approval_status->value,

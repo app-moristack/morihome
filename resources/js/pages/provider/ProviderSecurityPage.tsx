@@ -67,7 +67,7 @@ export default function ProviderSecurityPage() {
           isRequired
           type="password"
           autoComplete="new-password"
-          hint={t('At least 12 characters, with uppercase and lowercase letters and a number.')}
+          hint={t('At least 8 characters, with uppercase and lowercase letters and a number.')}
           {...(errors.password?.message ? { error: errors.password.message } : {})}
           {...register('password')}
         />

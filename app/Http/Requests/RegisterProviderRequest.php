@@ -5,14 +5,11 @@ namespace App\Http\Requests;
 use App\Enums\ProviderType;
 use App\Enums\SubscriptionTier;
 use App\Models\Subscription;
-use App\Rules\ValidPhoneNumber;
-use App\Support\PhoneNumber;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\Validator;
 
-class RegisterProviderRequest extends FormRequest
+class RegisterProviderRequest extends RegisterAccountRequest
 {
     public function authorize(): bool
     {
@@ -22,11 +19,7 @@ class RegisterProviderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'provider_type' => ['required', Rule::enum(ProviderType::class)],
-            'name' => ['required', 'string', 'min:2', 'max:120'],
-            'phone' => ['required', 'string', 'max:20', new ValidPhoneNumber, Rule::unique('users', 'phone')],
-            'whatsapp_phone' => ['nullable', 'string', 'max:20', new ValidPhoneNumber],
-            'email' => ['nullable', 'email:rfc', 'max:180', Rule::unique('users', 'email')],
+            ...parent::rules(),
             'password' => ['required', 'string', 'max:128', 'confirmed', Password::defaults()],
             'description' => ['nullable', 'string', 'max:2000'],
             'website' => ['nullable', 'url:http,https', 'max:180'],
@@ -38,7 +31,7 @@ class RegisterProviderRequest extends FormRequest
             'longitude' => ['required', 'numeric', 'between:-180,180'],
             'service_areas' => ['nullable', 'array', 'max:20'],
             'service_areas.*' => ['string', 'max:120'],
-            'service_categories' => ['required', 'array', 'min:1', 'max:10'],
+            'service_categories' => ['sometimes', 'array'],
             'service_categories.*' => ['integer', Rule::exists('service_categories', 'id')->where('is_active', true)],
             'subscription_ids' => ['required', 'array', 'min:1', 'max:3'],
             'subscription_ids.*' => [
@@ -88,13 +81,5 @@ class RegisterProviderRequest extends FormRequest
                 }
             },
         ];
-    }
-
-    protected function prepareForValidation(): void
-    {
-        $this->merge(array_filter([
-            'phone' => PhoneNumber::tryParse($this->input('phone'))?->e164,
-            'whatsapp_phone' => PhoneNumber::tryParse($this->input('whatsapp_phone'))?->e164,
-        ]));
     }
 }

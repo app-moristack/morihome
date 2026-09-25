@@ -61,6 +61,7 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware('throttle:auth')->group(function () {
         Route::post('register', [RegisteredProvidersController::class, 'store']);
+        Route::post('register/validate-account', [RegisteredProvidersController::class, 'validateAccount']);
         Route::post('login', [AuthenticatedSessionController::class, 'store']);
         Route::post('forgot-password', [PasswordResetController::class, 'sendLink']);
         Route::post('reset-password', [PasswordResetController::class, 'reset']);

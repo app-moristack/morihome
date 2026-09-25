@@ -131,6 +131,44 @@
   box-shadow: 0 12px 34px rgb(30 43 67 / 0.08);
 }
 
+.plan-carousel {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 48px) / 3);
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 16px;
+}
+.plan-carousel > article {
+  min-width: 0;
+  scroll-snap-align: start;
+}
+.plan-carousel-control {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 1px solid #dce1e8;
+  border-radius: 50%;
+}
+.plan-carousel-control:disabled {
+  opacity: 0.35;
+}
+.plan-carousel-control:not(:disabled):hover {
+  background: #ffca18;
+}
+@media (max-width: 1100px) {
+  .plan-carousel {
+    grid-auto-columns: calc((100% - 24px) / 2);
+  }
+}
+@media (max-width: 640px) {
+  .plan-carousel {
+    grid-auto-columns: 100%;
+  }
+}
+
 .pro-plan-card.business-plan {
   border-color: #f4d069;
   background: linear-gradient(145deg, #fff 45%, #fff9e7);
@@ -176,20 +214,6 @@
 .pro-plan-card > p {
   margin-top: 18px;
   color: #4a5872;
-}
-
-.free-badge {
-  position: absolute;
-  top: 18px;
-  right: 20px;
-  rotate: -5deg;
-  border-radius: 9px;
-  padding: 8px 13px;
-  background: #ff244d;
-  color: #fff;
-  text-align: center;
-  font-size: 0.75rem;
-  font-weight: 900;
 }
 
 .pro-benefit-list {
@@ -363,10 +387,10 @@
 }
 
 .register-hero {
-  min-height: 360px;
+  min-height: 0;
 }
 .register-hero-copy {
-  min-height: 360px;
+  min-height: 0;
   max-width: 560px;
 }
 .register-hero h1 {
@@ -533,6 +557,21 @@
     justify-content: flex-start;
     padding-top: 32px;
   }
+  .register-hero,
+  .register-hero-copy {
+    min-height: 0;
+  }
+  .register-hero-copy {
+    padding-bottom: 32px;
+  }
+  .register-hero > img {
+    top: 0;
+    height: 100%;
+  }
+  .register-hero-wash,
+  .business-register .register-hero-wash {
+    background: rgb(255 255 255 / 0.9);
+  }
   .pro-hero h1,
   .register-hero h1 {
     font-size: clamp(2.25rem, 10vw, 3.5rem);
@@ -562,7 +601,6 @@
   }
   .register-benefits-card {
     position: static;
-    grid-row: 1;
   }
 }
 
@@ -571,7 +609,7 @@
     padding: 22px 18px;
   }
   .pro-plan-card header {
-    padding-right: 38px;
+    padding-right: 0;
   }
   .pro-plan-card h2 {
     font-size: 1.05rem;

@@ -121,7 +121,7 @@ const CONTENT: Record<string, { title: string; intro: string; sections: Section[
   },
 }
 
-export default function StaticPage({ slug }: { slug: string }) {
+export default function StaticPage({ slug, embedded = false }: { slug: string; embedded?: boolean }) {
   useLocale()
   const page = CONTENT[slug]
 
@@ -135,8 +135,12 @@ export default function StaticPage({ slug }: { slug: string }) {
   })
 
   return (
-    <div className="container-page max-w-3xl py-10 sm:py-14">
-      <PageHeader title={t(page.title)} description={t(page.intro)} />
+    <div className={embedded ? '' : 'container-page max-w-3xl py-10 sm:py-14'}>
+      {embedded ? (
+        <p className="text-sm text-ink-600">{t(page.intro)}</p>
+      ) : (
+        <PageHeader title={t(page.title)} description={t(page.intro)} />
+      )}
 
       <div className="mt-8 flex flex-col gap-8">
         {page.sections.map((section) => (
@@ -174,11 +178,13 @@ export default function StaticPage({ slug }: { slug: string }) {
         </div>
       ) : null}
 
-      <p className="mt-10 text-sm text-ink-500">
-        <Link to="/" className="font-semibold text-ink-900 underline underline-offset-2">
-          {t('Back to MoriHome')}
-        </Link>
-      </p>
+      {!embedded && (
+        <p className="mt-10 text-sm text-ink-500">
+          <Link to="/" className="font-semibold text-ink-900 underline underline-offset-2">
+            {t('Back to MoriHome')}
+          </Link>
+        </p>
+      )}
     </div>
   )
 }
