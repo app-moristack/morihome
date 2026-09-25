@@ -66,7 +66,7 @@ export function SearchPage() {
         stateKey={searchParams.toString()}
       />
 
-      <div className="container-page grid max-w-none gap-5 py-5 lg:grid-cols-[250px_minmax(0,1fr)] lg:items-start">
+      <div className="container-page grid max-w-none gap-5 py-5 lg:grid-cols-[300px_minmax(0,1fr)] lg:items-start">
         <aside className="sticky top-24 hidden lg:block" aria-label={t('Search filters')}>
           {!areFiltersOpen && <SearchFilters state={state} onChange={updateState} />}
         </aside>

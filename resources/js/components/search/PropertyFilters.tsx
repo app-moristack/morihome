@@ -163,6 +163,7 @@ export function PropertyFilters({
       <div className="grid grid-cols-2 gap-3">
         <SelectField
           label={t('Bedrooms')}
+          className="min-h-[50px] pl-2.5 pr-8 text-sm"
           value={bedrooms}
           onChange={(event) => update({ bedrooms: event.target.value })}
         >
@@ -175,6 +176,7 @@ export function PropertyFilters({
         </SelectField>
         <SelectField
           label={t('Bathrooms')}
+          className="min-h-[50px] pl-2.5 pr-8 text-sm"
           value={bathrooms}
           onChange={(event) => update({ bathrooms: event.target.value })}
         >

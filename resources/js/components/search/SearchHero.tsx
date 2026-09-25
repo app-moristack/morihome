@@ -182,7 +182,7 @@ export function SearchHero({
           ) : (
             <form
               onSubmit={submitPropertySearch}
-              className={`card grid gap-4 p-4 shadow-lifted sm:grid-cols-2 sm:p-5 lg:grid-cols-[0.75fr_0.85fr_1.3fr_0.9fr_auto] ${showSearchModeTabs ? 'rounded-tl-none' : ''}`}
+              className={`card grid gap-4 p-4 shadow-lifted sm:grid-cols-2 sm:p-5 lg:grid-cols-[0.65fr_1fr_1.15fr_1.2fr_auto] ${showSearchModeTabs ? 'rounded-tl-none' : ''}`}
               role="search"
               aria-label={t('Find property in Mauritius')}
             >

@@ -36,7 +36,7 @@ export function FieldShell({
 }: FieldShellProps) {
   useLocale()
   return (
-    <div className={cn('flex flex-col gap-1.5', className)}>
+    <div className={cn('flex min-w-0 flex-col gap-1.5', className)}>
       <label htmlFor={htmlFor} className="text-sm font-semibold text-ink-800">
         {t(label)}
         {isRequired ? <span className="ml-0.5 text-danger">*</span> : null}
@@ -140,7 +140,11 @@ export function SelectField({ label, error, hint, isRequired, id, children, ...p
         id={fieldId}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? `${fieldId}-error` : hint ? `${fieldId}-hint` : undefined}
-        className={cn(CONTROL_CLASSES, 'appearance-none bg-no-repeat pr-10', props.className)}
+        className={cn(
+          CONTROL_CLASSES,
+          'form-select min-w-0 appearance-none overflow-hidden text-ellipsis whitespace-nowrap bg-no-repeat pr-8',
+          props.className,
+        )}
         style={{
           backgroundImage:
             "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235F6368' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",

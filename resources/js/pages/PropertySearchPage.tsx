@@ -118,8 +118,8 @@ export default function PropertySearchPage() {
         }
       />
 
-      <div className="container-page py-8">
-        <div className="grid items-start gap-7 lg:grid-cols-[280px_minmax(0,1fr)]">
+      <div className="container-page max-w-none py-8">
+        <div className="grid items-start gap-7 lg:grid-cols-[300px_minmax(0,1fr)]">
           <aside id="property-filters-sidebar" aria-label={t('Property filters')} className="hidden lg:block">
             {!filtersOpen && (
               <PropertyFilters
@@ -197,7 +197,7 @@ export default function PropertySearchPage() {
               </div>
             </div>
             {isLoading ? (
-              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                 <Skeleton className="h-80 rounded-card" />
                 <Skeleton className="h-80 rounded-card" />
                 <Skeleton className="h-80 rounded-card" />
@@ -213,7 +213,7 @@ export default function PropertySearchPage() {
                 <PropertyMap properties={data.data} />
               </Suspense>
             ) : data?.data.length ? (
-              <ul className={resultsView === 'list' ? 'grid gap-5' : 'grid gap-5 sm:grid-cols-2'}>
+              <ul className={resultsView === 'list' ? 'grid gap-5' : 'grid gap-5 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'}>
                 {data.data.map((listing) => {
                   const whatsapp = listing.provider?.whatsapp_phone ?? listing.provider?.phone
                   return (
